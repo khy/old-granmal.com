@@ -3,12 +3,15 @@
 <!DOCTYPE html>
 
 <html>
-    <head>
-        <title>Gran Mal</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
-    </head>
-    <body>
-        @content
-    </body>
+  <head>
+    <title>Gran Mal</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    @helper.requireJs(core = routes.Assets.at("javascripts/require.js").url, module = routes.Assets.at("javascripts/main").url)
+  </head>
+
+  <body>
+    <div class="container">
+      @content
+    </div>
+  </body>
 </html>
