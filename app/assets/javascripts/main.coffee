@@ -8,14 +8,11 @@ require [
   'underscore'
 ], ($, _) ->
 
-  resizeMasthead = ->
-    navHeight = $('.nav').outerHeight()
-    windowHeight = $(window).height()
-    $('.masthead').height(windowHeight - (navHeight + 20))
+  resizeMasthead = -> $('.masthead').height $(window).height() - 40
 
   resizeMasthead()
 
-  $(window).resize _.throttle resizeMasthead, 100
+  $(window).resize resizeMasthead
 
   originalNavTop = $('.nav').offset().top
 
