@@ -1,6 +1,12 @@
+@import "bootstrap/glyphicons.less"
+
 @container-width-max: 768px;
 @container-margin: 20px;
 @component-width-max: (@container-width-max - (2 * @container-margin));
+
+body {
+  font-family: 'Raleway', sans-serif;
+}
 
 .container {
   width: @container-width-max;
@@ -21,6 +27,44 @@
   margin: 0 @container-margin;
   background: url(/assets/images/bad-ass.jpg) no-repeat center top -70px local;
   background-size: @component-width-max auto;
+
+  h1, h2 {
+    margin: 0;
+    font-size: 8em;
+    font-weight: 100;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  @media all and (max-width: 720px) {
+    h1, h2 {
+      font-size: 7em;
+    }
+  }
+
+  @media all and (max-width: 635px) {
+    h1, h2 {
+      font-size: 6em;
+    }
+  }
+
+  @media all and (max-width: 550px) {
+    h1, h2 {
+      font-size: 5em;
+    }
+  }
+
+  @media all and (max-width: 470px) {
+    h1, h2 {
+      font-size: 4em;
+    }
+  }
+
+  @media all and (max-width: 385px) {
+    h1, h2 {
+      font-size: 3em;
+    }
+  }
 }
 
 .nav {
