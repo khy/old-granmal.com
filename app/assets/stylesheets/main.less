@@ -1,4 +1,6 @@
-@import "bootstrap/glyphicons.less"
+@import "bootstrap/variables.less";
+@import "bootstrap/mixins.less";
+@import "bootstrap/glyphicons.less";
 
 @container-width-max: 768px;
 @container-margin: 20px;
@@ -68,15 +70,16 @@ body {
 }
 
 .nav {
-  padding: @container-margin;
+  .clearfix;
+
+  padding: @container-margin 0;
   border-bottom: 1px solid #DDD;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
   .container.affix-header & {
     position: fixed;
     top: 0;
-    width: @component-width-max;
-    padding-top: @container-margin;
+    width: @container-width-max;
     background-color: #FFF;
   }
 
@@ -87,8 +90,15 @@ body {
   }
 
   h1 {
-    margin: 0;
+    margin: 0 0 0 @container-margin;
     font-size: 1.5em;
+    font-weight: 400;
+    float: left;
+  }
+
+  a {
+    margin: 5px @container-margin 0 0;
+    float: right;
   }
 }
 
