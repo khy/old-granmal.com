@@ -1,12 +1,8 @@
 require.config
   paths:
-    'jquery':     'vendor/jquery-2.1.0'
-    'underscore': 'vendor/underscore-1.6.0'
+    'jquery': 'vendor/jquery-2.1.0'
 
-require [
-  'jquery'
-  'underscore'
-], ($, _) ->
+require ['jquery'], ($) ->
 
   navTop = $('.nav').offset().top
 
