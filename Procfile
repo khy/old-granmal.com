@@ -1,0 +1,1 @@
+web: target/universal/stage/bin/granmal -Dconfig.file=conf/prod.conf -Dhttp.port=$PORT
