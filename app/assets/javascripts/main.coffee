@@ -8,16 +8,23 @@ require [
   'underscore'
 ], ($, _) ->
 
-  resizeMasthead = -> $('.masthead').height $(window).height() - 40
+  navTop = $('.nav').offset().top
 
-  resizeMasthead()
+  resizePage = ->
+    windowHeight = $(window).height()
+    $('.masthead').height windowHeight - 40
 
-  $(window).resize resizeMasthead
+    listMinHeight = windowHeight - $('.nav').height()
+    $('.list').css("min-height", listMinHeight)
 
-  originalNavTop = $('.nav').offset().top
+    navTop = $('.nav').offset().top
+
+  resizePage()
+
+  $(window).resize resizePage
 
   conditionallyAffixHeader = ->
-    if ($(window).scrollTop() >= originalNavTop)
+    if ($(window).scrollTop() >= navTop)
       $('.container').addClass('affix-header')
     else
       $('.container').removeClass('affix-header')
