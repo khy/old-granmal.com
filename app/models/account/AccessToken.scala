@@ -1,15 +1,7 @@
 package models.account
 
-trait AccessToken {
+import java.util.UUID
 
-  def guid: UUID
+import mongo.AccessTokenDocument
 
-  def provider: Provider
-
-  def accessToken: String
-
-  def code: Option[String]
-
-  def scopes: Seq[String]
-
-}
+class AccessToken(document: AccessTokenDocument)
