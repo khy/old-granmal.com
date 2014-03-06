@@ -1,15 +1,14 @@
 package models.account
 
 import java.util.UUID
-import org.joda.time.DateTime
 import org.specs2.mutable.{ Specification, Before }
 import play.api.test.Helpers
 import Helpers._
-import play.api.libs.concurrent.Execution.Implicits.{defaultContext => executionContext}
 import io.useless.util.mongo.MongoUtil
 
 import mongo.AccountDocument
 import AccountDocument._
+import test.support.AccountFactory
 
 class AccountSpec extends Specification {
 
@@ -17,36 +16,34 @@ class AccountSpec extends Specification {
     def before = MongoUtil.clearDb()
   }
 
+  def factory = new AccountFactory(Account.collection)
+
   "AccountDao.accountForGuid" should {
+    "return None for a non-existant GUID" in new Context {
+      val optAccount = Helpers.await { Account.accountForGuid(UUID.randomUUID) }
+      optAccount must beNone
+    }
+
     "return the account corresponding to the specified GUID" in new Context {
-      val accountDocument = createAccount()
+      val accountDocument = factory.createAccount()
       val optAccount = Helpers.await { Account.accountForGuid(accountDocument.guid) }
       optAccount.get.guid must beEqualTo(accountDocument.guid)
     }
   }
 
-  def createAccount() = {
-    val document = new AccountDocument(
-      guid = UUID.randomUUID,
-      email = None,
-      handle = None,
-      name = None,
-      password = None,
-      accessTokens = Seq.empty,
-      createdAt = DateTime.now,
-      updatedAt = DateTime.now,
-      deletedAt = None
-    )
-    
-    Helpers.await {
-      Account.collection.insert(document).map { lastError =>
-        if (lastError.ok) {
-          Right(document)
-        } else {
-          throw lastError
-        }
-      }
-    }.right.toOption.get
+  "AccountDao.accountForAccessTokenCode" should {
+    "return None for a non-existant access token code" in new Context {
+      val optAccount = Helpers.await { Account.accountForAccessTokenCode("non-existant-code") }
+      optAccount must beNone
+    }
+
+    "return the account with an access token with the specified code" in new Context {
+      val accessTokenDocument = factory.buildAccessTokenDocument(code = Some("code"))
+      val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
+      factory.createAccount(accountDocument)
+      val optAccount = Helpers.await { Account.accountForAccessTokenCode("code") }
+      optAccount.get.accessTokens.head.code must beEqualTo(Some("code"))
+    }
   }
 
 }
