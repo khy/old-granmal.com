@@ -6,9 +6,12 @@ import org.joda.time.DateTime
 import io.useless.reactivemongo.bson.UuidBson._
 import io.useless.reactivemongo.bson.DateTimeBson._
 
+import models.account.AuthProvider._
+import AuthProviderBson._
+
 class AccessTokenDocument(
   val guid: UUID,
-  val providerKey: String,
+  val authProvider: AuthProvider,
   val token: String,
   val code: Option[String],
   val scopes: Seq[String],
@@ -22,7 +25,7 @@ object AccessTokenDocument {
     def read(bsonDocument: BSONDocument): AccessTokenDocument = {
       new AccessTokenDocument(
         bsonDocument.getAsTry[UUID]("_id").get,
-        bsonDocument.getAsTry[String]("provider_key").get,
+        bsonDocument.getAsTry[AuthProvider]("auth_provider").get,
         bsonDocument.getAsTry[String]("token").get,
         bsonDocument.getAs[String]("code"),
         bsonDocument.getAsTry[Seq[String]]("scopes").get,
@@ -36,7 +39,7 @@ object AccessTokenDocument {
     def write(accessTokenDocument: AccessTokenDocument): BSONDocument = {
       BSONDocument(
         "_id" -> accessTokenDocument.guid,
-        "provider_key" -> accessTokenDocument.providerKey,
+        "auth_provider" -> accessTokenDocument.authProvider,
         "token" -> accessTokenDocument.token,
         "code" -> accessTokenDocument.code,
         "scopes" -> accessTokenDocument.scopes,
