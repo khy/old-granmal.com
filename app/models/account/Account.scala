@@ -8,6 +8,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.reactivemongo.MongoAccess
 import io.useless.reactivemongo.bson.UuidBson._
 
+import AuthProvider.AuthProvider
 import mongo.AccountDocument
 
 object Account extends MongoAccess {
@@ -26,7 +27,8 @@ object Account extends MongoAccess {
 
   def accountForGuid(guid: UUID) = findOne("_id" -> guid)
 
-  def accountForAccessTokenCode(code: String) = findOne("access_tokens.code" -> code)
+  def accountForAccessTokenCode(authProvider: AuthProvider, code: String) =
+    findOne("access_tokens.code" -> code)
 
   private def findOne(query: Producer[(String, BSONValue)]*): Future[Option[Account]] = {
     collection.find(BSONDocument(query:_*)).one[AccountDocument].map { optDocument =>

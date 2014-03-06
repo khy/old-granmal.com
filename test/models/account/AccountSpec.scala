@@ -33,16 +33,26 @@ class AccountSpec extends Specification {
 
   "AccountDao.accountForAccessTokenCode" should {
     "return None for a non-existant access token code" in new Context {
-      val optAccount = Helpers.await { Account.accountForAccessTokenCode("non-existant-code") }
+      val optAccount = Helpers.await {
+        Account.accountForAccessTokenCode(AuthProvider.Useless, "non-existant-code")
+      }
       optAccount must beNone
     }
 
     "return the account with an access token with the specified code" in new Context {
-      val accessTokenDocument = factory.buildAccessTokenDocument(code = Some("code"))
+      val accessTokenDocument = factory.buildAccessTokenDocument(
+        authProvider = AuthProvider.Useless,
+        code = Some("code")
+      )
       val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
       factory.createAccount(accountDocument)
-      val optAccount = Helpers.await { Account.accountForAccessTokenCode("code") }
-      optAccount.get.accessTokens.head.code must beEqualTo(Some("code"))
+
+      val optAccount = Helpers.await {
+        Account.accountForAccessTokenCode(AuthProvider.Useless, "code")
+      }
+      val accessToken = optAccount.get.accessTokens.head
+      accessToken.authProvider must beEqualTo(AuthProvider.Useless)
+      accessToken.code must beEqualTo(Some("code"))
     }
   }
 

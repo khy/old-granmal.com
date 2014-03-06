@@ -8,6 +8,7 @@ import play.api.test.Helpers
 import Helpers._
 
 import models.account.AuthProvider
+import AuthProvider.AuthProvider
 import models.account.mongo._
 
 class AccountFactory(collection: BSONCollection) {
@@ -26,10 +27,13 @@ class AccountFactory(collection: BSONCollection) {
     )
   }
 
-  def buildAccessTokenDocument(code: Option[String] = None) = {
+  def buildAccessTokenDocument(
+    code: Option[String] = None,
+    authProvider: AuthProvider = AuthProvider.Useless
+  ) = {
     new AccessTokenDocument(
       guid = UUID.randomUUID,
-      authProvider = AuthProvider.Useless,
+      authProvider = authProvider,
       token = UUID.randomUUID.toString,
       code = code,
       scopes = Seq.empty,
