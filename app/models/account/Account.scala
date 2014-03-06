@@ -3,6 +3,7 @@ package models.account
 import java.util.UUID
 import scala.concurrent.Future
 import reactivemongo.bson._
+import reactivemongo.api.indexes.{ Index, IndexType }
 import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.reactivemongo.MongoAccess
 import io.useless.reactivemongo.bson.UuidBson._
@@ -12,6 +13,16 @@ import mongo.AccountDocument
 object Account extends MongoAccess {
 
   private[account] lazy val collection = mongo.collection("accounts")
+
+  def ensureIndexes() {
+    collection.indexesManager.ensure(new Index(
+      key = Seq(
+        "access_tokens.auth_provider" -> IndexType.Ascending,
+        "access_tokens.code" -> IndexType.Ascending
+      ),
+      unique = true
+    ))
+  }
 
   def accountForGuid(guid: UUID) = findOne("_id" -> guid)
 
