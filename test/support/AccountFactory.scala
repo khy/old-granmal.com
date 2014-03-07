@@ -7,9 +7,9 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.test.Helpers
 import Helpers._
 
-import models.account.AuthProvider
-import AuthProvider.AuthProvider
+import models.account._
 import models.account.mongo._
+import AuthProvider.AuthProvider
 
 class AccountFactory(collection: BSONCollection) {
 
@@ -42,12 +42,12 @@ class AccountFactory(collection: BSONCollection) {
     )
   }
 
-  def createAccount(): AccountDocument = {
+  def createAccount(): Account = {
     val document = buildAccountDocument()
     createAccount(document)
   }
 
-  def createAccount(document: AccountDocument): AccountDocument = {
+  def createAccount(document: AccountDocument): Account = {
     Helpers.await {
       collection.insert(document).map { lastError =>
         if (lastError.ok) {
@@ -56,7 +56,7 @@ class AccountFactory(collection: BSONCollection) {
           throw lastError
         }
       }
-    }.right.toOption.get
+    }.right.toOption.map(new Account(_)).get
   }
 
 }

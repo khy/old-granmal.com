@@ -42,6 +42,6 @@ class Account(document: AccountDocument) {
 
   def guid = document.guid
 
-  def accessTokens = document.accessTokens
+  def accessTokens = document.accessTokens.map { new AccessToken(_) }
 
 }
