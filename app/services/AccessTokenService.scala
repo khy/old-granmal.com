@@ -31,7 +31,18 @@ class AccessTokenService(authClient: AuthClient) {
             Future.successful { Right(accessToken) }
           }
         }.getOrElse {
-          Future.successful { Left("TODO") }
+          authClient.getAccessToken(code).flatMap { optAccessToken =>
+            optAccessToken.map { accessToken =>
+              Account.create().flatMap { result =>
+                result.fold(
+                  error => Future.successful { Left(error) },
+                  account => account.addAccessToken(accessToken)
+                )
+              }
+            }.getOrElse {
+              Future.successful { Left("access_token.error.unknown_code") }
+            }
+          }
         }
       }
     }

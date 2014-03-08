@@ -90,6 +90,28 @@ class AccessTokenServiceSpec extends Specification {
       result.right.get.guid must beEqualTo(accessTokenDocument.guid)
     }
 
+    "it should return an error if the AuthClient returns None for the code" in new Context {
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken("code", None) }
+      result must beLeft
+    }
+
+    "it should return a newly created access token for a newly created " +
+    "account if the AuthClient returns an access token for the code" in new Context {
+      val token = UUID.randomUUID.toString
+      val service = buildService(new ExternalAccessToken(
+        authProvider = AuthProvider.Useless,
+        token = token,
+        code = Some("code"),
+        scopes = Seq.empty
+      ))
+
+      val result = Helpers.await { service.ensureAccessToken("code", None) }
+      val accessToken = result.right.get
+      accessToken.token must beEqualTo(token)
+      accessToken.code must beEqualTo(Some("code"))
+    }
+
   }
 
 }

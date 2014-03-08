@@ -56,6 +56,16 @@ class AccountSpec extends Specification {
     }
   }
 
+  "Account.create" should {
+    "create an empty account if no parameters are specified" in new Context {
+      val account = Helpers.await { Account.create() }.right.get
+      account.email should beNone
+      account.handle should beNone
+      account.name should beNone
+      account.password should beNone
+    }
+  }
+
   "Account#addAccessToken" should {
     "add the specified ExternalAccessToken to the Account" in new Context {
       val token = UUID.randomUUID.toString
