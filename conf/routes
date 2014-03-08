@@ -1,3 +1,5 @@
 GET     /                           controllers.Application.index
 
+GET     /oauth/useless              controllers.OAuthController.useless(code: String)
+
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
