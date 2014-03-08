@@ -18,6 +18,8 @@ class AccessTokenServiceSpec extends Specification {
   }
 
   class MockAuthClient(accessTokens: ExternalAccessToken*) extends AuthClient {
+    val authProvider = AuthProvider.Useless
+
     def getAccessToken(code: String) = Future.successful {
       accessTokens.find(_.code == Some(code))
     }
@@ -72,6 +74,20 @@ class AccessTokenServiceSpec extends Specification {
       val accessToken = result.right.get
       val _account = Helpers.await { account.reload() }
       _account.accessTokens.find(_.guid == accessToken.guid) must beSome
+    }
+
+    "it should return the access token for the specified code, if one exists" +
+    "for any account" in new Context {
+      val accessTokenDocument = factory.buildAccessTokenDocument(
+        authProvider = AuthProvider.Useless,
+        code = Some("code")
+      )
+      val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
+      val account = factory.createAccount(accountDocument)
+
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken("code", None) }
+      result.right.get.guid must beEqualTo(accessTokenDocument.guid)
     }
 
   }

@@ -25,7 +25,15 @@ class AccessTokenService(authClient: AuthClient) {
         }
       }
     }.getOrElse {
-      Future.successful { Left("TODO") }
+      Account.accountForAccessTokenCode(authClient.authProvider, code).flatMap { optAccount =>
+        optAccount.flatMap { account =>
+          account.accessTokens.find(_.code == Some(code)).map { accessToken =>
+            Future.successful { Right(accessToken) }
+          }
+        }.getOrElse {
+          Future.successful { Left("TODO") }
+        }
+      }
     }
   }
 
