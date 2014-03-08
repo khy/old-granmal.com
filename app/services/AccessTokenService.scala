@@ -4,9 +4,9 @@ import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 
 import models.account.{ Account, AccessToken }
-import clients.AuthClient
+import clients.OAuthClient
 
-class AccessTokenService(authClient: AuthClient) {
+class AccessTokenService(oauthClient: OAuthClient) {
 
   /**
    * If an access token corresponding to the specified code exists, this method
@@ -36,7 +36,7 @@ class AccessTokenService(authClient: AuthClient) {
       account.accessTokens.find(_.code == Some(code)).map { accessToken =>
         Future.successful { Right(accessToken) }
       }.getOrElse {
-        authClient.getAccessToken(code).flatMap { optAccessToken =>
+        oauthClient.getAccessToken(code).flatMap { optAccessToken =>
           optAccessToken.map { accessToken =>
             account.addAccessToken(accessToken)
           }.getOrElse {
@@ -45,13 +45,13 @@ class AccessTokenService(authClient: AuthClient) {
         }
       }
     }.getOrElse {
-      Account.accountForAccessTokenCode(authClient.authProvider, code).flatMap { optAccount =>
+      Account.accountForAccessTokenCode(oauthClient.provider, code).flatMap { optAccount =>
         optAccount.flatMap { account =>
           account.accessTokens.find(_.code == Some(code)).map { accessToken =>
             Future.successful { Right(accessToken) }
           }
         }.getOrElse {
-          authClient.getAccessToken(code).flatMap { optAccessToken =>
+          oauthClient.getAccessToken(code).flatMap { optAccessToken =>
             optAccessToken.map { accessToken =>
               Account.create().flatMap { result =>
                 result.fold(

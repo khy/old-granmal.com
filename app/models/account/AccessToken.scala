@@ -2,13 +2,13 @@ package models.account
 
 import java.util.UUID
 
-import AuthProvider.AuthProvider
+import OAuthProvider.OAuthProvider
 import mongo.AccessTokenDocument
 
 class AccessToken(val account: Account, document: AccessTokenDocument) {
 
   val guid = document.guid
-  val authProvider = document.authProvider
+  val oauthProvider = document.oauthProvider
   val code = document.code
   val token = document.token
 
@@ -20,7 +20,7 @@ class AccessToken(val account: Account, document: AccessTokenDocument) {
  * createdAt, etc., 
  */
 class ExternalAccessToken(
-  val authProvider: AuthProvider,
+  val oauthProvider: OAuthProvider,
   val token: String,
   val code: Option[String],
   val scopes: Seq[String]

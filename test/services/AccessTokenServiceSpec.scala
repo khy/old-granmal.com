@@ -7,7 +7,7 @@ import play.api.test.Helpers
 import Helpers._
 import io.useless.util.mongo.MongoUtil
 
-import clients.AuthClient
+import clients.OAuthClient
 import services.AccessTokenService
 import test.support.AccountFactory
 
@@ -17,8 +17,8 @@ class AccessTokenServiceSpec extends Specification {
     def before = MongoUtil.clearDb()
   }
 
-  class MockAuthClient(accessTokens: ExternalAccessToken*) extends AuthClient {
-    val authProvider = AuthProvider.Useless
+  class MockAuthClient(accessTokens: ExternalAccessToken*) extends OAuthClient {
+    val provider = OAuthProvider.Useless
 
     def getAccessToken(code: String) = Future.successful {
       accessTokens.find(_.code == Some(code))
@@ -37,7 +37,7 @@ class AccessTokenServiceSpec extends Specification {
     "it should return the access token with the specified code, if the " +
     "specified account has one" in new Context {
       val accessTokenDocument = factory.buildAccessTokenDocument(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         code = Some("code")
       )
       val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
@@ -64,7 +64,7 @@ class AccessTokenServiceSpec extends Specification {
       val accountDocument = factory.buildAccountDocument()
       val account = factory.createAccount(accountDocument)
       val service = buildService(new ExternalAccessToken(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         token = UUID.randomUUID.toString,
         code = Some("code"),
         scopes = Seq.empty
@@ -79,7 +79,7 @@ class AccessTokenServiceSpec extends Specification {
     "it should return the access token for the specified code, if one exists" +
     "for any account" in new Context {
       val accessTokenDocument = factory.buildAccessTokenDocument(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         code = Some("code")
       )
       val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
@@ -100,7 +100,7 @@ class AccessTokenServiceSpec extends Specification {
     "account if the AuthClient returns an access token for the code" in new Context {
       val token = UUID.randomUUID.toString
       val service = buildService(new ExternalAccessToken(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         token = token,
         code = Some("code"),
         scopes = Seq.empty

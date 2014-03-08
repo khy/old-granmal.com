@@ -34,24 +34,24 @@ class AccountSpec extends Specification {
   "Account.accountForAccessTokenCode" should {
     "return None for a non-existant access token code" in new Context {
       val optAccount = Helpers.await {
-        Account.accountForAccessTokenCode(AuthProvider.Useless, "non-existant-code")
+        Account.accountForAccessTokenCode(OAuthProvider.Useless, "non-existant-code")
       }
       optAccount must beNone
     }
 
     "return the account with an access token with the specified code" in new Context {
       val accessTokenDocument = factory.buildAccessTokenDocument(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         code = Some("code")
       )
       val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
       factory.createAccount(accountDocument)
 
       val optAccount = Helpers.await {
-        Account.accountForAccessTokenCode(AuthProvider.Useless, "code")
+        Account.accountForAccessTokenCode(OAuthProvider.Useless, "code")
       }
       val accessToken = optAccount.get.accessTokens.head
-      accessToken.authProvider must beEqualTo(AuthProvider.Useless)
+      accessToken.oauthProvider must beEqualTo(OAuthProvider.Useless)
       accessToken.code must beEqualTo(Some("code"))
     }
   }
@@ -70,7 +70,7 @@ class AccountSpec extends Specification {
     "add the specified ExternalAccessToken to the Account" in new Context {
       val token = UUID.randomUUID.toString
       val externalAccessToken = new ExternalAccessToken(
-        authProvider = AuthProvider.Useless,
+        oauthProvider = OAuthProvider.Useless,
         token = token,
         code = None,
         scopes = Seq.empty

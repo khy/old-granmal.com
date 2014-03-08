@@ -9,7 +9,7 @@ import Helpers._
 
 import models.account._
 import models.account.mongo._
-import AuthProvider.AuthProvider
+import OAuthProvider.OAuthProvider
 
 class AccountFactory(collection: BSONCollection) {
 
@@ -29,11 +29,11 @@ class AccountFactory(collection: BSONCollection) {
 
   def buildAccessTokenDocument(
     code: Option[String] = None,
-    authProvider: AuthProvider = AuthProvider.Useless
+    oauthProvider: OAuthProvider = OAuthProvider.Useless
   ) = {
     new AccessTokenDocument(
       guid = UUID.randomUUID,
-      authProvider = authProvider,
+      oauthProvider = oauthProvider,
       token = UUID.randomUUID.toString,
       code = code,
       scopes = Seq.empty,

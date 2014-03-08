@@ -9,7 +9,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.reactivemongo.MongoAccess
 import io.useless.reactivemongo.bson.UuidBson._
 
-import AuthProvider.AuthProvider
+import OAuthProvider.OAuthProvider
 import mongo._
 
 object Account extends MongoAccess {
@@ -19,7 +19,7 @@ object Account extends MongoAccess {
   def ensureIndexes() {
     collection.indexesManager.ensure(new Index(
       key = Seq(
-        "access_tokens.auth_provider" -> IndexType.Ascending,
+        "access_tokens.oauth_provider" -> IndexType.Ascending,
         "access_tokens.code" -> IndexType.Ascending
       ),
       unique = true
@@ -28,8 +28,8 @@ object Account extends MongoAccess {
 
   def accountForGuid(guid: UUID) = findOne("_id" -> guid)
 
-  def accountForAccessTokenCode(authProvider: AuthProvider, code: String) =
-    findOne("access_tokens.code" -> code)
+  def accountForAccessTokenCode(oauthProvider: OAuthProvider, code: String) =
+    findOne("access_tokens.oauth_provider" -> oauthProvider.toString, "access_tokens.code" -> code)
 
   def create(): Future[Either[String, Account]] = {
      val accountDocument = new AccountDocument(
@@ -79,7 +79,7 @@ class Account(document: AccountDocument) {
   def addAccessToken(externalAccessToken: ExternalAccessToken): Future[Either[String, AccessToken]] = {
     val accessTokenDocument = new AccessTokenDocument(
       guid = UUID.randomUUID,
-      authProvider = externalAccessToken.authProvider,
+      oauthProvider = externalAccessToken.oauthProvider,
       token = externalAccessToken.token,
       code = externalAccessToken.code,
       scopes = externalAccessToken.scopes,
