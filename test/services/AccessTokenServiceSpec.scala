@@ -19,7 +19,7 @@ class AccessTokenServiceSpec extends Specification {
 
   class MockAuthClient(accessTokens: ExternalAccessToken*) extends AuthClient {
     def getAccessToken(code: String) = Future.successful {
-      accessTokens.find(_.code == code)
+      accessTokens.find(_.code == Some(code))
     }
   }
 
@@ -32,7 +32,8 @@ class AccessTokenServiceSpec extends Specification {
 
   "AccessTokenService#ensureAccessToken" should {
 
-    "it should return the access token with the specified code, if the specified account has one" in new Context {
+    "it should return the access token with the specified code, if the " +
+    "specified account has one" in new Context {
       val accessTokenDocument = factory.buildAccessTokenDocument(
         authProvider = AuthProvider.Useless,
         code = Some("code")
@@ -41,8 +42,36 @@ class AccessTokenServiceSpec extends Specification {
       val account = factory.createAccount(accountDocument)
 
       val service = buildService()
-      val optAccessToken = Helpers.await { service.ensureAccessToken("code", Some(account)) }
-      optAccessToken.right.get.guid must beEqualTo(accessTokenDocument.guid)
+      val result = Helpers.await { service.ensureAccessToken("code", Some(account)) }
+      result.right.get.guid must beEqualTo(accessTokenDocument.guid)
+    }
+
+    "it should return an error if the specified account does not have an " + 
+    "access token corresponding to the specified code, and the AuthClient " +
+    "returns None for the code" in new Context {
+      val accountDocument = factory.buildAccountDocument()
+      val account = factory.createAccount(accountDocument)
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken("code", Some(account)) }
+      result must beLeft
+    }
+
+    "it should return a newly created access token if the specified account " +
+    "does not have an access token corresponding to the specified code, and " +
+    "the AuthClient returns an access token for the code" in new Context {
+      val accountDocument = factory.buildAccountDocument()
+      val account = factory.createAccount(accountDocument)
+      val service = buildService(new ExternalAccessToken(
+        authProvider = AuthProvider.Useless,
+        token = UUID.randomUUID.toString,
+        code = Some("code"),
+        scopes = Seq.empty
+      ))
+
+      val result = Helpers.await { service.ensureAccessToken("code", Some(account)) }
+      val accessToken = result.right.get
+      val _account = Helpers.await { account.reload() }
+      _account.accessTokens.find(_.guid == accessToken.guid) must beSome
     }
 
   }

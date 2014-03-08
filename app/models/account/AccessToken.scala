@@ -5,13 +5,12 @@ import java.util.UUID
 import AuthProvider.AuthProvider
 import mongo.AccessTokenDocument
 
-class AccessToken(document: AccessTokenDocument) {
+class AccessToken(val account: Account, document: AccessTokenDocument) {
 
   val guid = document.guid
-
   val authProvider = document.authProvider
-
   val code = document.code
+  val token = document.token
 
 }
 

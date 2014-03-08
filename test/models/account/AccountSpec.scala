@@ -18,7 +18,7 @@ class AccountSpec extends Specification {
 
   def factory = new AccountFactory(Account.collection)
 
-  "AccountDao.accountForGuid" should {
+  "Account.accountForGuid" should {
     "return None for a non-existant GUID" in new Context {
       val optAccount = Helpers.await { Account.accountForGuid(UUID.randomUUID) }
       optAccount must beNone
@@ -31,7 +31,7 @@ class AccountSpec extends Specification {
     }
   }
 
-  "AccountDao.accountForAccessTokenCode" should {
+  "Account.accountForAccessTokenCode" should {
     "return None for a non-existant access token code" in new Context {
       val optAccount = Helpers.await {
         Account.accountForAccessTokenCode(AuthProvider.Useless, "non-existant-code")
@@ -53,6 +53,25 @@ class AccountSpec extends Specification {
       val accessToken = optAccount.get.accessTokens.head
       accessToken.authProvider must beEqualTo(AuthProvider.Useless)
       accessToken.code must beEqualTo(Some("code"))
+    }
+  }
+
+  "Account#addAccessToken" should {
+    "add the specified ExternalAccessToken to the Account" in new Context {
+      val token = UUID.randomUUID.toString
+      val externalAccessToken = new ExternalAccessToken(
+        authProvider = AuthProvider.Useless,
+        token = token,
+        code = None,
+        scopes = Seq.empty
+      )
+
+      val accountDocument = factory.buildAccountDocument()
+      val account = factory.createAccount(accountDocument)
+      account.addAccessToken(externalAccessToken)
+
+      val _account = Helpers.await { account.reload() }
+      _account.accessTokens.find(_.token == token) must beSome
     }
   }
 
