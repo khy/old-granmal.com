@@ -2,6 +2,7 @@ package services
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
+import play.api.Logger
 
 import models.account.{ Account, AccessToken }
 import clients.OAuthClient
@@ -34,12 +35,15 @@ class AccessTokenService(oauthClient: OAuthClient) {
   ): Future[Either[String, AccessToken]] = {
     optAccount.map { account =>
       account.accessTokens.find(_.code == Some(code)).map { accessToken =>
+        Logger.debug(s"Access token [${accessToken.guid}] found for code [${code}] on specified account [${account.guid}].")
         Future.successful { Right(accessToken) }
       }.getOrElse {
         oauthClient.getAccessToken(code).flatMap { optAccessToken =>
           optAccessToken.map { accessToken =>
+            Logger.debug(s"Access token [${accessToken.token}] retrieved from provider [${oauthClient.provider}] for code [${code}] and added to specified account [${account.guid}].")
             account.addAccessToken(accessToken)
           }.getOrElse {
+            Logger.debug(s"Code [${code}] could not be retrieved from provider [${oauthClient.provider}].")
             Future.successful { Left("access_token.error.unknown_code") }
           }
         }
@@ -48,6 +52,7 @@ class AccessTokenService(oauthClient: OAuthClient) {
       Account.accountForAccessTokenCode(oauthClient.provider, code).flatMap { optAccount =>
         optAccount.flatMap { account =>
           account.accessTokens.find(_.code == Some(code)).map { accessToken =>
+            Logger.debug(s"Access token [${accessToken.guid}] found for code [${code}] on existing account [${account.guid}].")
             Future.successful { Right(accessToken) }
           }
         }.getOrElse {
@@ -56,10 +61,14 @@ class AccessTokenService(oauthClient: OAuthClient) {
               Account.create().flatMap { result =>
                 result.fold(
                   error => Future.successful { Left(error) },
-                  account => account.addAccessToken(accessToken)
+                  account => {
+                    Logger.debug(s"Access token [${accessToken.token}] retrieved from provider [${oauthClient.provider}] for code [${code}] and added to new account [${account.guid}].")
+                    account.addAccessToken(accessToken)
+                  }
                 )
               }
             }.getOrElse {
+              Logger.debug(s"Code [${code}] could not be retrieved from provider [${oauthClient.provider}].")
               Future.successful { Left("access_token.error.unknown_code") }
             }
           }
