@@ -58,14 +58,20 @@ class AccessTokenService(oauthClient: OAuthClient) {
         }.getOrElse {
           oauthClient.getAccessToken(code).flatMap { optAccessToken =>
             optAccessToken.map { accessToken =>
-              Account.create().flatMap { result =>
-                result.fold(
-                  error => Future.successful { Left(error) },
-                  account => {
-                    Logger.debug(s"Access token [${accessToken.token}] retrieved from provider [${oauthClient.provider}] for code [${code}] and added to new account [${account.guid}].")
-                    account.addAccessToken(accessToken)
-                  }
-                )
+              oauthClient.getAccount(accessToken.accountId).flatMap { optAccount =>
+                optAccount.map { account =>
+                  Account.create(account.email, account.handle, account.name)
+                }.getOrElse {
+                  Account.create()
+                }.flatMap { result =>
+                  result.fold(
+                    error => Future.successful { Left(error) },
+                    account => {
+                      Logger.debug(s"Access token [${accessToken.token}] retrieved from provider [${oauthClient.provider}] for code [${code}] and added to new account [${account.guid}].")
+                      account.addAccessToken(accessToken)
+                    }
+                  )
+                }
               }
             }.getOrElse {
               Logger.debug(s"Code [${code}] could not be retrieved from provider [${oauthClient.provider}].")

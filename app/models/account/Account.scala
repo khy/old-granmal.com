@@ -33,13 +33,15 @@ object Account extends MongoAccess {
     findOne("access_tokens.oauth_provider" -> oauthProvider.toString, "access_tokens.code" -> code)
 
   def create(
-    email: Option[String] = None
+    email: Option[String] = None,
+    handle: Option[String] = None,
+    name: Option[String] = None
   ): Future[Either[String, Account]] = {
      val accountDocument = new AccountDocument(
       guid = UUID.randomUUID,
       email = email,
-      handle = None,
-      name = None,
+      handle = handle,
+      name = name,
       password = None,
       accessTokens = Seq.empty,
       createdAt = DateTime.now,

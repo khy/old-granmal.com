@@ -12,6 +12,6 @@ trait OAuthClient {
 
   def getAccessToken(code: String): Future[Option[ExternalAccessToken]]
 
-  def getAccount(accessToken: AccessToken): Future[Option[ExternalAccount]]
+  def getAccount(accountId: String): Future[Option[ExternalAccount]]
 
 }

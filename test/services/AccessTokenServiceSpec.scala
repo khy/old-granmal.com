@@ -7,7 +7,7 @@ import play.api.test.Helpers
 import Helpers._
 import io.useless.util.mongo.MongoUtil
 
-import models.external.ExternalAccessToken
+import models.external.{ ExternalAccessToken, ExternalAccount }
 import clients.OAuthClient
 import services.AccessTokenService
 import test.support.AccountFactory
@@ -18,18 +18,22 @@ class AccessTokenServiceSpec extends Specification {
     def before = MongoUtil.clearDb()
   }
 
-  class MockAuthClient(accessTokens: ExternalAccessToken*) extends OAuthClient {
+  class MockAuthClient(
+    accessToken: Option[ExternalAccessToken],
+    account: Option[ExternalAccount]
+  ) extends OAuthClient {
     val provider = OAuthProvider.Useless
 
-    def getAccessToken(code: String) = Future.successful {
-      accessTokens.find(_.code == Some(code))
-    }
+    def getAccessToken(code: String) = Future.successful { accessToken }
 
-    def getAccount(accessToken: AccessToken) = Future.successful(None)
+    def getAccount(accountId: String) = Future.successful { account }
   }
 
-  def buildService(accessTokens: ExternalAccessToken*) = {
-    val client = new MockAuthClient(accessTokens: _*)
+  def buildService(
+    accessToken: Option[ExternalAccessToken] = None,
+    account: Option[ExternalAccount] = None
+  ) = {
+    val client = new MockAuthClient(accessToken, account)
     new AccessTokenService(client)
   }
 
@@ -66,13 +70,14 @@ class AccessTokenServiceSpec extends Specification {
     "the AuthClient returns an access token for the code" in new Context {
       val accountDocument = factory.buildAccountDocument()
       val account = factory.createAccount(accountDocument)
-      val service = buildService(new ExternalAccessToken(
+      val externalAccessToken = new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
         accountId = UUID.randomUUID.toString,
         token = UUID.randomUUID.toString,
         code = Some("code"),
         scopes = Seq.empty
-      ))
+      )
+      val service = buildService(Some(externalAccessToken))
 
       val result = Helpers.await { service.ensureAccessToken("code", Some(account)) }
       val accessToken = result.right.get
@@ -101,20 +106,28 @@ class AccessTokenServiceSpec extends Specification {
     }
 
     "it should return a newly created access token for a newly created " +
-    "account if the AuthClient returns an access token for the code" in new Context {
+    "account (with the attributes returned by the provider) if the " +
+    "AuthClient returns an access token for the code" in new Context {
       val token = UUID.randomUUID.toString
-      val service = buildService(new ExternalAccessToken(
+      val externalAccessToken = new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
         accountId = UUID.randomUUID.toString,
         token = token,
         code = Some("code"),
         scopes = Seq.empty
-      ))
+      )
+      val externalAccount = new ExternalAccount(
+        email = Some("llewlyn@granmal.com"),
+        handle = None,
+        name = None
+      )
+      val service = buildService(Some(externalAccessToken), Some(externalAccount))
 
       val result = Helpers.await { service.ensureAccessToken("code", None) }
       val accessToken = result.right.get
       accessToken.token must beEqualTo(token)
       accessToken.code must beEqualTo(Some("code"))
+      accessToken.account.email must beEqualTo(Some("llewlyn@granmal.com"))
     }
 
   }

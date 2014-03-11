@@ -47,8 +47,8 @@ class StandardUselessClient
     }
   }
 
-  def getAccount(accessToken: AccessToken) = {
-    val path = s"/accounts/${accessToken.accountId}"
+  def getAccount(accountId: String) = {
+    val path = s"/accounts/${accountId}"
     resourceClient.get[UselessAccount](path).map { optAccount =>
       optAccount.map { account =>
         account match {
