@@ -71,6 +71,7 @@ class AccountSpec extends Specification {
       val token = UUID.randomUUID.toString
       val externalAccessToken = new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
+        accountId = UUID.randomUUID.toString,
         token = token,
         code = None,
         scopes = Seq.empty

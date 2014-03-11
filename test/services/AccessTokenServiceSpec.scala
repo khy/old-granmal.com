@@ -65,6 +65,7 @@ class AccessTokenServiceSpec extends Specification {
       val account = factory.createAccount(accountDocument)
       val service = buildService(new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
+        accountId = UUID.randomUUID.toString,
         token = UUID.randomUUID.toString,
         code = Some("code"),
         scopes = Seq.empty
@@ -101,6 +102,7 @@ class AccessTokenServiceSpec extends Specification {
       val token = UUID.randomUUID.toString
       val service = buildService(new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
+        accountId = UUID.randomUUID.toString,
         token = token,
         code = Some("code"),
         scopes = Seq.empty

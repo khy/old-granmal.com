@@ -35,6 +35,7 @@ class StandardUselessClient
       result.right.toOption.map { accessToken =>
         new ExternalAccessToken(
           oauthProvider = this.provider,
+          accountId = accessToken.resourceOwner.guid.toString,
           token = accessToken.guid.toString,
           code = Some(code),
           scopes = accessToken.scopes.map(_.toString)

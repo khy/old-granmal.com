@@ -34,6 +34,7 @@ class AccountFactory(collection: BSONCollection) {
     new AccessTokenDocument(
       guid = UUID.randomUUID,
       oauthProvider = oauthProvider,
+      accountId = UUID.randomUUID.toString,
       token = UUID.randomUUID.toString,
       code = code,
       scopes = Seq.empty,

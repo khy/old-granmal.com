@@ -82,6 +82,7 @@ class Account(document: AccountDocument) {
     val accessTokenDocument = new AccessTokenDocument(
       guid = UUID.randomUUID,
       oauthProvider = externalAccessToken.oauthProvider,
+      accountId = externalAccessToken.accountId,
       token = externalAccessToken.token,
       code = externalAccessToken.code,
       scopes = externalAccessToken.scopes,

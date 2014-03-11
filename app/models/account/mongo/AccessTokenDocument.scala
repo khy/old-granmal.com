@@ -12,6 +12,7 @@ import OAuthProviderBson._
 class AccessTokenDocument(
   val guid: UUID,
   val oauthProvider: OAuthProvider,
+  val accountId: String,
   val token: String,
   val code: Option[String],
   val scopes: Seq[String],
@@ -26,6 +27,7 @@ object AccessTokenDocument {
       new AccessTokenDocument(
         bsonDocument.getAsTry[UUID]("_id").get,
         bsonDocument.getAsTry[OAuthProvider]("oauth_provider").get,
+        bsonDocument.getAsTry[String]("account_id").get,
         bsonDocument.getAsTry[String]("token").get,
         bsonDocument.getAs[String]("code"),
         bsonDocument.getAsTry[Seq[String]]("scopes").get,
@@ -40,6 +42,7 @@ object AccessTokenDocument {
       BSONDocument(
         "_id" -> accessTokenDocument.guid,
         "oauth_provider" -> accessTokenDocument.oauthProvider,
+        "account_id" -> accessTokenDocument.accountId,
         "token" -> accessTokenDocument.token,
         "code" -> accessTokenDocument.code,
         "scopes" -> accessTokenDocument.scopes,
