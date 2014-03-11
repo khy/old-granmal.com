@@ -8,6 +8,7 @@ import io.useless.util.mongo.MongoUtil
 
 import mongo.AccountDocument
 import AccountDocument._
+import models.external.ExternalAccessToken
 import test.support.AccountFactory
 
 class AccountSpec extends Specification {

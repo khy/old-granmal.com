@@ -7,6 +7,7 @@ import play.api.test.Helpers
 import Helpers._
 import io.useless.util.mongo.MongoUtil
 
+import models.external.ExternalAccessToken
 import clients.OAuthClient
 import services.AccessTokenService
 import test.support.AccountFactory
@@ -23,6 +24,8 @@ class AccessTokenServiceSpec extends Specification {
     def getAccessToken(code: String) = Future.successful {
       accessTokens.find(_.code == Some(code))
     }
+
+    def getAccount(accessToken: AccessToken) = Future.successful(None)
   }
 
   def buildService(accessTokens: ExternalAccessToken*) = {

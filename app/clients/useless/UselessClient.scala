@@ -4,11 +4,14 @@ import scala.concurrent.Future
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.play.client.ResourceClient
-import io.useless.accesstoken.AccessToken
+import io.useless.accesstoken.{ AccessToken => UselessAccessToken }
+import io.useless.account.{ Account => UselessAccount, User }
 import io.useless.play.json.accesstoken.AccessTokenJson._
+import io.useless.play.json.account.AccountJson._
 
 import clients.OAuthClient
-import models.account._
+import models.account.{ AccessToken, OAuthProvider }
+import models.external.{ ExternalAccessToken, ExternalAccount }
 
 object UselessClient {
 
@@ -31,7 +34,7 @@ class StandardUselessClient
 
   def getAccessToken(code: String) = {
     val path = s"/access_tokens/authorizations/$code"
-    resourceClient.create[AccessToken](path, Json.obj()).map { result =>
+    resourceClient.create[UselessAccessToken](path, Json.obj()).map { result =>
       result.right.toOption.map { accessToken =>
         new ExternalAccessToken(
           oauthProvider = this.provider,
@@ -40,6 +43,22 @@ class StandardUselessClient
           code = Some(code),
           scopes = accessToken.scopes.map(_.toString)
         )
+      }
+    }
+  }
+
+  def getAccount(accessToken: AccessToken) = {
+    val path = s"/accounts/${accessToken.accountId}"
+    resourceClient.get[UselessAccount](path).map { optAccount =>
+      optAccount.map { account =>
+        account match {
+          case user: User => new ExternalAccount(
+            email = None,
+            handle = user.handle,
+            name = user.name
+          )
+          case other => throw new RuntimeException(s"Unexpected account type for GUID [$account.guid]")
+        }
       }
     }
   }

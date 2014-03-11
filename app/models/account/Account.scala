@@ -11,6 +11,7 @@ import io.useless.reactivemongo.bson.UuidBson._
 
 import OAuthProvider.OAuthProvider
 import mongo._
+import models.external.ExternalAccessToken
 
 object Account extends MongoAccess {
 
