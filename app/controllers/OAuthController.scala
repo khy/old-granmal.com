@@ -16,8 +16,11 @@ object OAuthController extends Controller {
 
     accessTokenService.ensureAccessToken(code, request.account).map { result =>
       result.fold(
-        error => UnprocessableEntity(error),
-        accessToken => Ok("You're in!")
+        error => Redirect("/").
+          flashing("error" -> s"Connection with useless.io failed: ${error}"),
+        accessToken => Redirect("/").
+          withSession("auth" -> accessToken.guid.toString).
+          flashing("success" -> "Connected successfully with useless.io")
       )
     }
   }
