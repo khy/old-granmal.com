@@ -1,5 +1,5 @@
-GET     /                           controllers.Application.index
+GET     /               controllers.CoreController.index
 
-GET     /oauth/useless              controllers.OAuthController.useless(code: String)
+GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file   controllers.Assets.at(path="/public", file)
