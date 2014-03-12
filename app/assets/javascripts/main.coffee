@@ -8,7 +8,7 @@ require ['jquery'], ($) ->
 
   resizePage = ->
     windowHeight = $(window).height()
-    $('.masthead').height windowHeight - 40
+    $('.masthead .poster').height windowHeight - 40
 
     listMinHeight = windowHeight - $('.nav').height()
     $('.list').css("min-height", listMinHeight)
@@ -21,9 +21,9 @@ require ['jquery'], ($) ->
 
   conditionallyAffixHeader = ->
     if ($(window).scrollTop() >= navTop)
-      $('.container').addClass('affix-header')
+      $('.page-core-index .container').addClass('affix-header')
     else
-      $('.container').removeClass('affix-header')
+      $('.page-core-index .container').removeClass('affix-header')
 
   conditionallyAffixHeader()
 

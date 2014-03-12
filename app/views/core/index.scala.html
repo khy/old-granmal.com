@@ -1,14 +1,13 @@
-@main {
+@main("core-index") {
 
   <div class="masthead">
-    <h1>Gran Mal</h1>
-    <h2>App Log</h2>
+    <div class="poster">
+      <h1>Gran Mal</h1>
+      <h2>App Log</h2>
+    </div>
   </div>
 
-  <div class="nav">
-    <h1>Gran Mal</h1>
-    <a><span class="glyphicon glyphicon-th"></span></a>
-  </div>
+  @views.html.core.nav()
 
   <ol class="list">
     <li>
