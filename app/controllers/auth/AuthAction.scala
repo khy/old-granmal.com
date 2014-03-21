@@ -4,6 +4,7 @@ import java.util.UUID
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.mvc._
+import play.api.Logger
 
 import models.account.Account
 
@@ -26,7 +27,9 @@ object AuthActionBuilder extends ActionBuilder[AuthRequest] {
     request: Request[A],
     action: AuthRequest[A] => Future[SimpleResult]
   ): Future[SimpleResult] = {
+    Logger.debug("Attempting to authenticate request. Session: " + request.session)
     request.session.get("auth").map { accountGuidString =>
+      Logger.debug(s"Found account GUID [${accountGuidString}] in 'auth'.")
       val accountGuid = UUID.fromString(accountGuidString)
 
       Account.accountForGuid(accountGuid).flatMap { optAccount =>
@@ -34,6 +37,7 @@ object AuthActionBuilder extends ActionBuilder[AuthRequest] {
         action(_request)
       }
     }.getOrElse {
+      Logger.debug("No account GUID found in 'auth'.")
       val _request = new AuthRequest(None, request)
       action(_request)
     }

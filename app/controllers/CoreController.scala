@@ -19,8 +19,10 @@ object CoreController extends Controller {
     Ok(views.html.core.signIn())
   }
 
-  def signOut = Action {
-    Ok("Sign Out!!!!!!!!!!")
+  def signOut = Action { implicit request =>
+    Redirect("/").
+      withSession(session - "auth").
+      flashing("success" -> "You have been signed out.")
   }
 
 }

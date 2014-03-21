@@ -19,7 +19,7 @@ object OAuthController extends Controller {
         error => Redirect("/").
           flashing("error" -> s"Connection with useless.io failed: ${error}"),
         accessToken => Redirect("/").
-          withSession("auth" -> accessToken.guid.toString).
+          withSession("auth" -> accessToken.account.guid.toString).
           flashing("success" -> "Connected successfully with useless.io")
       )
     }
