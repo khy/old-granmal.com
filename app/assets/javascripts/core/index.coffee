@@ -5,7 +5,7 @@ define ['jquery', 'core/layout'], ($, layout) ->
     $('.masthead .poster').height windowHeight - 40
 
     listMinHeight = windowHeight - $('.nav').height()
-    $('.list').css('min-height', listMinHeight)
+    $('.apps').css('min-height', listMinHeight)
 
   init: ->
     resizeMasthead()

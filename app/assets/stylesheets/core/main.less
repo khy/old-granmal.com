@@ -6,6 +6,24 @@
 @container-margin: 20px;
 @component-width-max: (@container-width-max - (2 * @container-margin));
 
+.unstyled-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.list-item {
+  display: block;
+  width: @component-width-max;
+  padding: (2 * @container-margin) @container-margin;
+
+  @media all and (max-width: @container-width-max) {
+    & {
+      width: inherit;
+    }
+  }
+}
+
 body {
   font-family: 'Raleway', sans-serif;
 }
@@ -63,7 +81,18 @@ body {
   color: #999;
 }
 
+ul.menu {
+  .unstyled-list;
 
+  li a {
+    .list-item;
+    font-size: 1.2em;
+    color: #333;
+    background-color: #DDD;
+    text-decoration: none;
+    border-bottom: 1px solid #BBB;
+  }
+}
 
 // INDEX-SPECIFIC BELOW HERE
 
@@ -102,27 +131,17 @@ body {
   }
 }
 
-ol.list {
-  padding: 0;
-  margin: 0;
-  list-style: none;
+ol.apps {
+  .unstyled-list;
 
   .container.affix-header & {
     margin-top: 69px
   }
 
   li a {
-    display: block;
-    width: @component-width-max;
-    padding: (2 * @container-margin) @container-margin;
+    .list-item;
     text-decoration: none;
     border-bottom: 1px solid #DDD;
-
-    @media all and (max-width: @container-width-max) {
-      & {
-        width: inherit;
-      }
-    }
 
     &:hover {
       background-color: #EEE;

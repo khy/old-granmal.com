@@ -1,5 +1,21 @@
+@(optAccount: Option[models.account.Account])
+
 @core.layout("menu") {
 
   @views.html.core.nav()
+
+  @if(optAccount.isDefined) {
+
+    <ul class="menu">
+      <li><a href="@routes.CoreController.signOut">Sign Out</a></li>
+    </ul>
+
+  } else {
+
+    <ul class="menu">
+      <li><a href="@routes.CoreController.signIn">Sign In</a></li>
+    </ul>
+
+  }
 
 }

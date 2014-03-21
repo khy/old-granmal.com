@@ -25,4 +25,4 @@ requireJs += "main.js"
 
 requireJsShim += "main.js"
 
-lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" / "core" ** "main.less")
+lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "*.less")

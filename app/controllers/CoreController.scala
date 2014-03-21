@@ -12,7 +12,15 @@ object CoreController extends Controller {
   }
 
   def menu = Action.auth { request =>
-    Ok(views.html.core.menu())
+    Ok(views.html.core.menu(request.account))
+  }
+
+  def signIn = Action {
+    Ok(views.html.core.signIn())
+  }
+
+  def signOut = Action {
+    Ok("Sign Out!!!!!!!!!!")
   }
 
 }

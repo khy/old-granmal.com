@@ -1,5 +1,7 @@
 GET     /               controllers.CoreController.index
 GET     /menu           controllers.CoreController.menu
+GET     /sign-in        controllers.CoreController.signIn
+GET     /sign-out       controllers.CoreController.signOut
 
 GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
