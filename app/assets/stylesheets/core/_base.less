@@ -1,0 +1,58 @@
+@import "_lib.less";
+
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+.container {
+  width: @container-width-max;
+  margin: 0 auto;
+  border-left: 1px solid #DDD;
+  border-right: 1px solid #DDD;
+
+  @media all and (max-width: @container-width-max) {
+    width: 100%;
+    border-width: 0;
+  }
+}
+
+.nav {
+  .clearfix;
+
+  padding: @container-margin 0;
+  border-bottom: 1px solid #DDD;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    margin: 0 0 0 @container-margin;
+    font-size: 1.5em;
+    font-weight: 400;
+    float: left;
+    a { text-decoration: none; }
+  }
+
+  a {
+    margin: 5px @container-margin 0 0;
+    float: right;
+    color: #000;
+  }
+
+  .affixed {
+    position: fixed;
+    top: 0;
+    width: @container-width-max;
+    background-color: #FFF;
+
+    @media all and (max-width: @container-width-max) {
+      width: 100%;
+    }
+  }
+
+}
+
+.footer {
+  text-align: center;
+  padding: 1em;
+  font-size: 0.8em;
+  color: #999;
+}
