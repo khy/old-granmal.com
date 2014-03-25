@@ -4,13 +4,14 @@
 
   @views.html.core.nav()
 
-  @if(optAccount.isDefined) {
+  @optAccount.map { account =>
 
     <ul class="menu">
+      <li class="header">Sign in as <strong>@account.display</strong></li>
       <li><a href="@routes.CoreController.signOut">Sign Out</a></li>
     </ul>
 
-  } else {
+  }.getOrElse {
 
     <ul class="menu">
       <li><a href="@routes.CoreController.signIn">Sign In</a></li>

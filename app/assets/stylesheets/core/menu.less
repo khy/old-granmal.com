@@ -1,12 +1,20 @@
 @import "_lib.less";
 @import "_base.less";
 
+@border-color: #BBB;
+
 .nav {
-  border-bottom-color: #BBB;
+  border-bottom-color: @border-color;
 }
 
 ul.menu {
   .unstyled-list;
+
+  li.header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid @border-color;
+  }
 
   li a {
     .list-item;

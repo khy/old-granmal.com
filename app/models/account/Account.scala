@@ -81,6 +81,8 @@ class Account(document: AccountDocument) {
     }
   }
 
+  def display = name.orElse(handle).orElse(email).getOrElse("Anonymous")
+
   def addAccessToken(externalAccessToken: ExternalAccessToken): Future[Either[String, AccessToken]] = {
     val accessTokenDocument = new AccessTokenDocument(
       guid = UUID.randomUUID,
