@@ -7,14 +7,15 @@
   @optAccount.map { account =>
 
     <ul class="menu">
-      <li class="header">Sign in as <strong>@account.display</strong></li>
+      <li class="header">Signed in as <strong>@account.display</strong></li>
       <li><a href="@routes.CoreController.signOut">Sign Out</a></li>
     </ul>
 
   }.getOrElse {
 
     <ul class="menu">
-      <li><a href="@routes.CoreController.signIn">Sign In</a></li>
+      <li><a href="@routes.CoreController.signIn">Sign in with Email / Password</a></li>
+      <li><a href="@helpers.OAuthUrlHelper.uselessUrl">Sign in with Useless</a></li>
     </ul>
 
   }
