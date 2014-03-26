@@ -13,7 +13,11 @@ import OAuthProvider.OAuthProvider
 
 class AccountFactory(collection: BSONCollection) {
 
-  def buildAccountDocument(accessTokens: Seq[AccessTokenDocument] = Seq.empty) = {
+  def buildAccountDocument(
+    email: Option[String] = None,
+    password: Option[String] = None,
+    accessTokens: Seq[AccessTokenDocument] = Seq.empty
+  ) = {
     new AccountDocument(
       guid = UUID.randomUUID,
       email = None,

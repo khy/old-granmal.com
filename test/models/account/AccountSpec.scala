@@ -67,6 +67,25 @@ class AccountSpec extends Specification {
     }
   }
 
+  "Account.auth" should {
+    "return None if the specified email does not exist" in new Context {
+      val account = Helpers.await { Account.auth("non-existant@granmal.com", "secret") }
+      account must beNone
+    }
+
+    "return None if the specified email exists, but the password is wrong" in new Context {
+      Helpers.await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
+      val account = Helpers.await { Account.auth("john@granmal.com", "private") }
+      account must beNone
+    }
+
+    "return an Account if the specified email exists and the password is correct" in new Context {
+      Helpers.await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
+      val account = Helpers.await { Account.auth("john@granmal.com", "secret") }
+      account.get.email must beEqualTo(Some("john@granmal.com"))
+    }
+  }
+
   "Account#addAccessToken" should {
     "add the specified ExternalAccessToken to the Account" in new Context {
       val token = UUID.randomUUID.toString

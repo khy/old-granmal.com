@@ -1,9 +1,13 @@
 package controllers
 
+import scala.concurrent.Future
 import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+
+import models.account.Account
 
 object SessionController extends Controller {
 
@@ -20,8 +24,25 @@ object SessionController extends Controller {
     Ok(views.html.session.form(signInForm))
   }
 
-  def create = Action {
-    Ok("Hiya!")
+  def create = Action.async { implicit request =>
+    signInForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future.successful(UnprocessableEntity(views.html.session.form(formWithErrors)))
+      },
+      signInData => {
+        Account.auth(signInData.email, signInData.password).map { optAccount =>
+          optAccount.map { account =>
+            val redirectPath = request.cookies.get("sign_in_redirect_path").map(_.value).getOrElse("/")
+            Redirect(redirectPath).
+              withSession("auth" -> account.guid.toString).
+              flashing("success" -> "Signed in successfully")
+          }.getOrElse {
+            val formWithError = signInForm.withGlobalError("Invalid email / password combination")
+            Unauthorized(views.html.session.form(formWithError))
+          }
+        }
+      }
+    )
   }
 
   def delete = Action { implicit request =>

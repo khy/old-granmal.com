@@ -3,6 +3,7 @@ package models.account
 import java.util.UUID
 import scala.concurrent.Future
 import org.joda.time.DateTime
+import org.mindrot.jbcrypt.BCrypt
 import reactivemongo.bson._
 import reactivemongo.api.indexes.{ Index, IndexType }
 import play.api.libs.concurrent.Execution.Implicits._
@@ -19,6 +20,12 @@ object Account extends MongoAccess {
 
   def ensureIndexes() {
     collection.indexesManager.ensure(new Index(
+      key = Seq("email" -> IndexType.Ascending),
+      unique = true,
+      sparse = true
+    ))
+
+    collection.indexesManager.ensure(new Index(
       key = Seq(
         "access_tokens.oauth_provider" -> IndexType.Ascending,
         "access_tokens.code" -> IndexType.Ascending
@@ -32,17 +39,28 @@ object Account extends MongoAccess {
   def accountForAccessTokenCode(oauthProvider: OAuthProvider, code: String) =
     findOne("access_tokens.oauth_provider" -> oauthProvider.toString, "access_tokens.code" -> code)
 
+  def auth(email: String, password: String): Future[Option[Account]] = {
+    findOne("email" -> email).map { optAccount =>
+      optAccount.filter { account =>
+        account.password.map { actualPassword =>
+          BCrypt.checkpw(password, actualPassword)
+        }.getOrElse(false)
+      }
+    }
+  }
+
   def create(
     email: Option[String] = None,
     handle: Option[String] = None,
-    name: Option[String] = None
+    name: Option[String] = None,
+    password: Option[String] = None
   ): Future[Either[String, Account]] = {
      val accountDocument = new AccountDocument(
       guid = UUID.randomUUID,
       email = email,
       handle = handle,
       name = name,
-      password = None,
+      password = password.map(BCrypt.hashpw(_, BCrypt.gensalt)),
       accessTokens = Seq.empty,
       createdAt = DateTime.now,
       updatedAt = DateTime.now,
