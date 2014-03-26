@@ -8,13 +8,13 @@
 
     <ul class="menu">
       <li class="header">Signed in as <strong>@account.display</strong></li>
-      <li><a href="@routes.CoreController.signOut">Sign Out</a></li>
+      <li><a href="@routes.SessionController.delete">Sign Out</a></li>
     </ul>
 
   }.getOrElse {
 
     <ul class="menu">
-      <li><a href="@routes.CoreController.signIn">Sign in with Email / Password</a></li>
+      <li><a href="@routes.SessionController.form">Sign in with Email / Password</a></li>
       <li><a href="@helpers.OAuthUrlHelper.uselessUrl">Sign in with Useless</a></li>
     </ul>
 
