@@ -1,0 +1,29 @@
+@(signUpForm: Form[AccountController.SignUpData])
+
+@core.layout {
+
+  @views.html.core.nav()
+
+  <div class="form-section">
+    @if(signUpForm.hasErrors) {
+      <div class="alert">
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        @helpers.FormHelper.displayError(signUpForm)
+      </div>
+    }
+
+    @helper.form(action = routes.AccountController.create()) {
+      <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">
+      <input type="text" name="name" value="@signUpForm("name").value.getOrElse("")" placeholder="Name">
+      <input type="text" name="handle" value="@signUpForm("handle").value.getOrElse("")" placeholder="Handle">
+      <input type="password" name="password" placeholder="Password">
+      <button type="submit">Sign Up</button>
+    }
+
+    <ul class="alternate-actions">
+      <li><a href="@routes.SessionController.form()">Sign In</a></li>
+    </ul>
+
+  </div>
+
+}

@@ -5,6 +5,9 @@ GET     /sign-in        controllers.SessionController.form
 POST    /sign-in        controllers.SessionController.create
 GET     /sign-out       controllers.SessionController.delete
 
+GET     /sign-up        controllers.AccountController.form
+POST    /sign-up        controllers.AccountController.create
+
 GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
 GET     /assets/*file   controllers.Assets.at(path="/public", file)
