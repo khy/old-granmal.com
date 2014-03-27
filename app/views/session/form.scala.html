@@ -4,10 +4,19 @@
 
   @views.html.core.nav()
 
-  @helper.form(action = routes.SessionController.create(), 'role -> "form", 'class -> "session") {
-    <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" class="email form-control input-lg" placeholder="Email">
-    <input type="password" name="password" value="" class="password form-control input-lg" placeholder="Password">
-    <button type="submit" class="btn btn-primary btn-lg btn-block">Sign In</button>
-  }
+  <div class="form-section">
+    @if(signInForm.hasErrors) {
+      <div class="alert">
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        @helpers.FormHelper.displayError(signInForm)
+      </div>
+    }
+
+    @helper.form(action = routes.SessionController.create()) {
+      <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" placeholder="Email">
+      <input type="password" name="password" placeholder="Password">
+      <button type="submit">Sign In</button>
+    }
+  </div>
 
 }

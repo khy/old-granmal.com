@@ -32,12 +32,16 @@ object SessionController extends Controller {
       signInData => {
         Account.auth(signInData.email, signInData.password).map { optAccount =>
           optAccount.map { account =>
-            val redirectPath = request.cookies.get("sign_in_redirect_path").map(_.value).getOrElse("/")
+            val redirectPath = request.cookies.get("sign_in_redirect_path").
+              map(_.value).getOrElse("/")
+
             Redirect(redirectPath).
               withSession("auth" -> account.guid.toString).
               flashing("success" -> "Signed in successfully")
           }.getOrElse {
-            val formWithError = signInForm.withGlobalError("Invalid email / password combination")
+            val formWithError = signInForm.fill(signInData).
+              withGlobalError("Invalid email / password combination")
+
             Unauthorized(views.html.session.form(formWithError))
           }
         }
