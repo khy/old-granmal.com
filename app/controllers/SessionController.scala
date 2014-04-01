@@ -32,7 +32,7 @@ object SessionController extends Controller {
       signInData => {
         Account.auth(signInData.email, signInData.password).map { optAccount =>
           optAccount.map { account =>
-            val redirectPath = request.cookies.get("sign_in_redirect_path").
+            val redirectPath = request.cookies.get("auth_redirect_path").
               map(_.value).getOrElse("/")
 
             Redirect(redirectPath).

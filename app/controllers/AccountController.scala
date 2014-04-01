@@ -31,8 +31,35 @@ object AccountController extends Controller {
     Ok(views.html.account.form(signUpForm))
   }
 
-  def create = Action {
-    Ok("HI!")
+  def create = Action.async { implicit request =>
+    signUpForm.bindFromRequest.fold(
+      formWithErrors => {
+        Future.successful(UnprocessableEntity(views.html.account.form(formWithErrors)))
+      },
+      signUpData => {
+        Account.create(
+          Some(signUpData.email),
+          Some(signUpData.handle),
+          Some(signUpData.name),
+          Some(signUpData.password)
+        ).map { result =>
+          result.fold(
+            error => {
+              val formWithError = signUpForm.fill(signUpData).withGlobalError(error)
+              UnprocessableEntity(views.html.account.form(formWithError))
+            },
+            account => {
+              val redirectPath = request.cookies.get("auth_redirect_path").
+                map(_.value).getOrElse("/")
+
+              Redirect(redirectPath).
+                withSession("auth" -> account.guid.toString).
+                flashing("success" -> "Signed up successfully")
+            }
+          )
+        }
+      }
+    )
   }
 
 }
