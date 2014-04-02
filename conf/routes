@@ -1,5 +1,6 @@
-GET     /               controllers.core.CoreController.index
-GET     /menu           controllers.core.CoreController.menu
+GET     /               controllers.core.IndexController.index
+
+GET     /menu           controllers.core.MenuController.main
 
 GET     /sign-in        controllers.core.SessionController.form
 POST    /sign-in        controllers.core.SessionController.create
