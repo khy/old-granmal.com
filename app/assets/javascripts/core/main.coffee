@@ -17,6 +17,8 @@ define ['jquery'], ($) ->
     else
       $('.container').removeClass('affix-header')
 
+  navTop = 0
+
   $ ->
     resizeMasthead()
     navTop = $('.nav').offset().top
