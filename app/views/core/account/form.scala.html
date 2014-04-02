@@ -1,6 +1,6 @@
-@(signUpForm: Form[AccountController.SignUpData])
+@(signUpForm: Form[controllers.core.AccountController.SignUpData])
 
-@core.layout {
+@views.html.core.layout {
 
   @views.html.core.nav()
 
@@ -12,7 +12,7 @@
       </div>
     }
 
-    @helper.form(action = routes.AccountController.create()) {
+    @helper.form(action = controllers.core.routes.AccountController.create()) {
       <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">
       <input type="text" name="name" value="@signUpForm("name").value.getOrElse("")" placeholder="Name">
       <input type="text" name="handle" value="@signUpForm("handle").value.getOrElse("")" placeholder="Handle">
@@ -21,7 +21,7 @@
     }
 
     <ul class="alternate-actions">
-      <li><a href="@routes.SessionController.form()">Sign In</a></li>
+      <li><a href="@controllers.core.routes.SessionController.form()">Sign In</a></li>
     </ul>
 
   </div>

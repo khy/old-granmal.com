@@ -1,9 +1,9 @@
-package controllers
+package controllers.core
 
 import play.api._
 import play.api.mvc._
 
-import auth.AuthAction._
+import controllers.auth.AuthAction._
 
 object CoreController extends Controller {
 

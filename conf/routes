@@ -1,13 +1,13 @@
-GET     /               controllers.CoreController.index
-GET     /menu           controllers.CoreController.menu
+GET     /               controllers.core.CoreController.index
+GET     /menu           controllers.core.CoreController.menu
 
-GET     /sign-in        controllers.SessionController.form
-POST    /sign-in        controllers.SessionController.create
-GET     /sign-out       controllers.SessionController.delete
+GET     /sign-in        controllers.core.SessionController.form
+POST    /sign-in        controllers.core.SessionController.create
+GET     /sign-out       controllers.core.SessionController.delete
 
-GET     /sign-up        controllers.AccountController.form
-POST    /sign-up        controllers.AccountController.create
+GET     /sign-up        controllers.core.AccountController.form
+POST    /sign-up        controllers.core.AccountController.create
 
-GET     /oauth/useless  controllers.OAuthController.useless(code: String)
+GET     /oauth/useless  controllers.core.OAuthController.useless(code: String)
 
 GET     /assets/*file   controllers.Assets.at(path="/public", file)

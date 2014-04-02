@@ -1,10 +1,10 @@
-package controllers
+package controllers.core
 
 import play.api._
 import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits._
 
-import auth.AuthAction._
+import controllers.auth.AuthAction._
 import clients.useless.UselessClient
 import services.AccessTokenService
 

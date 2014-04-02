@@ -1,4 +1,4 @@
-package controllers
+package controllers.core
 
 import scala.concurrent.Future
 import play.api._
@@ -28,13 +28,13 @@ object AccountController extends Controller {
   }
 
   def form = Action {
-    Ok(views.html.account.form(signUpForm))
+    Ok(views.html.core.account.form(signUpForm))
   }
 
   def create = Action.async { implicit request =>
     signUpForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(UnprocessableEntity(views.html.account.form(formWithErrors)))
+        Future.successful(UnprocessableEntity(views.html.core.account.form(formWithErrors)))
       },
       signUpData => {
         Account.create(
@@ -46,7 +46,7 @@ object AccountController extends Controller {
           result.fold(
             error => {
               val formWithError = signUpForm.fill(signUpData).withGlobalError(error)
-              UnprocessableEntity(views.html.account.form(formWithError))
+              UnprocessableEntity(views.html.core.account.form(formWithError))
             },
             account => {
               val redirectPath = request.cookies.get("auth_redirect_path").
