@@ -1,4 +1,4 @@
-package helpers
+package helpers.core
 
 import play.api.Play
 
