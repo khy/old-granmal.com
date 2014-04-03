@@ -1,4 +1,4 @@
-package models.account
+package models.core.account
 
 import java.util.UUID
 

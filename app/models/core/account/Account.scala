@@ -1,4 +1,4 @@
-package models.account
+package models.core.account
 
 import java.util.UUID
 import scala.concurrent.Future
@@ -12,7 +12,7 @@ import io.useless.reactivemongo.bson.UuidBson._
 
 import OAuthProvider.OAuthProvider
 import mongo._
-import models.external.ExternalAccessToken
+import models.core.external.ExternalAccessToken
 
 object Account extends MongoAccess {
 

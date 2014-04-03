@@ -4,7 +4,7 @@ import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
 
-import models.account.{ Account, AccessToken }
+import models.core.account.{ Account, AccessToken }
 import clients.core.OAuthClient
 
 class AccessTokenService(oauthClient: OAuthClient) {

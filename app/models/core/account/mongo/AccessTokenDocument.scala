@@ -1,4 +1,4 @@
-package models.account.mongo
+package models.core.account.mongo
 
 import reactivemongo.bson._
 import java.util.UUID
@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 import io.useless.reactivemongo.bson.UuidBson._
 import io.useless.reactivemongo.bson.DateTimeBson._
 
-import models.account.OAuthProvider._
+import models.core.account.OAuthProvider._
 import OAuthProviderBson._
 
 class AccessTokenDocument(

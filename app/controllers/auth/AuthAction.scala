@@ -6,7 +6,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import play.api.mvc._
 import play.api.Logger
 
-import models.account.Account
+import models.core.account.Account
 
 object AuthAction {
 

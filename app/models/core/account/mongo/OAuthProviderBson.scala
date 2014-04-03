@@ -1,8 +1,8 @@
-package models.account.mongo
+package models.core.account.mongo
 
 import reactivemongo.bson._
 
-import models.account.OAuthProvider
+import models.core.account.OAuthProvider
 import OAuthProvider._
 
 object OAuthProviderBson {

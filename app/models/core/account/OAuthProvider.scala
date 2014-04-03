@@ -1,4 +1,4 @@
-package models.account
+package models.core.account
 
 object OAuthProvider extends Enumeration {
   type OAuthProvider = Value

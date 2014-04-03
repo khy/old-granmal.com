@@ -1,7 +1,7 @@
 import play.api.{ Application, Logger }
 import play.api.mvc.WithFilters
 import io.useless.play.filter.{ AccessLogFilter, RequestTimeFilter }
-import models.account.Account
+import models.core.account.Account
 
 object Global
   extends WithFilters(

@@ -1,6 +1,6 @@
-package models.external
+package models.core.external
 
-import models.account.OAuthProvider.OAuthProvider
+import models.core.account.OAuthProvider.OAuthProvider
 
 /**
  * An ExternalAccessToken represents an access token that is not yet known by

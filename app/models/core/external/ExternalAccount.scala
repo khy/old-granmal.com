@@ -1,4 +1,4 @@
-package models.external
+package models.core.external
 
 /**
  * An ExternalAccount is a normalized representation of a 3rd-party account.

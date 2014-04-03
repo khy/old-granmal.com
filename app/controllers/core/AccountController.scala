@@ -7,7 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import models.account.Account
+import models.core.account.Account
 
 object AccountController extends Controller {
 
