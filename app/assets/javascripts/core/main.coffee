@@ -17,16 +17,19 @@ define ['jquery'], ($) ->
     else
       $('.container').removeClass('affix-header')
 
-  navTop = 0
+  initIndex = ->
+    navTop = 0
 
-  $ ->
-    resizeMasthead()
-    navTop = $('.nav').offset().top
-    conditionallyAffixHeader(navTop)
+    $ ->
+      resizeMasthead()
+      navTop = $('.nav').offset().top
+      conditionallyAffixHeader(navTop)
 
-  $(window).resize ->
-    resizeMasthead()
-    navTop = $('.nav').offset().top
+    $(window).resize ->
+      resizeMasthead()
+      navTop = $('.nav').offset().top
 
-  $(window).scroll ->
-    conditionallyAffixHeader(navTop)
+    $(window).scroll ->
+      conditionallyAffixHeader(navTop)
+
+  initIndex: initIndex
