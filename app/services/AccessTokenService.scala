@@ -5,7 +5,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
 
 import models.account.{ Account, AccessToken }
-import clients.OAuthClient
+import clients.core.OAuthClient
 
 class AccessTokenService(oauthClient: OAuthClient) {
 

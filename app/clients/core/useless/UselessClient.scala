@@ -1,4 +1,4 @@
-package clients.useless
+package clients.core.useless
 
 import scala.concurrent.Future
 import play.api.libs.json.Json
@@ -9,7 +9,7 @@ import io.useless.account.{ Account => UselessAccount, User }
 import io.useless.play.json.accesstoken.AccessTokenJson._
 import io.useless.play.json.account.AccountJson._
 
-import clients.OAuthClient
+import clients.core.OAuthClient
 import models.account.{ AccessToken, OAuthProvider }
 import models.external.{ ExternalAccessToken, ExternalAccount }
 
