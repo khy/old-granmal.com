@@ -6,7 +6,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import controllers.auth.AuthAction._
 import clients.core.useless.UselessClient
-import services.AccessTokenService
+import services.core.AccessTokenService
 
 object OAuthController extends Controller {
 
