@@ -1,7 +1,6 @@
-require.config
+requirejs.config
+  baseUrl: '/assets/javascripts'
   paths:
-    jquery: '../vendor/jquery-2.1.0'
+    jquery: 'vendor/jquery-2.1.0'
 
-define ['jquery'], ($) ->
-
-  console.debug("Loading Haikunst! javascript...")
+require ['haikunst/app'], (app) -> app.init()

@@ -21,8 +21,8 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 play.Project.playScalaSettings
 
-requireJs += "main.js"
+requireJs ++= Seq("core/main", "haikunst/main")
 
-requireJsShim += "main.js"
+requireJsShim += "config.js"
 
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.less")
