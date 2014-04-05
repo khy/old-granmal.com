@@ -11,4 +11,8 @@ object AppController extends Controller {
     Ok(views.html.haikunst.index())
   }
 
+  def menu = Action {
+    Ok(views.html.haikunst.menu())
+  }
+
 }

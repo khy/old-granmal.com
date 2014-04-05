@@ -12,5 +12,6 @@ POST    /sign-up        controllers.core.AccountController.create
 GET     /oauth/useless  controllers.core.OAuthController.useless(code: String)
 
 GET     /haikunst       controllers.haikunst.AppController.index
+GET     /haikunst/menu  controllers.haikunst.AppController.menu
 
 GET     /assets/*file   controllers.Assets.at(path="/public", file)
