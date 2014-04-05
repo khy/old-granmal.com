@@ -1,0 +1,7 @@
+@(appName: String)
+
+<link rel="stylesheet" media="screen" href="@routes.Assets.at(s"stylesheets/$appName/main.css")">
+@helper.requireJs(
+  core = routes.Assets.at("javascripts/require.js").url,
+  module = routes.Assets.at(s"javascripts/$appName/main").url
+)

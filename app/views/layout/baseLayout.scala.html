@@ -1,0 +1,19 @@
+@(title: String)(head: Html)(content: Html)
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>@title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:700,400,100' rel='stylesheet' type='text/css'>
+    @head
+  </head>
+
+  <body>
+    <div class="container">
+      @content
+    </div>
+  </body>
+</html>
