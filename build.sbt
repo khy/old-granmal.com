@@ -26,3 +26,7 @@ requireJs ++= Seq("core/main", "haikunst/main")
 requireJsShim += "config.js"
 
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.less")
+
+publishArtifact in (Compile, packageDoc) := false
+
+publishArtifact in (Compile, packageSrc) := false
