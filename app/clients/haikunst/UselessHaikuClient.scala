@@ -17,7 +17,7 @@ object UselessHaikuClient {
 
 trait UselessHaikuClient {
 
-  def getHaikus(after: Option[UUID]): Future[Seq[JsObject]]
+  def getHaikus(after: Option[String] = None): Future[Seq[JsObject]]
 
 }
 
@@ -31,7 +31,7 @@ class StandardUselessHaikuClient(
     }
   }
 
-  def getHaikus(after: Option[UUID]) = {
+  def getHaikus(after: Option[String] = None) = {
     WS.url(baseUrl + "/haikus").get.map { response =>
       response.json.as[Seq[JsObject]]
     }
