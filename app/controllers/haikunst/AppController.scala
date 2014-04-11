@@ -3,6 +3,8 @@ package controllers.haikunst
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
+import play.api.data._
+import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
 import controllers.auth.AuthAction._
@@ -22,6 +24,24 @@ object AppController extends Controller {
       val haikus = haikuJsons.map(new HaikuPresenter(_))
       Ok(views.html.haikunst.index(haikus))
     }
+  }
+
+  case class HaikuData(one: String, two: String, three: String)
+
+  val haikuForm = Form {
+    mapping(
+      "one" -> nonEmptyText,
+      "two" -> nonEmptyText,
+      "three" -> nonEmptyText
+    )(HaikuData.apply)(HaikuData.unapply)
+  }
+
+  def form = Action {
+    Ok(views.html.haikunst.form(haikuForm))
+  }
+
+  def create = Action {
+    Ok("YAY HAIKUS!!!")
   }
 
   def menu = Action {

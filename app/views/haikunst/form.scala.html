@@ -1,0 +1,27 @@
+@(haikuForm: Form[controllers.haikunst.AppController.HaikuData])
+
+@views.html.haikunst.layout {
+
+  @views.html.haikunst.nav()
+
+  <div class="form-section">
+    @if(haikuForm.hasErrors) {
+      <div class="alert">
+        <span class="glyphicon glyphicon-thumbs-down"></span>
+        @helpers.core.FormHelper.displayError(haikuForm)
+      </div>
+    }
+
+    @helper.form(action = controllers.haikunst.routes.AppController.create()) {
+      <input type="text" name="one" placeholder="Fünf">
+      <input type="text" name="two" placeholder="Sieben">
+      <input type="text" name="three" placeholder="Fünf">
+      <button type="submit">Verkünden!</button>
+    }
+
+    <ul class="alternate-actions">
+      <li><a href="@controllers.haikunst.routes.AppController.index">Cancel</a></li>
+    </ul>
+  </div>
+
+}
