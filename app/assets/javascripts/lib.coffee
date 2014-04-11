@@ -5,7 +5,9 @@ define ['jquery'], ($) ->
     $(el).css('min-height', listMinHeight)
 
   ensureFullPage = (el) ->
-    $(document).ready -> resizeContent(el)
-    $(window).resize -> resizeContent(el)
+    $(document).ready ->
+      if $(el).length > 0
+        resizeContent(el)
+        $(window).resize -> resizeContent(el)
 
   ensureFullPage: ensureFullPage
