@@ -1,23 +1,31 @@
 @import "../base.less";
 @import "../lib.less";
 
-.haikus {
-  .unstyled-list();
+.container {
+  padding-top: 74px;
 
-  padding: 40px 20px;
+  .nav {
+    .nav.affixed()
+  }
 
-  .haiku {
-    margin-bottom: 40px;
+  .haikus {
+    .unstyled-list();
 
-    .line {
-      font-size: 2em;
-      margin-bottom: 10px;
-    }
+    padding: 40px 20px;
 
-    .author {
-      margin-top: 20px;
-      font-size: 1.4em;
-      color: #777;
+    .haiku {
+      margin-bottom: 40px;
+
+      .line {
+        font-size: 2em;
+        margin-bottom: 10px;
+      }
+
+      .author {
+        margin-top: 2  0px;
+        font-size: 1.4em;
+        color: #777;
+      }
     }
   }
 }
