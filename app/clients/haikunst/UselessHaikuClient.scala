@@ -19,6 +19,8 @@ trait UselessHaikuClient {
 
   def getHaikus(after: Option[String] = None): Future[Seq[JsObject]]
 
+  def createHaiku(lines: Seq[String]): Future[Either[String, JsObject]]
+
 }
 
 class StandardUselessHaikuClient(
@@ -31,10 +33,30 @@ class StandardUselessHaikuClient(
     }
   }
 
+  val collectionUrl = baseUrl + "/haikus"
+
   def getHaikus(after: Option[String] = None) = {
-    WS.url(baseUrl + "/haikus").get.map { response =>
+    WS.url(collectionUrl).get.map { response =>
       response.json.as[Seq[JsObject]]
     }
+  }
+
+  def createHaiku(lines: Seq[String]) = {
+    accessToken.map { accessToken =>
+      val futureResponse = WS.url(collectionUrl).
+        withHeaders(("Authorization", accessToken)).
+        post(Json.obj("lines" -> lines))
+
+      futureResponse.map { response =>
+        response.status match {
+          case 201 => Right(response.json.as[JsObject])
+          case _ => Left(response.body)
+        }
+      }
+    }.getOrElse {
+      Future.successful(Left("An access token is required to create haikus."))
+    }
+
   }
 
 }
