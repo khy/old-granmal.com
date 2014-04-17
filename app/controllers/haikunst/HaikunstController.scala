@@ -8,7 +8,6 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
-import models.core.account.OAuthProvider.Useless
 import controllers.auth.AuthAction._
 import clients.haikunst.UselessHaikuClient
 
@@ -38,8 +37,18 @@ object HaikunstController extends Controller {
     )(HaikuData.apply)(HaikuData.unapply)
   }
 
-  def form = Action {
-    Ok(views.html.haikunst.form(haikuForm))
+  def form = Action.auth { request =>
+    request.account.map { account =>
+      account.uselessAccessToken.map { accessToken =>
+        Ok(views.html.haikunst.form(haikuForm))
+      }.getOrElse {
+        Ok(views.html.haikunst.connectUseless())
+      }
+    }.getOrElse {
+      Redirect(controllers.core.routes.SessionController.form).
+        flashing("failure" -> "You must sign-in first.").
+        withCookies(Cookie("auth_redirect_path", routes.HaikunstController.form.url))
+    }
   }
 
   def create = Action.auth.async { implicit request =>
@@ -49,9 +58,7 @@ object HaikunstController extends Controller {
           Future.successful(InternalServerError)
         },
         haikuForm => {
-          account.accessTokens.find { accessToken =>
-            accessToken.oauthProvider == Useless
-          }.map { accessToken =>
+          account.uselessAccessToken.map { accessToken =>
             val client = UselessHaikuClient.instance(accessToken.code)
             val haiku = Seq(haikuForm.one, haikuForm.two, haikuForm.three)
 

@@ -127,4 +127,8 @@ class Account(document: AccountDocument) {
     }
   }
 
+  def uselessAccessToken = accessTokens.find { accessToken =>
+    accessToken.oauthProvider == OAuthProvider.Useless
+  }
+
 }
