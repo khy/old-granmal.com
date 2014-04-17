@@ -1,5 +1,6 @@
 package controllers.haikunst
 
+import scala.concurrent.Future
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
@@ -7,10 +8,11 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
+import models.core.account.OAuthProvider.Useless
 import controllers.auth.AuthAction._
 import clients.haikunst.UselessHaikuClient
 
-object AppController extends Controller {
+object HaikunstController extends Controller {
 
   class HaikuPresenter(json: JsObject) {
     val firstLine: String = (json \ "lines")(0).as[String]
@@ -40,8 +42,34 @@ object AppController extends Controller {
     Ok(views.html.haikunst.form(haikuForm))
   }
 
-  def create = Action {
-    Ok("YAY HAIKUS!!!")
+  def create = Action.auth.async { implicit request =>
+    request.account.map { account =>
+      haikuForm.bindFromRequest.fold(
+        formWithErrors => {
+          Future.successful(InternalServerError)
+        },
+        haikuForm => {
+          account.accessTokens.find { accessToken =>
+            accessToken.oauthProvider == Useless
+          }.map { accessToken =>
+            val client = UselessHaikuClient.instance(accessToken.code)
+            val haiku = Seq(haikuForm.one, haikuForm.two, haikuForm.three)
+
+            client.createHaiku(haiku).map { result =>
+              result.fold(
+                error => UnprocessableEntity(error),
+                json => Ok(json.toString)
+              )
+            }
+          }.getOrElse {
+            Future.successful(UnprocessableEntity("Get more access tokens"))
+          }
+        }
+      )
+    }.getOrElse {
+      Future.successful(UnprocessableEntity("Get more access tokens"))
+    }
+
   }
 
   def menu = Action {

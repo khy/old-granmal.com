@@ -1,4 +1,4 @@
-@(haikuForm: Form[controllers.haikunst.AppController.HaikuData])
+@(haikuForm: Form[controllers.haikunst.HaikunstController.HaikuData])
 
 @views.html.haikunst.layout {
 
@@ -12,7 +12,7 @@
       </div>
     }
 
-    @helper.form(action = controllers.haikunst.routes.AppController.create()) {
+    @helper.form(action = controllers.haikunst.routes.HaikunstController.create()) {
       <input type="text" name="one" placeholder="Fünf">
       <input type="text" name="two" placeholder="Sieben">
       <input type="text" name="three" placeholder="Fünf">
@@ -20,7 +20,7 @@
     }
 
     <ul class="alternate-actions">
-      <li><a href="@controllers.haikunst.routes.AppController.index">Cancel</a></li>
+      <li><a href="@controllers.haikunst.routes.HaikunstController.index">Cancel</a></li>
     </ul>
   </div>
 
