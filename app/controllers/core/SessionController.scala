@@ -7,6 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+import controllers.auth.AuthKeys
 import models.core.account.Account
 
 object SessionController extends Controller {
@@ -36,7 +37,7 @@ object SessionController extends Controller {
               map(_.value).getOrElse("/")
 
             Redirect(redirectPath).
-              withSession("auth" -> account.guid.toString).
+              withSession(AuthKeys.session -> account.guid.toString).
               flashing("success" -> "Signed in successfully")
           }.getOrElse {
             val formWithError = signInForm.fill(signInData).
@@ -51,7 +52,7 @@ object SessionController extends Controller {
 
   def delete = Action { implicit request =>
     Redirect("/").
-      withSession(session - "auth").
+      withSession(session - AuthKeys.session).
       flashing("success" -> "You have been signed out.")
   }
 

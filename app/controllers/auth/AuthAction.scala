@@ -28,7 +28,7 @@ object AuthActionBuilder extends ActionBuilder[AuthRequest] {
     action: AuthRequest[A] => Future[SimpleResult]
   ): Future[SimpleResult] = {
     Logger.debug("Attempting to authenticate request. Session: " + request.session)
-    request.session.get("auth").map { accountGuidString =>
+    request.session.get(AuthKeys.session).map { accountGuidString =>
       Logger.debug(s"Found account GUID [${accountGuidString}] in 'auth'.")
       val accountGuid = UUID.fromString(accountGuidString)
 

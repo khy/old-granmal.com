@@ -60,7 +60,7 @@ class AuthActionSpec extends PlaySpecification {
     "return the specified result, with a logged-in account" in new WithApplication(testApplication) {
       MongoUtil.clearDb()
       val account = await { Account.create(email = Some("john@granmal.com")) }.right.get
-      val request = FakeRequest().withSession(("auth", account.guid.toString))
+      val request = FakeRequest().withSession((AuthKeys.session, account.guid.toString))
       val result = TestController.authAction(request)
       contentAsString(result) must beEqualTo("authAction: Some(john@granmal.com)")
     }
@@ -75,7 +75,7 @@ class AuthActionSpec extends PlaySpecification {
     "return the specified result, with a logged-in account" in new WithApplication(testApplication) {
       MongoUtil.clearDb()
       val account = await { Account.create(email = Some("john@granmal.com")) }.right.get
-      val request = FakeRequest().withSession(("auth", account.guid.toString))
+      val request = FakeRequest().withSession((AuthKeys.session, account.guid.toString))
       val result = TestController.asyncAuthAction(request)
       contentAsString(result) must beEqualTo("asyncAuthAction: Some(john@granmal.com)")
     }

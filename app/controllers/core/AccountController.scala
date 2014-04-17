@@ -7,6 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+import controllers.auth.AuthKeys
 import models.core.account.Account
 
 object AccountController extends Controller {
@@ -53,7 +54,7 @@ object AccountController extends Controller {
                 map(_.value).getOrElse("/")
 
               Redirect(redirectPath).
-                withSession("auth" -> account.guid.toString).
+                withSession(AuthKeys.session -> account.guid.toString).
                 flashing("success" -> "Signed up successfully")
             }
           )

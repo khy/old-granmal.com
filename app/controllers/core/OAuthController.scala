@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.libs.concurrent.Execution.Implicits._
 
 import controllers.auth.AuthAction._
+import controllers.auth.AuthKeys
 import clients.core.useless.UselessClient
 import services.core.AccessTokenService
 
@@ -19,7 +20,7 @@ object OAuthController extends Controller {
         error => Redirect("/").
           flashing("error" -> s"Connection with useless.io failed: ${error}"),
         accessToken => Redirect("/").
-          withSession("auth" -> accessToken.account.guid.toString).
+          withSession(AuthKeys.session -> accessToken.account.guid.toString).
           flashing("success" -> "Connected successfully with useless.io")
       )
     }
