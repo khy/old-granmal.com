@@ -60,12 +60,12 @@ object HaikunstController extends Controller {
         },
         haikuForm => {
           account.uselessAccessToken.map { accessToken =>
-            val client = UselessHaikuClient.instance(accessToken.code)
+            val client = UselessHaikuClient.instance(Some(accessToken.token))
             val haiku = Seq(haikuForm.one, haikuForm.two, haikuForm.three)
 
             client.createHaiku(haiku).map { result =>
               result.fold(
-                error => UnprocessableEntity("THER ERRORR: " + error),
+                error => UnprocessableEntity(error),
                 json => Ok(json.toString)
               )
             }
