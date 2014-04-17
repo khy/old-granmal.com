@@ -33,11 +33,12 @@ object SessionController extends Controller {
       signInData => {
         Account.auth(signInData.email, signInData.password).map { optAccount =>
           optAccount.map { account =>
-            val redirectPath = request.cookies.get("auth_redirect_path").
+            val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
               map(_.value).getOrElse("/")
 
             Redirect(redirectPath).
-              withSession(AuthKeys.session -> account.guid.toString).
+              withSession(session + (AuthKeys.session -> account.guid.toString)).
+              discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
               flashing("success" -> "Signed in successfully")
           }.getOrElse {
             val formWithError = signInForm.fill(signInData).

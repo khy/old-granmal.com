@@ -50,11 +50,12 @@ object AccountController extends Controller {
               UnprocessableEntity(views.html.core.account.form(formWithError))
             },
             account => {
-              val redirectPath = request.cookies.get("auth_redirect_path").
+              val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
                 map(_.value).getOrElse("/")
 
               Redirect(redirectPath).
-                withSession(AuthKeys.session -> account.guid.toString).
+                withSession(session + (AuthKeys.session -> account.guid.toString)).
+                discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
                 flashing("success" -> "Signed up successfully")
             }
           )

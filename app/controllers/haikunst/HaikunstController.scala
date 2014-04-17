@@ -9,6 +9,7 @@ import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
 import controllers.auth.AuthAction._
+import controllers.auth.AuthKeys
 import clients.haikunst.UselessHaikuClient
 
 object HaikunstController extends Controller {
@@ -47,7 +48,7 @@ object HaikunstController extends Controller {
     }.getOrElse {
       Redirect(controllers.core.routes.SessionController.form).
         flashing("failure" -> "You must sign-in first.").
-        withCookies(Cookie("auth_redirect_path", routes.HaikunstController.form.url))
+        withCookies(Cookie(AuthKeys.authRedirectPath, routes.HaikunstController.form.url))
     }
   }
 
@@ -64,7 +65,7 @@ object HaikunstController extends Controller {
 
             client.createHaiku(haiku).map { result =>
               result.fold(
-                error => UnprocessableEntity(error),
+                error => UnprocessableEntity("THER ERRORR: " + error),
                 json => Ok(json.toString)
               )
             }
