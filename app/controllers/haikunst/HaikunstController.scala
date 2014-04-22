@@ -66,7 +66,7 @@ object HaikunstController extends Controller {
             client.createHaiku(haiku).map { result =>
               result.fold(
                 error => UnprocessableEntity(error),
-                json => Ok(json.toString)
+                json => Redirect(routes.HaikunstController.index)
               )
             }
           }.getOrElse {
