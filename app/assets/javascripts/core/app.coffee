@@ -2,9 +2,9 @@ define ['jquery', 'lib'], ($, lib) ->
 
   conditionallyAffixHeader = (threshold) ->
     if ($(window).scrollTop() >= threshold)
-      $('.container').addClass('affix-header')
+      $('.container').addClass('affix-nav')
     else
-      $('.container').removeClass('affix-header')
+      $('.container').removeClass('affix-nav')
 
   resizeMasthead = ->
     $('.masthead .poster').height $(window).height() - 40
@@ -27,6 +27,10 @@ define ['jquery', 'lib'], ($, lib) ->
   init: ->
     console.debug 'Initializing Core...'
 
+    lib.ensureFullPage('.apps')
+
     if $('.masthead').length > 0
-      lib.ensureFullPage('.apps')
       initIndex()
+    else
+      $(document).ready ->
+        $('.container').addClass('affix-nav')

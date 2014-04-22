@@ -2,8 +2,8 @@
 @import "../base.less";
 @import "../form.less";
 
-.container.affix-header .nav {
-  .nav.affixed()
+.container.affix-nav {
+  .container.affix-nav()
 }
 
 .masthead {
@@ -39,10 +39,6 @@
 
 ol.apps {
   .unstyled-list;
-
-  .container.affix-header & {
-    margin-top: 69px
-  }
 
   li a {
     .list-item;
