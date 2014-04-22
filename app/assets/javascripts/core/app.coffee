@@ -9,7 +9,7 @@ define ['jquery', 'lib'], ($, lib) ->
   resizeMasthead = ->
     $('.masthead .poster').height $(window).height() - 40
 
-  initIndex = ->
+  initIndexWithMasthead = ->
     navTop = 0
 
     $(document).ready ->
@@ -30,7 +30,7 @@ define ['jquery', 'lib'], ($, lib) ->
     lib.ensureFullPage('.apps')
 
     if $('.masthead').length > 0
-      initIndex()
+      initIndexWithMasthead()
     else
       $(document).ready ->
         $('.container').addClass('affix-nav')
