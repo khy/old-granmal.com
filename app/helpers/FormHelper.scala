@@ -1,4 +1,4 @@
-package helpers.core
+package helpers
 
 import play.api.data.Form
 

@@ -21,6 +21,8 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 play.Project.playScalaSettings
 
+templatesImport += "helpers._"
+
 requireJs ++= Seq("core/main", "haikunst/main")
 
 requireJsShim += "config.js"
