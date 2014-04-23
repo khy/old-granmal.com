@@ -8,7 +8,7 @@
     @if(signInForm.hasErrors) {
       <div class="alert">
         <span class="glyphicon glyphicon-thumbs-down"></span>
-        @FormHelper.displayError(signInForm)
+        @FormHelper.displayFirstError(signInForm)
       </div>
     }
 

@@ -8,7 +8,7 @@
     @if(haikuForm.hasErrors) {
       <div class="alert">
         <span class="glyphicon glyphicon-thumbs-down"></span>
-        @FormHelper.displayError(haikuForm)
+        @FormHelper.displayFirstError(haikuForm)
       </div>
     }
 
