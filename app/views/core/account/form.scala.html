@@ -1,16 +1,19 @@
-@(signUpForm: Form[controllers.core.AccountController.SignUpData])
+@(signUpForm: Form[controllers.core.AccountController.SignUpData])(implicit flash: Flash)
 
 @views.html.core.layout {
 
   @views.html.core.nav()
 
   <div class="form-section">
+
     @if(signUpForm.hasErrors) {
       <div class="alert">
         <span class="glyphicon glyphicon-thumbs-down"></span>
         @FormHelper.displayFirstError(signUpForm)
       </div>
     }
+
+    @views.html.flash()
 
     @helper.form(action = controllers.core.routes.AccountController.create()) {
       <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">

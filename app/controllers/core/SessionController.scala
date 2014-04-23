@@ -21,7 +21,7 @@ object SessionController extends Controller {
     )(SignInData.apply)(SignInData.unapply)
   }
 
-  def form = Action {
+  def form = Action { implicit request =>
     Ok(views.html.core.session.form(signInForm))
   }
 

@@ -28,7 +28,7 @@ object AccountController extends Controller {
     )(SignUpData.apply)(SignUpData.unapply)
   }
 
-  def form = Action {
+  def form = Action { implicit request =>
     Ok(views.html.core.account.form(signUpForm))
   }
 
