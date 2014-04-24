@@ -1,15 +1,15 @@
-@()(implicit flash: Flash)
+@(flash: Flash)
 
-@if(flash.get("success").isDefined) {
-  <div class="alert">
+@if(!flash.isEmpty) {
+  @if(flash.get("success").isDefined) {
     <span class="glyphicon glyphicon-thumbs-up"></span>
     @flash.get("success").get
-  </div>
-} else {
-  @if(flash.get("failure").isDefined) {
-    <div class="alert">
+  } else {
+    @if(flash.get("failure").isDefined) {
       <span class="glyphicon glyphicon-thumbs-down"></span>
       @flash.get("failure").get
-    </div>
+    } else {
+      @flash.data.values.head
+    }
   }
 }

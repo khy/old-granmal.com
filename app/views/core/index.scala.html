@@ -1,4 +1,4 @@
-@(showMasthead: Boolean)
+@(showMasthead: Boolean)(implicit _flash: Flash)
 
 @views.html.core.layout {
 
@@ -14,12 +14,16 @@
   @views.html.core.nav()
 
   <ol class="apps">
+
+    @flash.list()
+
     <li>
       <a href="@controllers.haikunst.routes.HaikunstController.index">
         <p class="name">Haikunst!</p>
         <p class="description">Like Twitter. But with haikus. And vaguely German?</p>
       </a>
     </li>
+
   </ol>
 
   @views.html.layout.footer()

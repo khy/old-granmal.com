@@ -1,4 +1,4 @@
-@(signInForm: Form[controllers.core.SessionController.SignInData])(implicit flash: Flash)
+@(signInForm: Form[controllers.core.SessionController.SignInData])(implicit _flash: Flash)
 
 @views.html.core.layout {
 
@@ -13,7 +13,7 @@
       </div>
     }
 
-    @views.html.flash()
+    @flash.form()
 
     @helper.form(action = controllers.core.routes.SessionController.create()) {
       <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" placeholder="Email">

@@ -1,0 +1,7 @@
+@()(implicit flash: Flash)
+
+@if(!flash.isEmpty) {
+  <li class="alert">
+    @views.html.flash.contents(flash)
+  </li>
+}

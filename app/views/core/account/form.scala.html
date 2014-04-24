@@ -1,4 +1,4 @@
-@(signUpForm: Form[controllers.core.AccountController.SignUpData])(implicit flash: Flash)
+@(signUpForm: Form[controllers.core.AccountController.SignUpData])(implicit _flash: Flash)
 
 @views.html.core.layout {
 
@@ -13,7 +13,7 @@
       </div>
     }
 
-    @views.html.flash()
+    @flash.form()
 
     @helper.form(action = controllers.core.routes.AccountController.create()) {
       <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">

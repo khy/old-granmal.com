@@ -40,24 +40,34 @@
 ol.apps {
   .unstyled-list;
 
-  li a {
-    .list-item;
-    text-decoration: none;
+  li {
     border-bottom: 1px solid #DDD;
 
-    &:hover {
-      background-color: #EEE;
+    &.alert {
+      .alert;
+      padding: 20px 10px;
+      background-color: lightYellow;
     }
 
-    p.name {
-      font-size: 1.2em;
-      color: #333;
-      margin: 0;
-    }
+    a {
+      .list-item;
+      text-decoration: none;
 
-    p.description {
-      color: #777;
-      margin: 0;
+      &:hover {
+        background-color: #EEE;
+      }
+
+      p.name {
+        font-size: 1.2em;
+        color: #333;
+        margin: 0;
+      }
+
+      p.description {
+        color: #777;
+        margin: 0;
+      }
     }
   }
+
 }

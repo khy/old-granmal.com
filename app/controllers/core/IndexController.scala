@@ -8,11 +8,11 @@ import controllers.auth.AuthAction._
 
 object IndexController extends Controller {
 
-  def index = Action { request =>
+  def index = Action { implicit request =>
     Ok(views.html.core.index(shouldShowMasthead(request)))
   }
 
-  def shouldShowMasthead[T](request: Request[T]): Boolean = {
+  private def shouldShowMasthead[T](request: Request[T]): Boolean = {
     request.headers.get("Referer").map { referer =>
       val domain = Play.configuration.getString("application.domain").get
       !referer.contains(domain)
