@@ -27,8 +27,7 @@ define ['jquery', 'lib'], ($, lib) ->
   init: ->
     console.debug 'Initializing Core...'
 
-    lib.ensureFullPage('.apps')
-    lib.ensureFullPage('.form-section')
+    lib.ensureFullPage()
 
     if $('.masthead').length > 0
       initIndexWithMasthead()
