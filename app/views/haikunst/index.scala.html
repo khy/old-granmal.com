@@ -5,8 +5,8 @@
   @views.html.haikunst.nav()
 
   <ol class="haikus">
-    @haikus.map { haiku =>
-      <li class="haiku">
+    @haikus.zipWithIndex.map { case (haiku, index) =>
+      <li class="haiku @(if (index % 2 == 0) "even" else "odd")">
         <div class="line">@haiku.firstLine</div>
         <div class="line">@haiku.secondLine</div>
         <div class="line">@haiku.thirdLine</div>
