@@ -1,3 +1,0 @@
-FROM granmal/base:0.0.1
-ADD . /app/
-CMD /app/bin/granmal
