@@ -32,3 +32,5 @@ lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.
 publishArtifact in (Compile, packageDoc) := false
 
 publishArtifact in (Compile, packageSrc) := false
+
+mappings in Universal += buildDockerfile.value -> "Dockerfile"
