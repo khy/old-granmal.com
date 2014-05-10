@@ -33,4 +33,7 @@ publishArtifact in (Compile, packageDoc) := false
 
 publishArtifact in (Compile, packageSrc) := false
 
-mappings in Universal += buildDockerfile.value -> "Dockerfile"
+mappings in Universal ++= Seq(
+  buildDockerfile.value -> "Dockerfile",
+  file("docker/Dockerrun.aws.json") -> "Dockerrun.aws.json"
+)
