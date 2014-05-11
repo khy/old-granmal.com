@@ -1,5 +1,7 @@
 import sbt._
 import Keys._
+import com.typesafe.sbt.packager.Keys.stage
+
 
 object GranMalBuild extends Build {
 
@@ -17,6 +19,10 @@ object GranMalBuild extends Build {
 
   val buildPrivateVersionDockerfile = taskKey[File](
     "Build a Dockerfile based upon a public granmal/app image version, adds it to target/docker."
+  )
+
+  val prepareImages = taskKey[Unit](
+    "Builds the public image, and builds the private image Dockerfile."
   )
 
   lazy val root = Project(id = "granmal", base = file("."), settings = Project.defaultSettings ++ Seq(
@@ -53,6 +59,14 @@ object GranMalBuild extends Build {
       val location = target.value / "docker" / s"Dockerfile.${version.value}"
       IO.write(location, content)
       location
+    },
+
+    // 'a' and 'b' vals are to avoid warnings.
+    prepareImages := {
+      val a = stage.value
+      val imageName = s"granmal/app:${version.value}"
+      s"docker build -t $imageName .".!
+      val b = buildPrivateVersionDockerfile.value
     }
 
   ))
