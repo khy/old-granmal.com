@@ -29,8 +29,4 @@ requireJsShim += "config.js"
 
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.less")
 
-publishArtifact in (Compile, packageDoc) := false
-
-publishArtifact in (Compile, packageSrc) := false
-
 mappings in Universal += buildStageDockerfile.value -> "Dockerfile"
