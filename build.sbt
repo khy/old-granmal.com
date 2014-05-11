@@ -33,4 +33,4 @@ publishArtifact in (Compile, packageDoc) := false
 
 publishArtifact in (Compile, packageSrc) := false
 
-mappings in Universal += buildDockerfile.value -> "Dockerfile"
+mappings in Universal += buildStageDockerfile.value -> "Dockerfile"

@@ -7,29 +7,51 @@ object GranMalBuild extends Build {
     "Defines environment variables to be included in the Dockerfile."
   )
 
-  val buildDockerfile = taskKey[File](
-    "Builds the Dockerfile, adds it to target/docker."
+  val dockerfileEnvInstructions = settingKey[String](
+    "The ENV instructions corresponding to the environment variables defined by dockerEnvironmentVariables."
+  )
+
+  val buildStageDockerfile = taskKey[File](
+    "Builds a Dockerfile suitable for the stage distribution, adds it to target/docker."
+  )
+
+  val buildPrivateVersionDockerfile = taskKey[File](
+    "Build a Dockerfile based upon a public granmal/app image version, adds it to target/docker."
   )
 
   lazy val root = Project(id = "granmal", base = file("."), settings = Project.defaultSettings ++ Seq(
 
     dockerEnvironmentVariables := Seq.empty,
 
-    buildDockerfile := {
-      val location = target.value / "docker" / "Dockerfile"
-      var df = List.empty[String]
+    dockerfileEnvInstructions := dockerEnvironmentVariables.value.map { case (key, value) =>
+      s"ENV $key $value"
+    }.mkString("\n"),
 
-      df = df :+ "FROM granmal/base:0.0.1"
-      df = df :+ "ADD . /app"
-      df = df :+ "WORKDIR /app"
-      df = df :+ "RUN chmod +x bin/granmal"
-      dockerEnvironmentVariables.value.foreach { case (key, value) =>
-        df = df :+ s"ENV ${key} ${value}"
-      }
-      df = df :+ "EXPOSE 9000"
-      df = df :+ "CMD [\"bin/granmal\", \"-Dconfig.file=conf/prod.conf\"]"
+    buildStageDockerfile := {
+      val content =
+      s"""|FROM granmal/base:0.0.1
+          |ADD . /app
+          |WORKDIR /app
+          |${dockerfileEnvInstructions.value}
+          |RUN chmod +x bin/granmal
+          |EXPOSE 9000
+          |CMD ["bin/granmal", "-Dconfig.file=conf/prod.conf"]
+          |""".stripMargin
 
-      IO.write(location, df.mkString("\n") + "\n")
+      val location = target.value / "docker" / "Dockerfile.stage"
+      IO.write(location, content)
+      location
+    },
+
+    buildPrivateVersionDockerfile := {
+      val content =
+      s"""|FROM granmal/app:${version.value}
+          |${dockerfileEnvInstructions.value}
+          |EXPOSE 9000
+          |""".stripMargin
+
+      val location = target.value / "docker" / s"Dockerfile.${version.value}"
+      IO.write(location, content)
       location
     }
 
