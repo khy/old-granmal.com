@@ -2,7 +2,7 @@ name := "granmal"
 
 version := "0.1.0"
 
-scalaVersion := "2.10.3"
+scalaVersion := "2.11.0"
 
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "reactivemongo" % "0.10.0",
