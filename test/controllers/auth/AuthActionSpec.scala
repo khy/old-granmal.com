@@ -6,7 +6,7 @@ import play.api.mvc._
 import play.api.test._
 import io.useless.util.mongo.MongoUtil
 
-import models.account.Account
+import models.core.account.Account
 import AuthAction._
 
 class AuthActionSpec extends PlaySpecification {

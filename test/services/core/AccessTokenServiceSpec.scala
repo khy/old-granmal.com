@@ -1,4 +1,4 @@
-package models.account
+package services.core
 
 import java.util.UUID
 import scala.concurrent.Future
@@ -7,9 +7,9 @@ import play.api.test.Helpers
 import Helpers._
 import io.useless.util.mongo.MongoUtil
 
-import models.external.{ ExternalAccessToken, ExternalAccount }
-import clients.OAuthClient
-import services.AccessTokenService
+import models.core.external.{ ExternalAccessToken, ExternalAccount }
+import models.core.account.{ Account, OAuthProvider }
+import clients.core.OAuthClient
 import test.support.AccountFactory
 
 class AccessTokenServiceSpec extends Specification {
@@ -55,7 +55,7 @@ class AccessTokenServiceSpec extends Specification {
       result.right.get.guid must beEqualTo(accessTokenDocument.guid)
     }
 
-    "it should return an error if the specified account does not have an " + 
+    "it should return an error if the specified account does not have an " +
     "access token corresponding to the specified code, and the AuthClient " +
     "returns None for the code" in new Context {
       val accountDocument = factory.buildAccountDocument()

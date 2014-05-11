@@ -7,8 +7,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.test.Helpers
 import Helpers._
 
-import models.account._
-import models.account.mongo._
+import models.core.account._
+import models.core.account.mongo._
 import OAuthProvider.OAuthProvider
 
 class AccountFactory(collection: BSONCollection) {

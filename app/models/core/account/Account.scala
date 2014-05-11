@@ -16,7 +16,7 @@ import models.core.external.ExternalAccessToken
 
 object Account extends MongoAccess {
 
-  private[account] lazy val collection = mongo.collection("accounts")
+  lazy val collection = mongo.collection("accounts")
 
   def ensureIndexes() {
     collection.indexesManager.ensure(new Index(

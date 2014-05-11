@@ -1,4 +1,4 @@
-package models.account
+package models.core.account
 
 import java.util.UUID
 import org.specs2.mutable.{ Specification, Before }
@@ -8,7 +8,7 @@ import io.useless.util.mongo.MongoUtil
 
 import mongo.AccountDocument
 import AccountDocument._
-import models.external.ExternalAccessToken
+import models.core.external.ExternalAccessToken
 import test.support.AccountFactory
 
 class AccountSpec extends Specification {
