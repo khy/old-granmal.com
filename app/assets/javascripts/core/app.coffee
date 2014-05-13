@@ -28,6 +28,7 @@ define ['jquery', 'lib'], ($, lib) ->
     console.debug 'Initializing Core...'
 
     lib.ensureFullPage()
+    lib.ensureFullPage('ol.apps')
 
     if $('.masthead').length > 0
       initIndexWithMasthead()
