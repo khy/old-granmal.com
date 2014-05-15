@@ -1,4 +1,6 @@
 GET     /               controllers.core.IndexController.index
+GET     /masthead       controllers.core.IndexController.masthead
+GET     /apps           controllers.core.IndexController.apps
 
 GET     /menu           controllers.core.MenuController.main
 

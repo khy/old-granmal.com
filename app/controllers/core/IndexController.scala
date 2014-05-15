@@ -12,8 +12,16 @@ object IndexController extends Controller {
     if (shouldShowMasthead(request)) {
       Ok(views.html.core.masthead())
     } else {
-      Ok(views.html.core.index())
+      Ok(views.html.core.apps())
     }
+  }
+
+  def masthead = Action {
+    Ok(views.html.core.masthead())
+  }
+
+  def apps = Action { implicit request =>
+    Ok(views.html.core.apps())
   }
 
   private def shouldShowMasthead[T](request: Request[T]): Boolean = {
