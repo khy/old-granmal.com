@@ -1,4 +1,4 @@
-@(title: String)(head: Html)(content: Html)
+@(title: String)(head: Html)(content: Html)(footer: Html)
 
 <!DOCTYPE html>
 
@@ -15,9 +15,7 @@
     <div class="container">
       @content
 
-      <footer class="footer">
-        &copy; 2014 Kevin Hyland
-      </footer>
+      @footer
     </div>
   </body>
 </html>

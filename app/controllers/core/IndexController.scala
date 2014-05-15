@@ -9,7 +9,11 @@ import controllers.auth.AuthAction._
 object IndexController extends Controller {
 
   def index = Action { implicit request =>
-    Ok(views.html.core.index(shouldShowMasthead(request)))
+    if (shouldShowMasthead(request)) {
+      Ok(views.html.core.masthead())
+    } else {
+      Ok(views.html.core.index())
+    }
   }
 
   private def shouldShowMasthead[T](request: Request[T]): Boolean = {

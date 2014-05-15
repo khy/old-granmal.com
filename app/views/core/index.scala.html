@@ -1,15 +1,6 @@
-@(showMasthead: Boolean)(implicit _flash: Flash)
+@()(implicit _flash: Flash)
 
 @views.html.core.layout {
-
-  @if(showMasthead) {
-    <div class="masthead">
-      <div class="poster">
-        <h1>Gran Mal</h1>
-        <h2>App Log</h2>
-      </div>
-    </div>
-  }
 
   @views.html.core.nav()
 
