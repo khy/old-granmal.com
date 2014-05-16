@@ -13,8 +13,12 @@ a {
     padding: @container-margin @container-margin;
 
     .poster {
-      background: url(/assets/images/bad-ass.jpg) no-repeat center top -70px local;
-      background-size: @component-width-max auto;
+      background: url(/assets/images/bad-ass.jpg) no-repeat center top content-box;
+      background-size: auto 100%;
+
+      @media all and (min-aspect-ratio: 835/1050) {
+        background-size: 100% auto;
+      }
 
       h1, h2 {
         margin: 0;
