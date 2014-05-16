@@ -28,5 +28,3 @@ requireJs ++= Seq("core/main", "haikunst/main")
 requireJsShim += "config.js"
 
 lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.less")
-
-mappings in Universal += buildStageDockerfile.value -> "Dockerfile"
