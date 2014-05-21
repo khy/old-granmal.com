@@ -9,8 +9,13 @@ object GranMalBuild extends Build {
   )
 
   val buildPublicDockerImage = taskKey[Unit](
-    "Build a public Docker image (everything but environment variables) for " +
-    "the current staged application."
+    "Package the application and build the public Docker image (everything " +
+    "but environment variables)."
+  )
+
+  val pushPublicDockerImage = taskKey[Unit](
+    "Package the application, build the public Docker image and push to the " +
+    "Docker repository."
   )
 
   val buildPrivateDockerfile = taskKey[Unit](
@@ -19,8 +24,10 @@ object GranMalBuild extends Build {
   )
 
   val publishDocker = taskKey[Unit](
-    "[Incomplete] Push the current version of the app to AWS."
+    "Push the public Docker image and build the private Dockerfile."
   )
+
+  def dockerImageName(version) = "granmal/app:" + version
 
   lazy val root = Project(id = "granmal", base = file("."), settings = Project.defaultSettings ++ Seq(
 
@@ -28,8 +35,13 @@ object GranMalBuild extends Build {
 
     buildPublicDockerImage := {
       stage.value
-      s"docker build -t granmal/app:${version.value} .".!
+      s"docker build -t $dockerImageName(version.value) .".!
     },
+
+    pushPublicDockerImage := {
+      buildPublicDockerImage.value
+      s"docker push $dockerImageName(version.value)".!
+    }
 
     buildPrivateDockerfile := {
       val envInstructions = dockerEnvironmentVariables.value.map { case (key, value) =>
@@ -47,7 +59,7 @@ object GranMalBuild extends Build {
     },
 
     publishDocker <<= Seq(
-      buildPublicDockerImage,
+      pushPublicDockerImage,
       buildPrivateDockerfile
     ).dependOn
 
