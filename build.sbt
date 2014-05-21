@@ -1,7 +1,5 @@
 name := "granmal"
 
-version := "0.1.3"
-
 scalaVersion := "2.11.0"
 
 libraryDependencies ++= Seq(
