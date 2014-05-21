@@ -18,7 +18,7 @@ object GranMalBuild extends Build {
     "the current version, add it to target/docker."
   )
 
-  val release = taskKey[Unit](
+  val publishDocker = taskKey[Unit](
     "[Incomplete] Push the current version of the app to AWS."
   )
 
@@ -27,6 +27,7 @@ object GranMalBuild extends Build {
     dockerEnvironmentVariables := Seq.empty,
 
     buildPublicDockerImage := {
+      stage.value
       s"docker build -t granmal/app:${version.value} .".!
     },
 
@@ -45,12 +46,10 @@ object GranMalBuild extends Build {
       IO.write(location, content)
     },
 
-    // assignment is to avoid warnings.
-    release := {
-      val step1 = stage.value
-      val step2 = buildPublicDockerImage.value
-      val step3 = buildPrivateDockerfile.value
-    }
+    publishDocker <<= Seq(
+      buildPublicDockerImage,
+      buildPrivateDockerfile
+    ).dependOn
 
   ))
 
