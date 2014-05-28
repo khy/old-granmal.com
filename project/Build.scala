@@ -27,7 +27,7 @@ object GranMalBuild extends Build {
     "Push the public Docker image and build the private Dockerfile."
   )
 
-  def dockerImageName(version) = "granmal/app:" + version
+  def dockerImageName(version: String) = "granmal/app:" + version
 
   lazy val root = Project(id = "granmal", base = file("."), settings = Project.defaultSettings ++ Seq(
 
@@ -35,13 +35,13 @@ object GranMalBuild extends Build {
 
     buildPublicDockerImage := {
       stage.value
-      s"docker build -t $dockerImageName(version.value) .".!
+      s"docker build -t ${dockerImageName(version.value)} .".!
     },
 
     pushPublicDockerImage := {
       buildPublicDockerImage.value
-      s"docker push $dockerImageName(version.value)".!
-    }
+      s"docker push ${dockerImageName(version.value)}".!
+    },
 
     buildPrivateDockerfile := {
       val envInstructions = dockerEnvironmentVariables.value.map { case (key, value) =>
