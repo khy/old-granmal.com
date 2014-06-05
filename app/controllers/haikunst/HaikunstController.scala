@@ -55,29 +55,31 @@ object HaikunstController extends Controller {
   def create = Action.auth.async { implicit request =>
     request.account.map { account =>
       haikuForm.bindFromRequest.fold(
-        formWithErrors => {
-          Future.successful(InternalServerError)
+        formWithErrors => Future.successful {
+          UnprocessableEntity(views.html.haikunst.form(formWithErrors))
         },
-        haikuForm => {
+        haikuData => {
           account.uselessAccessToken.map { accessToken =>
             val client = UselessHaikuClient.instance(Some(accessToken.token))
-            val haiku = Seq(haikuForm.one, haikuForm.two, haikuForm.three)
+            val haiku = Seq(haikuData.one, haikuData.two, haikuData.three)
 
             client.createHaiku(haiku).map { result =>
               result.fold(
-                error => UnprocessableEntity(error),
+                error => {
+                  val formWithError = haikuForm.fill(haikuData).withGlobalError(error)
+                  Ok(views.html.haikunst.form(formWithError))
+                },
                 json => Redirect(routes.HaikunstController.index)
               )
             }
           }.getOrElse {
-            Future.successful(UnprocessableEntity("Get more access tokens"))
+            Future.successful(Redirect(routes.HaikunstController.form))
           }
         }
       )
     }.getOrElse {
-      Future.successful(UnprocessableEntity("Get more access tokens"))
+      Future.successful(Redirect(routes.HaikunstController.form))
     }
-
   }
 
   def menu = Action {
