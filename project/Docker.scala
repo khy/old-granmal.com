@@ -10,6 +10,10 @@ object Docker {
       "Define environment variables to be included in the private Dockerfile."
     )
 
+    val ensureDockerDaemon = taskKey[Unit](
+      "Ensure that the local Docker daemon is running."
+    )
+
     val buildPublicDockerImage = taskKey[Unit](
       "Package the application and build the public Docker image (everything " +
       "but environment variables)."
@@ -37,8 +41,13 @@ object Docker {
 
     dockerEnvironmentVariables := Seq.empty,
 
+    ensureDockerDaemon := {
+      "boot2docker up".!
+    },
+
     buildPublicDockerImage := {
       stage.value
+      ensureDockerDaemon.value
       s"docker build -t ${dockerImageName(version.value)} .".!
     },
 
