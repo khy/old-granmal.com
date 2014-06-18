@@ -18,11 +18,22 @@ object HaikunstController extends Controller {
     val firstLine: String = (json \ "lines")(0).as[String]
     val secondLine: String = (json \ "lines")(1).as[String]
     val thirdLine: String = (json \ "lines")(2).as[String]
-    val author: String = (json \ "created_by" \ "name").as[String]
+    val authorName: String = (json \ "created_by" \ "name").as[String]
+    val authorHandle = (json \ "created_by" \ "handle").as[String]
+    val authorUrl = routes.HaikunstController.byUser(authorHandle)
   }
 
+  lazy val anonymousClient = UselessHaikuClient.instance()
+
   def index = Action.async {
-    UselessHaikuClient.instance().getHaikus().map { haikuJsons =>
+    anonymousClient.getHaikus().map { haikuJsons =>
+      val haikus = haikuJsons.map(new HaikuPresenter(_))
+      Ok(views.html.haikunst.index(haikus))
+    }
+  }
+
+  def byUser(handle: String) = Action.async {
+    anonymousClient.getHaikus(handle = Some(handle)).map { haikuJsons =>
       val haikus = haikuJsons.map(new HaikuPresenter(_))
       Ok(views.html.haikunst.index(haikus))
     }

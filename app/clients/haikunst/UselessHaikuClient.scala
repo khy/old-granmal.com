@@ -17,7 +17,10 @@ object UselessHaikuClient {
 
 trait UselessHaikuClient {
 
-  def getHaikus(after: Option[String] = None): Future[Seq[JsObject]]
+  def getHaikus(
+    handle: Option[String] = None,
+    until: Option[String] = None
+  ): Future[Seq[JsObject]]
 
   def createHaiku(lines: Seq[String]): Future[Either[String, JsObject]]
 
@@ -35,8 +38,21 @@ class StandardUselessHaikuClient(
 
   val collectionUrl = baseUrl + "/haikus"
 
-  def getHaikus(after: Option[String] = None) = {
-    WS.url(collectionUrl).get.map { response =>
+  def getHaikus(
+    handle: Option[String] = None,
+    until: Option[String] = None
+  ) = {
+    var request = WS.url(collectionUrl)
+
+    handle.foreach { handle =>
+      request = request.withQueryString("user" -> handle)
+    }
+
+    until.foreach { until =>
+      request = request.withQueryString("since" -> until)
+    }
+
+    request.get.map { response =>
       response.json.as[Seq[JsObject]]
     }
   }

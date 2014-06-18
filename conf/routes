@@ -17,5 +17,6 @@ GET     /haikunst         controllers.haikunst.HaikunstController.index
 GET     /haikunst/new     controllers.haikunst.HaikunstController.form
 POST    /haikunst/haikus  controllers.haikunst.HaikunstController.create
 GET     /haikunst/menu    controllers.haikunst.HaikunstController.menu
+GET     /haikunst/:handle controllers.haikunst.HaikunstController.byUser(handle: String)
 
 GET     /assets/*file   controllers.Assets.at(path="/public", file)
