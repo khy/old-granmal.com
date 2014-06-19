@@ -1,0 +1,13 @@
+@(placeholder: String, field: play.api.data.Field)(input: Html)
+
+<div class="input-group">
+  @input
+
+  @if(field.hasErrors) {
+    <ol class="input-info">
+      @for(error <- field.errors) {
+        @Messages(error.message)
+      }
+    </ol>
+  }
+</div>

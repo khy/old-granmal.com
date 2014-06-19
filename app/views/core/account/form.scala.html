@@ -20,9 +20,7 @@
         <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">
       </div>
 
-      <div class="input-group">
-        <input type="text" name="name" value="@signUpForm("name").value.getOrElse("")" placeholder="Name">
-      </div>
+      @views.html.form.inputText("Name", signUpForm("name"))
 
       <div class="input-group">
         <input type="text" name="handle" value="@signUpForm("handle").value.getOrElse("")" placeholder="Handle">
