@@ -4,7 +4,7 @@
 
   @views.html.core.nav()
 
-  <div class="form-section">
+  <div class="form-group">
 
     @if(signUpForm.hasErrors) {
       <div class="alert">
@@ -16,10 +16,22 @@
     @flash.form()
 
     @helper.form(action = controllers.core.routes.AccountController.create()) {
-      <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">
-      <input type="text" name="name" value="@signUpForm("name").value.getOrElse("")" placeholder="Name">
-      <input type="text" name="handle" value="@signUpForm("handle").value.getOrElse("")" placeholder="Handle">
-      <input type="password" name="password" placeholder="Password">
+      <div class="input-group">
+        <input type="email" name="email" value="@signUpForm("email").value.getOrElse("")" placeholder="Email">
+      </div>
+
+      <div class="input-group">
+        <input type="text" name="name" value="@signUpForm("name").value.getOrElse("")" placeholder="Name">
+      </div>
+
+      <div class="input-group">
+        <input type="text" name="handle" value="@signUpForm("handle").value.getOrElse("")" placeholder="Handle">
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password">
+      </div>
+
       <button type="submit">Sign Up</button>
     }
 

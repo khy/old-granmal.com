@@ -4,7 +4,7 @@
 
   @views.html.core.nav()
 
-  <div class="form-section">
+  <div class="form-group">
 
     @if(signInForm.hasErrors) {
       <div class="alert">
@@ -16,8 +16,14 @@
     @flash.form()
 
     @helper.form(action = controllers.core.routes.SessionController.create()) {
-      <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" placeholder="Email">
-      <input type="password" name="password" placeholder="Password">
+      <div class="input-group">
+        <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" placeholder="Email">
+      </div>
+
+      <div class="input-group">
+        <input type="password" name="password" placeholder="Password">
+      </div>
+
       <button type="submit">Sign In</button>
     }
 

@@ -4,7 +4,7 @@
 
   @views.html.haikunst.nav()
 
-  <div class="form-section">
+  <div class="form-group">
     @if(haikuForm.hasErrors) {
       <div class="alert">
         <span class="glyphicon glyphicon-thumbs-down"></span>
@@ -13,9 +13,18 @@
     }
 
     @helper.form(action = controllers.haikunst.routes.HaikunstController.create()) {
-      <input type="text" name="one" placeholder="Fünf">
-      <input type="text" name="two" placeholder="Sieben">
-      <input type="text" name="three" placeholder="Fünf">
+      <div class="input-group">
+        <input type="text" name="one" placeholder="Fünf">
+      </div>
+
+      <div class="input-group">
+        <input type="text" name="two" placeholder="Sieben">
+      </div>
+
+      <div class="input-group">
+        <input type="text" name="three" placeholder="Fünf">
+      </div>
+
       <button type="submit">Verkünden!</button>
     }
 
