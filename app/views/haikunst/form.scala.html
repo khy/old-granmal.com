@@ -1,31 +1,22 @@
 @(haikuForm: Form[controllers.haikunst.HaikunstController.HaikuData])
 
+@import helpers.FormHelper._
+
 @views.html.haikunst.layout {
 
   @views.html.haikunst.nav()
 
   <div class="form-group">
-    @if(haikuForm.hasErrors) {
-      <div class="alert">
-        <span class="glyphicon glyphicon-thumbs-down"></span>
-        @FormHelper.displayFirstError(haikuForm)
-      </div>
-    }
-
     @helper.form(action = controllers.haikunst.routes.HaikunstController.create()) {
-      <div class="input-group">
-        <input type="text" name="one" placeholder="Fünf">
-      </div>
 
-      <div class="input-group">
-        <input type="text" name="two" placeholder="Sieben">
-      </div>
+      @textField("Fünf", haikuForm("one"))
 
-      <div class="input-group">
-        <input type="text" name="three" placeholder="Fünf">
-      </div>
+      @textField("Sieben", haikuForm("two"))
+
+      @textField("Fünf", haikuForm("three"))
 
       <button type="submit">Verkünden!</button>
+
     }
 
     <ul class="alternate-actions">

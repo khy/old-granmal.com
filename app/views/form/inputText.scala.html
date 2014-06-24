@@ -1,5 +1,0 @@
-@(placeholder: String, field: play.api.data.Field)
-
-@views.html.form.inputGroup(placeholder, field) {
-  <input type="text" name="@field.id" id="@field.id" value="@field.value.getOrElse("")" placeholder="@placeholder">
-}

@@ -1,7 +1,7 @@
-@(placeholder: String, field: play.api.data.Field)(input: Html)
+@(field: play.api.data.Field)(control: Html)
 
-<div class="input-group">
-  @input
+<div class="field">
+  @control
 
   @if(field.hasErrors) {
     <ol class="input-info">

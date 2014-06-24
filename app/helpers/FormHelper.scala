@@ -1,17 +1,20 @@
 package helpers
 
-import play.api.data.Form
-import play.api.i18n.Messages
+import play.api.data.Field
+import views.html.form
 
 object FormHelper {
 
-  def displayFirstError[T](form: Form[T]) = {
-    val formError = form.errors.head
+  def textField(placeholder: String, field: Field) = {
+    form.inputField("text", placeholder, field)
+  }
 
-    formError.message match {
-      case "error.required" => Messages("error.key-required", formError.key.capitalize)
-      case _ => Messages(formError.message)
-    }
+  def emailField(placeholder: String, field: Field) = {
+    form.inputField("email", placeholder, field)
+  }
+
+  def passwordField(placeholder: String, field: Field) = {
+    form.passwordField(placeholder, field)
   }
 
 }

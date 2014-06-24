@@ -1,28 +1,20 @@
 @(signInForm: Form[controllers.core.SessionController.SignInData])(implicit _flash: Flash)
 
+@import helpers.FormHelper._
+
 @views.html.core.layout {
 
   @views.html.core.nav()
 
   <div class="form-group">
 
-    @if(signInForm.hasErrors) {
-      <div class="alert">
-        <span class="glyphicon glyphicon-thumbs-down"></span>
-        @FormHelper.displayFirstError(signInForm)
-      </div>
-    }
-
     @flash.form()
 
     @helper.form(action = controllers.core.routes.SessionController.create()) {
-      <div class="input-group">
-        <input type="email" name="email" value="@signInForm("email").value.getOrElse("")" placeholder="Email">
-      </div>
 
-      <div class="input-group">
-        <input type="password" name="password" placeholder="Password">
-      </div>
+      @emailField("Email", signInForm("email"))
+
+      @passwordField("Password", signInForm("password"))
 
       <button type="submit">Sign In</button>
     }
