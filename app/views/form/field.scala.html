@@ -4,9 +4,9 @@
   @control
 
   @if(field.hasErrors) {
-    <ol class="input-info">
+    <ol class="input-messages">
       @for(error <- field.errors) {
-        @Messages(error.message)
+        <li class="input-error">@Messages(error.message)</li>
       }
     </ol>
   }
