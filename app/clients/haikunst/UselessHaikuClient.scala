@@ -22,7 +22,7 @@ trait UselessHaikuClient {
     until: Option[String] = None
   ): Future[Seq[JsObject]]
 
-  def createHaiku(lines: Seq[String]): Future[Either[String, JsObject]]
+  def createHaiku(lines: Seq[String]): Future[Either[JsArray, JsObject]]
 
 }
 
@@ -66,13 +66,12 @@ class StandardUselessHaikuClient(
       futureResponse.map { response =>
         response.status match {
           case 201 => Right(response.json.as[JsObject])
-          case _ => Left(response.body)
+          case _ => Left(response.json.as[JsArray])
         }
       }
     }.getOrElse {
-      Future.successful(Left("An access token is required to create haikus."))
+      throw new RuntimeException("An access token is required to create haikus.")
     }
-
   }
 
 }

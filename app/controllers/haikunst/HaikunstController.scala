@@ -77,7 +77,14 @@ object HaikunstController extends Controller {
             client.createHaiku(haiku).map { result =>
               result.fold(
                 error => {
-                  val formWithError = haikuForm.fill(haikuData).withGlobalError(error)
+                  var formWithError = haikuForm.fill(haikuData)
+
+                  Seq((0, "one"), (1, "two"), (2, "three")).foreach { case (index, key) =>
+                    error(index).asOpt[String].foreach { error =>
+                      formWithError = formWithError.withError(key, error)
+                    }
+                  }
+
                   Ok(views.html.haikunst.form(formWithError))
                 },
                 json => Redirect(routes.HaikunstController.index)
