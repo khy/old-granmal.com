@@ -15,3 +15,4 @@ dist
 /.settings
 secrets.sbt
 .DS_Store
+dump
