@@ -23,8 +23,6 @@ trait UselessClient extends OAuthClient {
 
   def provider = OAuthProvider.Useless
 
-  def getAccessToken(code: String): Future[Option[ExternalAccessToken]]
-
 }
 
 class StandardUselessClient

@@ -33,12 +33,13 @@ class AccountFactory(collection: BSONCollection) {
 
   def buildAccessTokenDocument(
     code: Option[String] = None,
+    accountId: String = UUID.randomUUID.toString,
     oauthProvider: OAuthProvider = OAuthProvider.Useless
   ) = {
     new AccessTokenDocument(
       guid = UUID.randomUUID,
       oauthProvider = oauthProvider,
-      accountId = UUID.randomUUID.toString,
+      accountId = accountId,
       token = UUID.randomUUID.toString,
       code = code,
       scopes = Seq.empty,
