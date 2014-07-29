@@ -12,7 +12,7 @@ import io.useless.play.json.account.AccountJson._
 
 object TrustedUselessClient {
 
-  /*def instance: TrustedUselessClient = new StandardTrustedUselessClient*/
+  def instance: TrustedUselessClient = new StandardTrustedUselessClient
 
 }
 
@@ -27,5 +27,37 @@ trait TrustedUselessClient {
   ): Future[Either[String, UselessAccount]]
 
   def createAccessToken(accountGuid: UUID): Future[Either[String, UselessAccessToken]]
+
+}
+
+class StandardTrustedUselessClient
+  extends TrustedUselessClient
+  with ResourceClient
+{
+
+  def getUserByEmail(email: String) = {
+    resourceClient.find[UselessAccount]("/accounts", "email" -> email).map { accounts =>
+      accounts.headOption
+    }
+  }
+
+  def createUser(
+    email: String,
+    handle: Option[String],
+    name: Option[String]
+  ) = {
+    val body = Json.obj(
+      "email" -> email,
+      "handle" -> handle,
+      "name" -> name
+    )
+
+    resourceClient.create[UselessAccount]("/users", body)
+  }
+
+  def createAccessToken(accountGuid: UUID) = {
+    val path = s"/accounts/$accountGuid/access_tokens"
+    resourceClient.create[UselessAccessToken](path, Json.obj())
+  }
 
 }

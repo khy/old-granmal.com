@@ -3,8 +3,9 @@ package services.core
 import java.util.UUID
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
-import clients.core.useless.TrustedUselessClient
+import play.api.Logger
 
+import clients.core.useless.TrustedUselessClient
 import models.core.account.{ Account, AccessToken, OAuthProvider }
 import models.core.external.ExternalAccessToken
 
@@ -34,6 +35,8 @@ class UselessAccessTokenService(trustedUselessClient: TrustedUselessClient) {
         result.fold(
           error => Future.successful(Left(error)),
           accessToken => {
+            Logger.debug(s"Created Useless access token found for account [${account.guid}].")
+
             val externalAccessToken = new ExternalAccessToken(
               oauthProvider = OAuthProvider.Useless,
               accountId = accessToken.resourceOwner.guid.toString,
@@ -51,26 +54,35 @@ class UselessAccessTokenService(trustedUselessClient: TrustedUselessClient) {
     Account.accountForGuid(accountGuid).flatMap { optAccount =>
       optAccount.map { account =>
         if (account.uselessAccessToken.isDefined) {
-          Future.successful(Right(account.uselessAccessToken.get))
+          val accessToken = account.uselessAccessToken.get
+          Logger.debug(s"Found existing Useless access token [${accessToken.guid}] for account [${account.guid}].")
+          Future.successful(Right(accessToken))
         } else {
           account.email.map { email =>
             trustedUselessClient.getUserByEmail(email).flatMap { optUselessAccount =>
               optUselessAccount.map { uselessAccount =>
+                Logger.debug(s"Useless account [${uselessAccount.guid}] found for email [${email}].")
                 createAndAddAccessToken(account, uselessAccount.guid)
               }.getOrElse {
                 trustedUselessClient.createUser(email, account.handle, account.name).flatMap { result =>
+
                   result.fold(
                     error => Future.successful(Left(error)),
-                    uselessAccount => createAndAddAccessToken(account, uselessAccount.guid)
+                    uselessAccount => {
+                      Logger.debug(s"Created Useless account for email [${email}].")
+                      createAndAddAccessToken(account, uselessAccount.guid)
+                    }
                   )
                 }
               }
             }
           }.getOrElse {
+            Logger.debug(s"Could not ensure Useless acess token for account [${account.guid}] because it had no email.")
             Future.successful(Left("useless_access_token.error.no_account_email"))
           }
         }
       }.getOrElse {
+        Logger.debug(s"Could not ensure Useless acess token for account [${accountGuid}] because there is no such GUID.")
         Future.successful(Left("useless_access_token.error.no_account_for_guid"))
       }
     }

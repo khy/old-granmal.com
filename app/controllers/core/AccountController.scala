@@ -9,6 +9,8 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import controllers.auth.AuthKeys
 import models.core.account.Account
+import clients.core.useless.TrustedUselessClient
+import services.core.UselessAccessTokenService
 
 object AccountController extends Controller {
 
@@ -50,6 +52,10 @@ object AccountController extends Controller {
               UnprocessableEntity(views.html.core.account.form(formWithError))
             },
             account => {
+              val trustedUselessClient = TrustedUselessClient.instance
+              val uselessAccessTokenService = new UselessAccessTokenService(trustedUselessClient)
+              uselessAccessTokenService.ensureAccessToken(account.guid)
+
               val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
                 map(_.value).getOrElse("/")
 
