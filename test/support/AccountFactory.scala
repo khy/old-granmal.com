@@ -20,10 +20,10 @@ class AccountFactory(collection: BSONCollection) {
   ) = {
     new AccountDocument(
       guid = UUID.randomUUID,
-      email = None,
+      email = email,
       handle = None,
       name = None,
-      password = None,
+      password = password,
       accessTokens = accessTokens,
       createdAt = DateTime.now,
       updatedAt = DateTime.now,

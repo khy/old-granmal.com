@@ -9,7 +9,7 @@ import io.useless.util.mongo.MongoUtil
 import io.useless.accesstoken.AccessToken
 import io.useless.account.{ User, AuthorizedUser, App }
 
-import models.core.account.Account
+import models.core.account.{ Account, OAuthProvider }
 import clients.core.useless.TrustedUselessClient
 import test.support.AccountFactory
 
@@ -112,5 +112,59 @@ class UselessAccessTokenServiceSpec extends Specification {
   }
 
   def factory = new AccountFactory(Account.collection)
+
+  "UselessAccessTokenService#ensureAccessToken" should {
+
+    "it should return Left if the specified account GUID is non-existant" in new Context {
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken(UUID.randomUUID) }
+      result must beLeft
+    }
+
+    "it should return the access token with the Useless OAuth provider, if the " +
+    "specified account has one" in new Context {
+      val accessTokenDocument = factory.buildAccessTokenDocument(
+        oauthProvider = OAuthProvider.Useless,
+        code = Some("code")
+      )
+      val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
+      val account = factory.createAccount(accountDocument)
+
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken(account.guid) }
+      result.right.get.guid must beEqualTo(accessTokenDocument.guid)
+    }
+
+    "it should return a Left if the specified account doesn't have an email" in new Context {
+      val accountDocument = factory.buildAccountDocument()
+      val account = factory.createAccount(accountDocument)
+
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken(account.guid) }
+      result must beLeft
+    }
+
+    "it should add an access token to the Useless user corresponding to the " +
+    "account's email, and store it" in new Context {
+      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"))
+      val account = factory.createAccount(accountDocument)
+
+      val uselessUser = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val service = buildService(users = Seq(uselessUser))
+      Helpers.await { service.ensureAccessToken(account.guid) }
+      val _account = Helpers.await{ account.reload() }
+      _account.uselessAccessToken must not beNone
+    }
+
+    "it should add a Useless user and an access token, and store the access token" in new Context {
+      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"))
+      val account = factory.createAccount(accountDocument)
+
+      val service = buildService()
+      Helpers.await { service.ensureAccessToken(account.guid) }
+      val _account = Helpers.await{ account.reload() }
+      _account.uselessAccessToken must not beNone
+    }
+  }
 
 }
