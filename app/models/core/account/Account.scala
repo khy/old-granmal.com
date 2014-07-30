@@ -29,8 +29,7 @@ object Account extends MongoAccess {
       key = Seq(
         "access_tokens.oauth_provider" -> IndexType.Ascending,
         "access_tokens.code" -> IndexType.Ascending
-      ),
-      unique = true
+      )
     ))
   }
 
