@@ -16,17 +16,17 @@ object AccountController extends Controller {
 
   case class SignUpData(
     email: String,
-    name: String,
+    password: String,
     handle: String,
-    password: String
+    name: String
   )
 
   val signUpForm = Form {
     mapping(
       "email" -> email,
-      "name" -> text,
-      "handle" -> text,
-      "password" -> nonEmptyText
+      "password" -> nonEmptyText,
+      "handle" -> nonEmptyText,
+      "name" -> nonEmptyText
     )(SignUpData.apply)(SignUpData.unapply)
   }
 
