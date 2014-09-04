@@ -10,6 +10,9 @@ libraryDependencies ++= Seq(
   "io.useless"        %% "useless"       % "0.14.0",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m"
+) ++ Seq(
+  "org.webjars"       % "jquery"         % "2.1.1",
+  "org.webjars"       % "normalize.css"  % "3.0.1"
 )
 
 resolvers ++= Seq(
