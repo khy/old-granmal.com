@@ -37,7 +37,7 @@ object SessionController extends Controller {
               map(_.value).getOrElse("/")
 
             Redirect(redirectPath).
-              withSession(session + (AuthKeys.session -> account.guid.toString)).
+              withSession(request.session + (AuthKeys.session -> account.guid.toString)).
               discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
               flashing("success" -> "Signed in successfully")
           }.getOrElse {
@@ -53,7 +53,7 @@ object SessionController extends Controller {
 
   def delete = Action { implicit request =>
     Redirect("/").
-      withSession(session - AuthKeys.session).
+      withSession(request.session - AuthKeys.session).
       flashing("success" -> "You have been signed out.")
   }
 

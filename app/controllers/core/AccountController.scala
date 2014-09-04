@@ -60,7 +60,7 @@ object AccountController extends Controller {
                 map(_.value).getOrElse("/")
 
               Redirect(redirectPath).
-                withSession(session + (AuthKeys.session -> account.guid.toString)).
+                withSession(request.session + (AuthKeys.session -> account.guid.toString)).
                 discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
                 flashing("success" -> "Signed up successfully")
             }

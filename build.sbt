@@ -1,10 +1,13 @@
 name := "granmal"
 
-scalaVersion := "2.11.0"
+scalaVersion in ThisBuild := "2.11.2"
+
+lazy val root = (project in file(".")).
+  enablePlugins(PlayScala)
 
 libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "reactivemongo" % "0.10.0",
-  "io.useless"        %% "useless"       % "0.13.0",
+  "org.reactivemongo" %% "reactivemongo" % "0.10.5.akka23-SNAPSHOT",
+  "io.useless"        %% "useless"       % "0.14.0",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m"
 )
@@ -17,14 +20,6 @@ resolvers ++= Seq(
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
-play.Project.playScalaSettings
-
-templatesImport += "helpers._"
-
-requireJs ++= Seq("core/main", "haikunst/main")
-
-requireJsShim += "config.js"
-
-lessEntryPoints <<= baseDirectory(_ / "app" / "assets" / "stylesheets" ** "main.less")
+TwirlKeys.templateImports += "helpers._"
 
 Docker.defaultSettings

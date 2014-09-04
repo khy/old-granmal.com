@@ -25,8 +25,8 @@ object AuthActionBuilder extends ActionBuilder[AuthRequest] {
 
   def invokeBlock[A](
     request: Request[A],
-    action: AuthRequest[A] => Future[SimpleResult]
-  ): Future[SimpleResult] = {
+    action: AuthRequest[A] => Future[Result]
+  ): Future[Result] = {
     Logger.debug("Attempting to authenticate request. Session: " + request.session)
     request.session.get(AuthKeys.session).map { accountGuidString =>
       Logger.debug(s"Found account GUID [${accountGuidString}] in 'auth'.")

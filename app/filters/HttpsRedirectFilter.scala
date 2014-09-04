@@ -10,7 +10,7 @@ class HttpsRedirectFilter extends Filter with Results {
 
   lazy val optRequiredProtocol = Play.configuration.getString("application.protocol")
 
-  override def apply(next: RequestHeader => Future[SimpleResult])(request: RequestHeader): Future[SimpleResult] = {
+  override def apply(next: RequestHeader => Future[Result])(request: RequestHeader): Future[Result] = {
     val requestHasRequiredProtocol =
       request.headers.get("X-Forwarded-Proto").flatMap { requestProtocol =>
         optRequiredProtocol.map { requiredProtocol =>
