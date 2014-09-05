@@ -1,6 +1,6 @@
 requirejs.config
   baseUrl: '/assets/javascripts'
   paths:
-    jquery: 'vendor/jquery-2.1.0'
+    jquery: '/assets/lib/jquery/jquery'
 
 require ['core/app'], (app) -> app.initMasthead()
