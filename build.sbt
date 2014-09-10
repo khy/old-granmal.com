@@ -2,7 +2,7 @@ name := "granmal"
 
 scalaVersion in ThisBuild := "2.11.2"
 
-lazy val lib = project
+lazy val lib = project.enablePlugins(SbtTwirl)
 
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala).

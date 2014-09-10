@@ -1,7 +1,7 @@
-package helpers
+package com.granmal.helpers
 
 import play.api.data.Field
-import views.html.form
+import com.granmal.views.html.form
 
 object FormHelper {
 

@@ -1,4 +1,4 @@
-package helpers
+package com.granmal.helpers
 
 import play.api.Play
 

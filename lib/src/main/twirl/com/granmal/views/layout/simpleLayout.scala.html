@@ -1,0 +1,3 @@
+@(appName: String, title: String = "Gran Mal")(content: Html)
+
+@com.granmal.views.html.layout.baseLayout(title)(com.granmal.views.html.layout.simpleHead(appName))(content)(com.granmal.views.html.layout.simpleFooter())
