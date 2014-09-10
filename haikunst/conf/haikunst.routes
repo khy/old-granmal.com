@@ -1,0 +1,7 @@
+GET     /              haikunst.controllers.Application.index
+GET     /new           haikunst.controllers.Application.form
+POST    /haikus        haikunst.controllers.Application.create
+GET     /menu          haikunst.controllers.Application.menu
+GET     /:handle       haikunst.controllers.Application.byUser(handle: String)
+
+GET     /assets/*file  haikunst.controllers.Assets.at(path="/public", file)

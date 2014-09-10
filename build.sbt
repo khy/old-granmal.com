@@ -2,8 +2,14 @@ name := "granmal"
 
 scalaVersion in ThisBuild := "2.11.2"
 
+lazy val lib = project
+
 lazy val root = (project in file(".")).
-  enablePlugins(PlayScala)
+  enablePlugins(PlayScala).
+  dependsOn(lib, haikunst).
+  aggregate(lib, haikunst)
+
+lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
 
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.akka23-SNAPSHOT",

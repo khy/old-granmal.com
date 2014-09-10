@@ -6,8 +6,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
 
 import clients.core.useless.TrustedUselessClient
-import models.core.account.{ Account, AccessToken, OAuthProvider }
-import models.core.external.ExternalAccessToken
+import com.granmal.models.account.{ Account, AccessToken, OAuthProvider }
+import com.granmal.models.external.ExternalAccessToken
 
 class UselessAccessTokenService(trustedUselessClient: TrustedUselessClient) {
 

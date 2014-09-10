@@ -10,8 +10,8 @@ import io.useless.play.json.accesstoken.AccessTokenJson._
 import io.useless.play.json.account.AccountJson._
 
 import clients.core.OAuthClient
-import models.core.account.{ AccessToken, OAuthProvider }
-import models.core.external.{ ExternalAccessToken, ExternalAccount }
+import com.granmal.models.account.{ AccessToken, OAuthProvider }
+import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
 
 object UselessClient {
 

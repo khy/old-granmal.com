@@ -1,0 +1,27 @@
+@(haikuForm: Form[haikunst.controllers.Application.HaikuData])
+
+@import helpers.FormHelper._
+
+@views.html.layout {
+
+  @views.html.nav()
+
+  <div class="form-group">
+    @helper.form(action = haikunst.controllers.routes.Application.create()) {
+
+      @textField("Fünf", haikuForm("one"))
+
+      @textField("Sieben", haikuForm("two"))
+
+      @textField("Fünf", haikuForm("three"))
+
+      <button type="submit">Verkünden!</button>
+
+    }
+
+    <ul class="alternate-actions">
+      <li><a href="@haikunst.controllers.routes.Application.index">Cancel</a></li>
+    </ul>
+  </div>
+
+}

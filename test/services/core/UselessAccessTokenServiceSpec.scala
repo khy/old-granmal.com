@@ -9,9 +9,9 @@ import io.useless.util.mongo.MongoUtil
 import io.useless.accesstoken.AccessToken
 import io.useless.account.{ User, AuthorizedUser, App }
 
-import models.core.account.{ Account, OAuthProvider }
+import com.granmal.models.account.{ Account, OAuthProvider }
+import com.granmal.test.AccountFactory
 import clients.core.useless.TrustedUselessClient
-import test.support.AccountFactory
 
 class UselessAccessTokenServiceSpec extends Specification {
 

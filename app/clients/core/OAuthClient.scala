@@ -2,9 +2,9 @@ package clients.core
 
 import scala.concurrent.Future
 
-import models.core.account.AccessToken
-import models.core.account.OAuthProvider.OAuthProvider
-import models.core.external.{ ExternalAccessToken, ExternalAccount }
+import com.granmal.models.account.AccessToken
+import com.granmal.models.account.OAuthProvider.OAuthProvider
+import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
 
 trait OAuthClient {
 

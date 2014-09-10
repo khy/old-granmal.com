@@ -8,7 +8,7 @@ import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import controllers.auth.AuthKeys
-import models.core.account.Account
+import com.granmal.models.account.Account
 import clients.core.useless.TrustedUselessClient
 import services.core.UselessAccessTokenService
 

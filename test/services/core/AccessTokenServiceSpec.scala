@@ -7,10 +7,10 @@ import play.api.test.Helpers
 import Helpers._
 import io.useless.util.mongo.MongoUtil
 
-import models.core.external.{ ExternalAccessToken, ExternalAccount }
-import models.core.account.{ Account, OAuthProvider }
+import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
+import com.granmal.models.account.{ Account, OAuthProvider }
+import com.granmal.test.AccountFactory
 import clients.core.OAuthClient
-import test.support.AccountFactory
 
 class AccessTokenServiceSpec extends Specification {
 

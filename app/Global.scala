@@ -2,7 +2,7 @@ import play.api.{ Application, Logger }
 import play.api.mvc.WithFilters
 import io.useless.play.filter.{ AccessLogFilter, RequestTimeFilter }
 import filters.HttpsRedirectFilter
-import models.core.account.Account
+import com.granmal.models.account.Account
 
 object Global
   extends WithFilters(
