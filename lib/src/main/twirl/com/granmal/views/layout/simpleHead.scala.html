@@ -1,8 +1,8 @@
-@(appName: String)
+@(appName: String, assetRoute: String => Call)
 
-<link rel="stylesheet" media="screen" href="@routes.Assets.at("lib/normalize.css/normalize.css")">
-<link rel="stylesheet" media="screen" href="@routes.Assets.at(s"stylesheets/$appName/main.css")">
+<link rel="stylesheet" media="screen" href="@assetRoute("lib/normalize.css/normalize.css")">
+<link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/$appName/main.css")">
 @helper.requireJs(
-  core = routes.Assets.at("javascripts/require.js").url,
-  module = routes.Assets.at(s"javascripts/$appName/main").url
+  core = assetRoute("javascripts/require.js").url,
+  module = assetRoute(s"javascripts/$appName/main").url
 )

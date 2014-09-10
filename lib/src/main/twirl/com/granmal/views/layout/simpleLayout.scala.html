@@ -1,3 +1,11 @@
-@(appName: String, title: String = "Gran Mal")(content: Html)
+@(appName: String, title: String = "Gran Mal", assetRoute: String => Call)(content: Html)
 
-@com.granmal.views.html.layout.baseLayout(title)(com.granmal.views.html.layout.simpleHead(appName))(content)(com.granmal.views.html.layout.simpleFooter())
+@head = {
+  com.granmal.views.html.layout.simpleHead(appName, assetRoute)
+}
+
+@foot = {
+  com.granmal.views.html.layout.simpleFooter()
+}
+
+@com.granmal.views.html.layout.baseLayout(title)(head)(content)(foot)
