@@ -1,4 +1,4 @@
-package controllers.core
+package controllers
 
 import play.api._
 import play.api.mvc._
@@ -10,18 +10,18 @@ object IndexController extends Controller {
 
   def index = Action { implicit request =>
     if (shouldShowMasthead(request)) {
-      Ok(views.html.core.masthead())
+      Ok(views.html.masthead())
     } else {
-      Ok(views.html.core.apps())
+      Ok(views.html.apps())
     }
   }
 
   def masthead = Action {
-    Ok(views.html.core.masthead())
+    Ok(views.html.masthead())
   }
 
   def apps = Action { implicit request =>
-    Ok(views.html.core.apps())
+    Ok(views.html.apps())
   }
 
   private def shouldShowMasthead[T](request: Request[T]): Boolean = {

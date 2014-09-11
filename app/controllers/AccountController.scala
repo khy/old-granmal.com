@@ -1,4 +1,4 @@
-package controllers.core
+package controllers
 
 import scala.concurrent.Future
 import play.api._
@@ -9,8 +9,8 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
 import controllers.auth.AuthKeys
 import com.granmal.models.account.Account
-import clients.core.useless.TrustedUselessClient
-import services.core.UselessAccessTokenService
+import clients.useless.TrustedUselessClient
+import services.UselessAccessTokenService
 
 object AccountController extends Controller {
 
@@ -31,13 +31,13 @@ object AccountController extends Controller {
   }
 
   def form = Action { implicit request =>
-    Ok(views.html.core.account.form(signUpForm))
+    Ok(views.html.account.form(signUpForm))
   }
 
   def create = Action.async { implicit request =>
     signUpForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(UnprocessableEntity(views.html.core.account.form(formWithErrors)))
+        Future.successful(UnprocessableEntity(views.html.account.form(formWithErrors)))
       },
       signUpData => {
         Account.create(
@@ -49,7 +49,7 @@ object AccountController extends Controller {
           result.fold(
             error => {
               val formWithError = signUpForm.fill(signUpData).withGlobalError(error)
-              UnprocessableEntity(views.html.core.account.form(formWithError))
+              UnprocessableEntity(views.html.account.form(formWithError))
             },
             account => {
               val trustedUselessClient = TrustedUselessClient.instance

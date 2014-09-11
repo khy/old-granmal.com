@@ -1,4 +1,4 @@
-package controllers.core
+package controllers
 
 import play.api._
 import play.api.mvc._
@@ -6,8 +6,8 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import controllers.auth.AuthAction._
 import controllers.auth.AuthKeys
-import clients.core.useless.UselessClient
-import services.core.AccessTokenService
+import clients.useless.UselessClient
+import services.AccessTokenService
 
 object OAuthController extends Controller {
 

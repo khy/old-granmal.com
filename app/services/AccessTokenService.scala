@@ -1,11 +1,11 @@
-package services.core
+package services
 
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
 
 import com.granmal.models.account.{ Account, AccessToken }
-import clients.core.OAuthClient
+import clients.OAuthClient
 
 class AccessTokenService(oauthClient: OAuthClient) {
 

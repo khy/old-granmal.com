@@ -1,4 +1,4 @@
-package controllers.core
+package controllers
 
 import scala.concurrent.Future
 import play.api._
@@ -22,13 +22,13 @@ object SessionController extends Controller {
   }
 
   def form = Action { implicit request =>
-    Ok(views.html.core.session.form(signInForm))
+    Ok(views.html.session.form(signInForm))
   }
 
   def create = Action.async { implicit request =>
     signInForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(UnprocessableEntity(views.html.core.session.form(formWithErrors)))
+        Future.successful(UnprocessableEntity(views.html.session.form(formWithErrors)))
       },
       signInData => {
         Account.auth(signInData.email, signInData.password).map { optAccount =>
@@ -44,7 +44,7 @@ object SessionController extends Controller {
             val formWithError = signInForm.fill(signInData).
               withGlobalError("Invalid email / password combination")
 
-            Unauthorized(views.html.core.session.form(formWithError))
+            Unauthorized(views.html.session.form(formWithError))
           }
         }
       }

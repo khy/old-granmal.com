@@ -1,4 +1,4 @@
-package clients.core.useless
+package clients.useless
 
 import scala.concurrent.Future
 import play.api.libs.json.Json

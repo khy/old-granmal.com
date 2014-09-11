@@ -1,4 +1,4 @@
-package clients.core
+package clients
 
 import scala.concurrent.Future
 

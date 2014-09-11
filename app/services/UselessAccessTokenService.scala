@@ -1,11 +1,11 @@
-package services.core
+package services
 
 import java.util.UUID
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.Logger
 
-import clients.core.useless.TrustedUselessClient
+import clients.useless.TrustedUselessClient
 import com.granmal.models.account.{ Account, AccessToken, OAuthProvider }
 import com.granmal.models.external.ExternalAccessToken
 

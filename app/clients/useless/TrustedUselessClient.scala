@@ -1,4 +1,4 @@
-package clients.core.useless
+package clients.useless
 
 import java.util.UUID
 import scala.concurrent.Future
