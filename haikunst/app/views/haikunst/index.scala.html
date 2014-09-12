@@ -1,8 +1,8 @@
-@(haikus: Seq[haikunst.controllers.Application.HaikuPresenter])
+@(haikus: Seq[controllers.haikunst.Application.HaikuPresenter])
 
-@views.html.layout {
+@layout {
 
-  @views.html.nav()
+  @nav()
 
   <ol class="haikus">
     @haikus.zipWithIndex.map { case (haiku, index) =>

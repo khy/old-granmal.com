@@ -1,4 +1,4 @@
-package haikunst.clients
+package clients.haikunst
 
 import java.util.UUID
 import scala.concurrent.Future

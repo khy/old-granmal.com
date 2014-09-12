@@ -1,4 +1,4 @@
-package haikunst.controllers
+package controllers.haikunst
 
 import scala.concurrent.Future
 import play.api._
@@ -10,7 +10,7 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import com.granmal.auth.AuthAction._
 import com.granmal.auth.AuthKeys
-import haikunst.clients.UselessHaikuClient
+import clients.haikunst.UselessHaikuClient
 
 object Application extends Controller {
 
@@ -28,14 +28,14 @@ object Application extends Controller {
   def index = Action.async {
     anonymousClient.getHaikus().map { haikuJsons =>
       val haikus = haikuJsons.map(new HaikuPresenter(_))
-      Ok(views.html.index(haikus))
+      Ok(views.html.haikunst.index(haikus))
     }
   }
 
   def byUser(handle: String) = Action.async {
     anonymousClient.getHaikus(handle = Some(handle)).map { haikuJsons =>
       val haikus = haikuJsons.map(new HaikuPresenter(_))
-      Ok(views.html.index(haikus))
+      Ok(views.html.haikunst.index(haikus))
     }
   }
 
@@ -52,7 +52,7 @@ object Application extends Controller {
   def form = Action.auth { request =>
     request.account.map { account =>
       account.uselessAccessToken.map { accessToken =>
-        Ok(views.html.form(haikuForm))
+        Ok(views.html.haikunst.form(haikuForm))
       }.getOrElse {
         throw new RuntimeException("You must have a useless account.")
       }
@@ -67,7 +67,7 @@ object Application extends Controller {
     request.account.map { account =>
       haikuForm.bindFromRequest.fold(
         formWithErrors => Future.successful {
-          UnprocessableEntity(views.html.form(formWithErrors))
+          UnprocessableEntity(views.html.haikunst.form(formWithErrors))
         },
         haikuData => {
           account.uselessAccessToken.map { accessToken =>
@@ -85,7 +85,7 @@ object Application extends Controller {
                     }
                   }
 
-                  Ok(views.html.form(formWithError))
+                  Ok(views.html.haikunst.form(formWithError))
                 },
                 json => Redirect(routes.Application.index)
               )
@@ -101,7 +101,7 @@ object Application extends Controller {
   }
 
   def menu = Action {
-    Ok(views.html.menu())
+    Ok(views.html.haikunst.menu())
   }
 
 }

@@ -1,13 +1,13 @@
-@(haikuForm: Form[haikunst.controllers.Application.HaikuData])
+@(haikuForm: Form[controllers.haikunst.Application.HaikuData])
 
 @import com.granmal.helpers.FormHelper._
 
-@views.html.layout {
+@views.html.haikunst.layout {
 
-  @views.html.nav()
+  @views.html.haikunst.nav()
 
   <div class="form-group">
-    @helper.form(action = haikunst.controllers.routes.Application.create()) {
+    @views.html.helper.form(action = controllers.haikunst.routes.Application.create()) {
 
       @textField("Fünf", haikuForm("one"))
 
@@ -20,7 +20,7 @@
     }
 
     <ul class="alternate-actions">
-      <li><a href="@haikunst.controllers.routes.Application.index">Cancel</a></li>
+      <li><a href="@controllers.haikunst.routes.Application.index">Cancel</a></li>
     </ul>
   </div>
 

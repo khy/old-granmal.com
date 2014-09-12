@@ -8,4 +8,4 @@ resolvers ++= Seq(
   "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
 )
 
-TwirlKeys.templateImports ++= Seq("haikunst.controllers._")
+TwirlKeys.templateImports := Seq("play.api.data._")
