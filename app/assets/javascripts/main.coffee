@@ -3,4 +3,4 @@ requirejs.config
   paths:
     jquery: '/assets/lib/jquery/jquery'
 
-require ['core/app'], (app) -> app.init()
+require ['app'], (app) -> app.init()
