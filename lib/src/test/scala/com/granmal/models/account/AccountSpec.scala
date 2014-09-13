@@ -1,9 +1,10 @@
 package com.granmal.models.account
 
 import java.util.UUID
-import org.specs2.mutable.{ Specification, Before }
-import play.api.test.Helpers
-import Helpers._
+import play.api.mvc._
+import play.api.test._
+import play.api.test.Helpers._
+import org.scalatest._
 import io.useless.util.mongo.MongoUtil
 
 import mongo.AccountDocument
@@ -11,36 +12,38 @@ import AccountDocument._
 import com.granmal.models.external.ExternalAccessToken
 import com.granmal.test.AccountFactory
 
-class AccountSpec extends Specification {
+class AccountSpec
+  extends WordSpec
+  with MustMatchers
+  with BeforeAndAfterEach
+{
 
-  trait Context extends Before {
-    def before = MongoUtil.clearDb()
-  }
+  override def beforeEach = MongoUtil.clearDb()
 
   def factory = new AccountFactory(Account.collection)
 
   "Account.accountForGuid" should {
-    "return None for a non-existant GUID" in new Context {
-      val optAccount = Helpers.await { Account.accountForGuid(UUID.randomUUID) }
-      optAccount must beNone
+    "return None for a non-existant GUID" in {
+      val optAccount = await { Account.accountForGuid(UUID.randomUUID) }
+      optAccount must be (None)
     }
 
-    "return the account corresponding to the specified GUID" in new Context {
+    "return the account corresponding to the specified GUID" in {
       val accountDocument = factory.createAccount()
-      val optAccount = Helpers.await { Account.accountForGuid(accountDocument.guid) }
-      optAccount.get.guid must beEqualTo(accountDocument.guid)
+      val optAccount = await { Account.accountForGuid(accountDocument.guid) }
+      optAccount.get.guid must equal (accountDocument.guid)
     }
   }
 
   "Account.accountForAccessTokenCode" should {
-    "return None for a non-existant access token code" in new Context {
-      val optAccount = Helpers.await {
+    "return None for a non-existant access token code" in {
+      val optAccount = await {
         Account.accountForAccessTokenCode(OAuthProvider.Useless, "non-existant-code")
       }
-      optAccount must beNone
+      optAccount must be (None)
     }
 
-    "return the account with an access token with the specified code" in new Context {
+    "return the account with an access token with the specified code" in {
       val accessTokenDocument = factory.buildAccessTokenDocument(
         oauthProvider = OAuthProvider.Useless,
         code = Some("code")
@@ -48,46 +51,46 @@ class AccountSpec extends Specification {
       val accountDocument = factory.buildAccountDocument(accessTokens = Seq(accessTokenDocument))
       factory.createAccount(accountDocument)
 
-      val optAccount = Helpers.await {
+      val optAccount = await {
         Account.accountForAccessTokenCode(OAuthProvider.Useless, "code")
       }
       val accessToken = optAccount.get.accessTokens.head
-      accessToken.oauthProvider must beEqualTo(OAuthProvider.Useless)
-      accessToken.code must beEqualTo(Some("code"))
+      accessToken.oauthProvider must equal (OAuthProvider.Useless)
+      accessToken.code must equal (Some("code"))
     }
   }
 
   "Account.create" should {
-    "create an empty account if no parameters are specified" in new Context {
-      val account = Helpers.await { Account.create() }.right.get
-      account.email should beNone
-      account.handle should beNone
-      account.name should beNone
-      account.password should beNone
+    "create an empty account if no parameters are specified" in {
+      val account = await { Account.create() }.right.get
+      account.email must be (None)
+      account.handle must be (None)
+      account.name must be (None)
+      account.password must be (None)
     }
   }
 
   "Account.auth" should {
-    "return None if the specified email does not exist" in new Context {
-      val account = Helpers.await { Account.auth("non-existant@granmal.com", "secret") }
-      account must beNone
+    "return None if the specified email does not exist" in {
+      val account = await { Account.auth("non-existant@granmal.com", "secret") }
+      account must be (None)
     }
 
-    "return None if the specified email exists, but the password is wrong" in new Context {
-      Helpers.await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
-      val account = Helpers.await { Account.auth("john@granmal.com", "private") }
-      account must beNone
+    "return None if the specified email exists, but the password is wrong" in {
+      await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
+      val account = await { Account.auth("john@granmal.com", "private") }
+      account must be (None)
     }
 
-    "return an Account if the specified email exists and the password is correct" in new Context {
-      Helpers.await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
-      val account = Helpers.await { Account.auth("john@granmal.com", "secret") }
-      account.get.email must beEqualTo(Some("john@granmal.com"))
+    "return an Account if the specified email exists and the password is correct" in {
+      await { Account.create(email = Some("john@granmal.com"), password = Some("secret")) }
+      val account = await { Account.auth("john@granmal.com", "secret") }
+      account.get.email must equal (Some("john@granmal.com"))
     }
   }
 
   "Account#addAccessToken" should {
-    "add the specified ExternalAccessToken to the Account" in new Context {
+    "add the specified ExternalAccessToken to the Account" in {
       val token = UUID.randomUUID.toString
       val externalAccessToken = new ExternalAccessToken(
         oauthProvider = OAuthProvider.Useless,
@@ -101,8 +104,8 @@ class AccountSpec extends Specification {
       val account = factory.createAccount(accountDocument)
       account.addAccessToken(externalAccessToken)
 
-      val _account = Helpers.await { account.reload() }
-      _account.accessTokens.find(_.token == token) must beSome
+      val _account = await { account.reload() }
+      _account.accessTokens.find(_.token == token) must be ('defined)
     }
   }
 
