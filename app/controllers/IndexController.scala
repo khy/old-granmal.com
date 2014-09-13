@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import Play.current
 
-import controllers.auth.AuthAction._
+import com.granmal.auth.AuthAction._
 
 object IndexController extends Controller {
 

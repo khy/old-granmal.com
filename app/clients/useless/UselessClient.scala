@@ -9,7 +9,7 @@ import io.useless.account.{ Account => UselessAccount, User }
 import io.useless.play.json.accesstoken.AccessTokenJson._
 import io.useless.play.json.account.AccountJson._
 
-import clients.core.OAuthClient
+import clients.OAuthClient
 import com.granmal.models.account.{ AccessToken, OAuthProvider }
 import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
 

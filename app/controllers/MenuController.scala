@@ -3,7 +3,7 @@ package controllers
 import play.api._
 import play.api.mvc._
 
-import controllers.auth.AuthAction._
+import com.granmal.auth.AuthAction._
 
 object MenuController extends Controller {
 

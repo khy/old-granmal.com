@@ -27,8 +27,8 @@ resolvers ++= Seq(
   "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
 )
 
-javaOptions in Test += "-Dconfig.file=conf/test.conf"
+scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
 
-TwirlKeys.templateImports += "helpers._"
+javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 Docker.defaultSettings

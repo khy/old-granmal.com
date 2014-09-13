@@ -1,16 +1,16 @@
-@(signInForm: Form[controllers.core.SessionController.SignInData])(implicit _flash: Flash)
+@(signInForm: Form[controllers.SessionController.SignInData])(implicit _flash: Flash)
 
-@import helpers.FormHelper._
+@import com.granmal.helpers.FormHelper._
 
-@views.html.core.layout {
+@views.html.layout {
 
-  @views.html.core.nav()
+  @views.html.nav()
 
   <div class="form-group">
 
-    @flash.form()
+    @com.granmal.views.html.flash.form()
 
-    @helper.form(action = controllers.core.routes.SessionController.create()) {
+    @helper.form(action = controllers.routes.SessionController.create()) {
 
       @emailField("Email", signInForm("email"))
 
@@ -20,7 +20,7 @@
     }
 
     <ul class="alternate-actions">
-      <li><a href="@controllers.core.routes.AccountController.form()">Sign Up</a></li>
+      <li><a href="@controllers.routes.AccountController.form()">Sign Up</a></li>
     </ul>
 
   </div>

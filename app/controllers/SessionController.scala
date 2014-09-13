@@ -7,7 +7,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
-import controllers.auth.AuthKeys
+import com.granmal.auth.AuthKeys
 import com.granmal.models.account.Account
 
 object SessionController extends Controller {
