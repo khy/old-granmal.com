@@ -1,4 +1,4 @@
-package services.core
+package services
 
 import java.util.UUID
 import scala.concurrent.Future
@@ -11,7 +11,7 @@ import io.useless.account.{ User, AuthorizedUser, App }
 
 import com.granmal.models.account.{ Account, OAuthProvider }
 import com.granmal.test.AccountFactory
-import clients.core.useless.TrustedUselessClient
+import clients.useless.TrustedUselessClient
 
 class UselessAccessTokenServiceSpec extends Specification {
 

@@ -1,4 +1,4 @@
-package services.core
+package services
 
 import java.util.UUID
 import scala.concurrent.Future
@@ -10,7 +10,7 @@ import io.useless.util.mongo.MongoUtil
 import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
 import com.granmal.models.account.{ Account, OAuthProvider }
 import com.granmal.test.AccountFactory
-import clients.core.OAuthClient
+import clients.OAuthClient
 
 class AccessTokenServiceSpec extends Specification {
 
