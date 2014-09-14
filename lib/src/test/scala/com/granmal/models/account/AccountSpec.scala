@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.test._
 import play.api.test.Helpers._
 import org.scalatest._
+import org.scalatestplus.play._
 import io.useless.util.mongo.MongoUtil
 
 import mongo.AccountDocument
@@ -13,8 +14,8 @@ import com.granmal.models.external.ExternalAccessToken
 import com.granmal.test.AccountFactory
 
 class AccountSpec
-  extends WordSpec
-  with MustMatchers
+  extends PlaySpec
+  with OneAppPerSuite
   with BeforeAndAfterEach
 {
 

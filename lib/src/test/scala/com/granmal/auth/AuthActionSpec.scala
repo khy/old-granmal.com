@@ -12,6 +12,8 @@ import io.useless.util.mongo.MongoUtil
 import com.granmal.models.account.Account
 import AuthAction._
 
+import com.typesafe.config.ConfigFactory
+
 class AuthActionSpec extends PlaySpec with OneAppPerSuite {
 
   object TestController extends Controller {
@@ -38,19 +40,12 @@ class AuthActionSpec extends PlaySpec with OneAppPerSuite {
 
   implicit override lazy val app = new FakeApplication(
     additionalConfiguration = Map(
-      "application.secret" -> "test",
-      "mongo.uri" -> "mongodb://localhost/granmal_test"
+      "application.secret" -> "test"
     )
   )
 
   "An unauthenticated, synchronous action" should {
     "return the specified result" in {
-      println(System.getProperty("config.file", "NOT FOUND!!!"))
-
-      import com.typesafe.config.ConfigFactory
-      val config = ConfigFactory.load()
-      println(config.getConfig("mongo"))
-
       val result = TestController.action(FakeRequest())
       contentAsString(result) mustBe("action")
     }

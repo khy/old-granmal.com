@@ -2,7 +2,7 @@ val playVersion = "2.3.4"
 
 libraryDependencies ++= Seq(
   "com.typesafe.play" %% "play"          % playVersion,
-  "io.useless"        %% "useless"       % "0.14.0",
+  "io.useless"        %% "useless"       % "0.14.2",
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.akka23-SNAPSHOT",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m",
