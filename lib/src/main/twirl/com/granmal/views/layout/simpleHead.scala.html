@@ -7,7 +7,6 @@
 <link rel="stylesheet" media="screen" href="@assetRoute("lib/normalize.css/normalize.css")">
 <link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/${appPath(appKey)}main.css")">
 
-@helper.requireJs(
-  core = assetRoute("javascripts/require.js").url,
-  module = assetRoute(s"javascripts/${appPath(appKey)}main").url
-)
+<script src="@assetRoute("javascripts/require.js").url"
+  data-main="@assetRoute(s"javascripts/${appPath(appKey)}main").url">
+</script>
