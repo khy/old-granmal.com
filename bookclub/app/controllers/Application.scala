@@ -13,7 +13,7 @@ object Assets extends controllers.AssetsBuilder
 object Application extends Controller {
 
   def index = Action.async {
-    Future.successful(Ok("Book Club"))
+    Future.successful(Ok(views.html.bookclub.index()))
   }
 
 }
