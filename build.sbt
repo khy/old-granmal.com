@@ -1,19 +1,20 @@
 name := "granmal"
 
-scalaVersion in ThisBuild := "2.11.2"
+scalaVersion in ThisBuild := "2.11.4"
 
 lazy val lib = project.enablePlugins(SbtTwirl)
 
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala).
-  dependsOn(lib, haikunst).
-  aggregate(lib, haikunst)
+  dependsOn(lib, haikunst, bookclub).
+  aggregate(lib, haikunst, bookclub)
 
 lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
+lazy val bookclub = project.enablePlugins(PlayScala).dependsOn(lib)
 
 libraryDependencies ++= Seq(
-  "org.reactivemongo" %% "reactivemongo" % "0.10.5.akka23-SNAPSHOT",
-  "io.useless"        %% "useless"       % "0.14.0",
+  "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
+  "io.useless"        %% "useless"       % "0.14.3",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m"
 ) ++ Seq(

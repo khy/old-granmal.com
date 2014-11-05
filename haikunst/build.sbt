@@ -1,5 +1,5 @@
 libraryDependencies ++= Seq(ws) ++ Seq(
-  "io.useless"  %% "useless"  % "0.14.0"
+  "io.useless"  %% "useless"  % "0.14.3"
 )
 
 resolvers ++= Seq(

@@ -15,4 +15,5 @@ GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
 GET     /assets/*file   controllers.Assets.at(path="/public", file)
 
-->  /haikunst haikunst.Routes
+->  /haikunst   haikunst.Routes
+->  /book-club  bookclub.Routes

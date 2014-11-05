@@ -1,0 +1,3 @@
+GET     /              controllers.bookclub.Application.index
+
+GET     /assets/*file  controllers.bookclub.Assets.at(path="/public", file)
