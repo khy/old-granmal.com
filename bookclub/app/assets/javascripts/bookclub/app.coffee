@@ -1,7 +1,11 @@
 define ['jquery', 'backbone', 'bookclub/router'], ($, Backbone, Router) ->
 
-  router: new Router
+  class App
+    constructor: ->
+      @router = new Router app: @
 
-  init: ->
-    Backbone.history.start
-      pushState: true, root: "book-club"
+    mainEl: $("#main")
+
+    init: ->
+      Backbone.history.start
+        pushState: true, root: "book-club"

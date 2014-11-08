@@ -1,8 +1,13 @@
-define ['backbone'], (Backbone) ->
+define ['backbone', 'bookclub/views/new-note'], (Backbone, NewNote) ->
 
   class Router extends Backbone.Router
+
+    initialize: (options) ->
+      @app = options.app
 
     routes:
       'notes/new': 'newNote'
 
-    newNote: -> console.debug("newNote")
+    newNote: ->
+      view = new NewNote(el: @app.mainEl)
+      view.render()
