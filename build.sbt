@@ -19,7 +19,9 @@ libraryDependencies ++= Seq(
   "org.mindrot"       %  "jbcrypt"       % "0.3m"
 ) ++ Seq(
   "org.webjars"       % "jquery"         % "2.1.1",
-  "org.webjars"       % "normalize.css"  % "3.0.1"
+  "org.webjars"       % "normalize.css"  % "3.0.1",
+  "org.webjars"       % "underscorejs"   % "1.7.0",
+  "org.webjars"       % "backbonejs"     % "1.1.2-2"
 )
 
 resolvers ++= Seq(

@@ -1,5 +1,7 @@
-define ['jquery', 'lib/lib'], ($, lib) ->
+define ['jquery', 'backbone', 'bookclub/router'], ($, Backbone, Router) ->
+
+  router: new Router
 
   init: ->
-    console.debug 'Initializing Book Club...'
-    lib.ensureFullPage()
+    Backbone.history.start
+      pushState: true, root: "book-club"
