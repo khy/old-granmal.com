@@ -1,4 +1,4 @@
-define ['jquery', 'lib/lib'], ($, lib) ->
+define ['jquery', 'lib'], ($, lib) ->
 
   resizeMasthead = ->
     $('.masthead .poster').height $(window).height() - 40

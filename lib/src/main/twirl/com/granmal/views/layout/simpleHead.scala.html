@@ -7,6 +7,5 @@
 <link rel="stylesheet" media="screen" href="@assetRoute("lib/normalize.css/normalize.css")">
 <link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/${appPath(appKey)}main.css")">
 
-<script src="@assetRoute("javascripts/require.js").url"
-  data-main="@assetRoute(s"javascripts/${appPath(appKey)}main").url">
-</script>
+@com.granmal.views.html.layout.requireJsConfig(appKey)
+<script src="@assetRoute("javascripts/require.js").url"></script>

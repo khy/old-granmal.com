@@ -1,0 +1,19 @@
+@(appKey: Option[String])
+
+<script>
+  var require = {
+    baseUrl: '/assets/javascripts@{appKey.map("/" + _)}',
+    paths: {
+      lib: '/assets/javascripts/lib/lib',
+      jquery: '/assets/lib/jquery/jquery',
+      underscore: '/assets/lib/underscorejs/underscore',
+      backbone: '/assets/lib/backbonejs/backbone',
+      handlebars: '/assets/lib/handlebars/handlebars'
+    },
+    shim: {
+      handlebars: {
+        exports: 'Handlebars'
+      }
+    }
+  }
+</script>

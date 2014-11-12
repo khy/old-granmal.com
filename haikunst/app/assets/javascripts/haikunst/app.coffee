@@ -1,4 +1,4 @@
-define ['jquery', 'lib/lib'], ($, lib) ->
+define ['jquery', 'lib'], ($, lib) ->
 
   init: ->
     console.debug 'Initializing Haikunst!...'

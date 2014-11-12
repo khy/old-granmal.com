@@ -1,3 +1,13 @@
 @(content: Html)
 
-@com.granmal.views.html.layout.simpleLayout(Some("haikunst"), "Haikunst!")(controllers.haikunst.routes.Assets.at)(content)
+@com.granmal.views.html.layout.simpleLayout(Some("haikunst"), "Haikunst!")(controllers.haikunst.routes.Assets.at) {
+
+  @content
+
+  <script>
+    require(['app'], function(app) {
+      app.init()
+    });
+  </script>
+
+}

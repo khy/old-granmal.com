@@ -1,9 +1,6 @@
 @com.granmal.views.html.layout.baseLayout("Gran Mal") {
 
-  <link rel="stylesheet" media="screen" href="@routes.Assets.at(s"stylesheets/main.css")">
-  <script src="@routes.Assets.at("javascripts/require.js").url"
-    data-main="@routes.Assets.at(s"javascripts/masthead").url">
-  </script>
+  @com.granmal.views.html.layout.simpleHead(None, controllers.routes.Assets.at)
 
 } {
 
@@ -15,6 +12,12 @@
       </div>
     </div>
   </a>
+
+  <script>
+    require(['app'], function(app) {
+      app.initMasthead()
+    });
+  </script>
 
 } {
 
