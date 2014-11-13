@@ -1,4 +1,8 @@
-define ['backbone', 'bookclub/views/new-note'], (Backbone, NewNote) ->
+define [
+  'backbone'
+  'views/new-note'
+  'views/new-book'
+], (Backbone, NewNote, NewBook) ->
 
   class Router extends Backbone.Router
 
@@ -7,7 +11,12 @@ define ['backbone', 'bookclub/views/new-note'], (Backbone, NewNote) ->
 
     routes:
       'notes/new': 'newNote'
+      'books/new': 'newBook'
 
     newNote: ->
-      view = new NewNote(el: @app.mainEl)
+      view = new NewNote(el: @app.mainEl, lastNote: @app.lastNote)
+      view.render()
+
+    newBook: ->
+      view = new NewBook(el: @app.mainEl)
       view.render()

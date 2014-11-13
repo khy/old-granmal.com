@@ -2,9 +2,11 @@ define ['jquery', 'backbone', 'handlebars'], ($, Backbone, Handlebars) ->
 
   class NewNote extends Backbone.View
 
-    tagName: "div"
+    initialize: (options) ->
+      @lastNote = options.lastNote
 
     template: Handlebars.compile($("#new-note-template").html())
 
     render: ->
-      @$el.html @template name: 'Kevin'
+      @$el.html @template
+        lastNote: @lastNote
