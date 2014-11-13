@@ -13,5 +13,5 @@ define ['jquery', 'lib'], ($, lib) ->
   init: ->
     console.debug 'Initializing core...'
     lib.ensureFullPage()
-    $(document).ready -> $('.container').addClass('affix-nav')
+    $(document).ready -> $('.container').addClass('affix-header')
     console.debug 'done!'

@@ -1,5 +1,6 @@
 @import "lib.less";
 @import "menu.less";
+@import "header.less";
 
 body {
   font-family: 'Raleway', sans-serif;
@@ -20,47 +21,13 @@ strong {
     border-width: 0;
   }
 
-  .affix-nav {
+  .affix-header {
     padding-top: 74px;
 
-    .nav {
-      .nav.affixed()
+    .header {
+      .header.affixed()
     }
   }
-}
-
-.nav {
-  .clearfix;
-
-  padding: @container-margin 0;
-  border-bottom: 1px solid #DDD;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  h1 {
-    margin: 0 0 0 @container-margin;
-    font-size: 1.5em;
-    font-weight: 400;
-    float: left;
-    a { text-decoration: none; }
-  }
-
-  a {
-    margin: 5px @container-margin 0 0;
-    float: right;
-    color: #000;
-  }
-
-  .affixed {
-    position: fixed;
-    top: 0;
-    width: @container-width-max;
-    background-color: #FFF;
-
-    @media all and (max-width: @container-width-max) {
-      width: 100%;
-    }
-  }
-
 }
 
 footer.footer {
