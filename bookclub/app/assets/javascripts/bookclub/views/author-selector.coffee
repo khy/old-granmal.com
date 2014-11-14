@@ -8,17 +8,30 @@ define [
 
   class AuthorSelector extends Backbone.View
 
-    template: Handlebars.compile($('#author-selector-template').html())
+    @template: Handlebars.compile($('#author-selector-template').html())
+
+    initialize: ->
+      @authors = new Backbone.Collection()
+      @listenTo @authors, "reset", @render
+
+    queryInput: -> @$('input[name="query"]')
 
     render: ->
-      @$el.html @template()
+      @$el.html AuthorSelector.template
+        query: @queryInput().val()
+        authors: @authors.toJSON()
+
+      queryInput = @queryInput()
+      focusOffset = queryInput.val().length * 2
+      queryInput.focus()
+      queryInput[0].setSelectionRange(focusOffset, focusOffset)
+
+      @
 
     events:
-      'keyup input[name="name"]': 'search'
+      'keyup input[name="query"]': 'search'
 
     search: _.debounce ->
-      name = @$('input[name="name"]').val()
-
-      $.ajax ServerRouter.findAuthors(name), (data) ->
-        console.log data
+      $.ajax(ServerRouter.findAuthors(@queryInput().val())).done (data) =>
+        @authors.reset(data)
     , 300

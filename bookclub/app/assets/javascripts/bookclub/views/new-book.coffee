@@ -16,6 +16,6 @@ define [
       'click input[name="author_name"]': 'showAuthorSelector'
 
     showAuthorSelector: ->
-      @$el.html @_authorSelector.render()
+      @$el.html @_authorSelector.render().el
 
     _authorSelector: new AuthorSelector()

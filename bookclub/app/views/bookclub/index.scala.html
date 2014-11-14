@@ -39,10 +39,20 @@
     <div class="form-group">
       <form>
         <div class="field">
-          <input type="text" name="name" placeholder="Search by name&hellip;"></input>
+          <input type="text" name="query" placeholder="Search by name&hellip;" value="{{query}}"></input>
         </div>
       </form>
     </div>
+
+    <ol class="authors">
+      {{#each authors}}
+        <li data-guid={{guid}}>{{name}}</li>
+      {{/each}}
+
+      {{#if query}}
+        <li>Add {{query}}</li>
+      {{/if}}
+    </ol>
   </script>
 
   @views.html.helper.javascriptRouter("serverRoutes")(
