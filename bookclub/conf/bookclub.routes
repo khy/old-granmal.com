@@ -1,3 +1,4 @@
 GET     /assets/*file   controllers.bookclub.Assets.at(path="/public", file)
+GET     /authors        controllers.bookclub.Application.findAuthors(name: String)
 GET     /               controllers.bookclub.Application.index(path = "")
 GET     /*path          controllers.bookclub.Application.index(path)

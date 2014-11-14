@@ -1,4 +1,9 @@
-define ['jquery', 'backbone', 'handlebars'], ($, Backbone, Handlebars) ->
+define [
+  'jquery'
+  'backbone'
+  'handlebars'
+  'views/author-selector'
+], ($, Backbone, Handlebars, AuthorSelector) ->
 
   class NewBook extends Backbone.View
 
@@ -6,3 +11,11 @@ define ['jquery', 'backbone', 'handlebars'], ($, Backbone, Handlebars) ->
 
     render: ->
       @$el.html @template()
+
+    events:
+      'click input[name="author_name"]': 'showAuthorSelector'
+
+    showAuthorSelector: ->
+      @$el.html @_authorSelector.render()
+
+    _authorSelector: new AuthorSelector()

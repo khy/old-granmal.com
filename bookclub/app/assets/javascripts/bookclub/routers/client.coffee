@@ -4,7 +4,7 @@ define [
   'views/new-book'
 ], (Backbone, NewNote, NewBook) ->
 
-  class Router extends Backbone.Router
+  class ClientRouter extends Backbone.Router
 
     initialize: (options) ->
       @app = options.app

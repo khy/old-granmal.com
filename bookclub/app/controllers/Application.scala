@@ -12,8 +12,12 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller {
 
-  def index(path: String = "") = Action.async {
+  def index(path: String = "") = Action.async { implicit request =>
     Future.successful(Ok(views.html.bookclub.index()))
+  }
+
+  def findAuthors(name: String) = Action.async {
+    Future.successful(Ok(Json.arr()))
   }
 
 }

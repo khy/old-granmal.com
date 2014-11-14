@@ -1,4 +1,4 @@
-@(lastNote: Option[json.JsObject] = None)
+@(lastNote: Option[json.JsObject] = None)(implicit req: play.api.mvc.RequestHeader)
 
 @layout {
 
@@ -31,7 +31,29 @@
     </div>
   </script>
 
+  <script id="author-selector-template" type="text/x-handlebars-template">
+    <div class="dialog-header">
+      <h1>Choose Author</h1>
+    </div>
+
+    <div class="form-group">
+      <form>
+        <div class="field">
+          <input type="text" name="name" placeholder="Search by name&hellip;"></input>
+        </div>
+      </form>
+    </div>
+  </script>
+
+  @views.html.helper.javascriptRouter("serverRoutes")(
+    controllers.bookclub.routes.javascript.Application.findAuthors
+  )
+
   <script>
+    define('routers/server', function() {
+      return serverRoutes.controllers.bookclub.Application;
+    });
+
     require(['lib', 'app', 'models/book'], function(lib, App, Book) {
       var lastNote;
 
