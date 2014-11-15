@@ -34,7 +34,7 @@
       <h1>Choose Author</h1>
     </div>
 
-    <form>
+    <form class="selector">
       <div class="field">
         <input type="text" name="query" placeholder="Search by name&hellip;" value="{{query}}"></input>
       </div>
@@ -46,7 +46,7 @@
       {{/each}}
 
       {{#if query}}
-        <li>Add {{query}}</li>
+        <li>Add <b>{{query}}</b></li>
       {{/if}}
     </ol>
   </script>
