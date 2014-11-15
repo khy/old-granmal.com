@@ -6,22 +6,20 @@
 
   @views.html.haikunst.header()
 
-  <div class="form-group">
-    @views.html.helper.form(action = controllers.haikunst.routes.Application.create()) {
+  @views.html.helper.form(action = controllers.haikunst.routes.Application.create()) {
 
-      @textField("Fünf", haikuForm("one"))
+    @textField("Fünf", haikuForm("one"))
 
-      @textField("Sieben", haikuForm("two"))
+    @textField("Sieben", haikuForm("two"))
 
-      @textField("Fünf", haikuForm("three"))
+    @textField("Fünf", haikuForm("three"))
 
-      <button type="submit">Verkünden!</button>
-
-    }
+    <button type="submit">Verkünden!</button>
 
     <ul class="alternate-actions">
       <li><a href="@controllers.haikunst.routes.Application.index">Cancel</a></li>
     </ul>
-  </div>
+
+  }
 
 }

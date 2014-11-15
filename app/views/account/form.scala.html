@@ -6,28 +6,24 @@
 
   @views.html.header()
 
-  <div class="form-group">
+  @helper.form(action = controllers.routes.AccountController.create()) {
 
     @com.granmal.views.html.flash.form()
 
-    @helper.form(action = controllers.routes.AccountController.create()) {
+    @emailField("Email", signUpForm("email"))
 
-      @emailField("Email", signUpForm("email"))
+    @passwordField("Password", signUpForm("password"))
 
-      @passwordField("Password", signUpForm("password"))
+    @textField("Username", signUpForm("handle"))
 
-      @textField("Username", signUpForm("handle"))
+    @textField("Full Name", signUpForm("name"))
 
-      @textField("Full Name", signUpForm("name"))
-
-      <button type="submit">Sign Up</button>
-
-    }
+    <button type="submit">Sign Up</button>
 
     <ul class="alternate-actions">
       <li><a href="@controllers.routes.SessionController.form()">Sign In</a></li>
     </ul>
 
-  </div>
+  }
 
 }

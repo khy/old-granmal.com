@@ -1,43 +1,41 @@
 @import "lib.less";
 
-.form-group {
+form {
   padding: 40px 20px;
+  margin-bottom: 20px;
 
   .alert {
     .alert;
     margin-bottom: 30px;
   }
 
-  form {
+  .field {
     margin-bottom: 20px;
 
-    .field {
-      margin-bottom: 20px;
-
-      input[type="text"],
-      input[type="email"],
-      input[type="password"] {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 10px;
-        font-size: 1.2em;
-      }
-
-      .input-messages {
-        .unstyled-list;
-        padding: 10px 10px 0;
-
-        li {
-          margin-bottom: 10px;
-          &.input-error { color: @state-danger-text }
-        }
-      }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 10px;
+      font-size: 1.2em;
     }
 
-    button { .button; }
+    .input-messages {
+      .unstyled-list;
+      padding: 10px 10px 0;
+
+      li {
+        margin-bottom: 10px;
+        &.input-error { color: @state-danger-text }
+      }
+    }
   }
+
+  button { .button; }
 
   ul.alternate-actions {
     .unstyled-list;
+    margin-top: 20px;
   }
 }
