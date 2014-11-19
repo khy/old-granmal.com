@@ -46,7 +46,14 @@
       {{/each}}
 
       {{#if query}}
-        <li>Add <b>{{query}}</b></li>
+        <li>
+          <a href="#" class="add-author">
+            <p class="primary">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              Add <b>{{query}}</b>
+            </p>
+          </a>
+        </li>
       {{/if}}
     </ol>
   </script>

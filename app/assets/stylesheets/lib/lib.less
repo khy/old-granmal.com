@@ -24,6 +24,40 @@
   }
 }
 
+.standard-list {
+  .unstyled-list;
+
+  li {
+    border-bottom: 1px solid #DDD;
+
+    &.alert {
+      .alert;
+      padding: 20px 10px;
+      background-color: lightYellow;
+    }
+
+    a {
+      .list-item;
+      text-decoration: none;
+
+      &:hover {
+        background-color: #EEE;
+      }
+
+      p.primary {
+        font-size: 1.2em;
+        color: #333;
+        margin: 0;
+      }
+
+      p.secondary {
+        color: #777;
+        margin: 0;
+      }
+    }
+  }
+}
+
 .bottom-shadow {
   border-bottom: 1px solid #DDD;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
