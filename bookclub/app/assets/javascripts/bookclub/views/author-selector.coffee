@@ -3,15 +3,15 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'routers/server'
-], ($, _, Backbone, Handlebars, ServerRouter) ->
+  'collections/authors'
+], ($, _, Backbone, Handlebars, Authors) ->
 
   class AuthorSelector extends Backbone.View
 
     @template: Handlebars.compile($('#author-selector-template').html())
 
     initialize: ->
-      @authors = new Backbone.Collection()
+      @authors = new Authors
       @listenTo @authors, "reset", @render
 
     queryInput: -> @$('input[name="query"]')
@@ -30,8 +30,17 @@ define [
 
     events:
       'keyup input[name="query"]': 'search'
+      'click a.add-author': 'addAuthor'
 
     search: _.debounce ->
-      $.ajax(ServerRouter.findAuthors(@queryInput().val())).done (data) =>
-        @authors.reset(data)
+      @authors.fetch
+        data: name: @queryInput().val()
+        reset: true
     , 300
+
+    addAuthor: (e) ->
+      e.preventDefault()
+      @_addAuthor()
+
+    _addAuthor: _.once ->
+      @authors.create name: @queryInput().val()
