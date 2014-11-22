@@ -16,8 +16,17 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller with BooksClient {
 
-  def index(path: String = "") = Action.async { implicit request =>
-    Future.successful(Ok(views.html.bookclub.index()))
+  def index(path: String = "") = Action.auth.async { implicit request =>
+    Future.successful(Ok(views.html.bookclub.index(
+      user = request.account.map { account =>
+        Json.obj(
+          "guid" -> account.guid,
+          "handle" -> account.handle,
+          "name" -> account.name
+        )
+      },
+      lastNote = None
+    )))
   }
 
   case class Author(guid: UUID, name: String)
@@ -28,19 +37,13 @@ object Application extends Controller with BooksClient {
   }
 
   def createAuthor = Action.auth.async(parse.json) { implicit request =>
-    client.create[Author]("/authors", request.body).map { result =>
-      result.fold(
-        error => Conflict(error),
-        author => Created(Json.toJson(author))
-      )
-    }
-  }
-
-  private def client()(implicit request: AuthRequest[_]) = {
-    request.account.flatMap(_.uselessAccessToken).map { accessToken =>
-      resourceClient.withAuth(accessToken.token)
-    }.getOrElse {
-      throw new RuntimeException("NEED TO FIGURE THIS OUT")
+    withUselessClient { client =>
+      client.create[Author]("/authors", request.body).map { result =>
+        result.fold(
+          error => Conflict(error),
+          author => Created(Json.toJson(author))
+        )
+      }
     }
   }
 

@@ -2,7 +2,8 @@ define [
   'backbone'
   'views/new-note'
   'views/new-book'
-], (Backbone, NewNote, NewBook) ->
+  'routers/server'
+], (Backbone, NewNote, NewBook, ServerRouter) ->
 
   class ClientRouter extends Backbone.Router
 
@@ -18,5 +19,8 @@ define [
       view.render()
 
     newBook: ->
-      view = new NewBook(el: @app.mainEl)
-      view.render()
+      if @app.user
+        view = new NewBook(el: @app.mainEl)
+        view.render()
+      else
+        window.location.replace(ServerRouter.signIn().url)

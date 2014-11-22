@@ -1,4 +1,9 @@
-@(lastNote: Option[json.JsObject] = None)(implicit req: play.api.mvc.RequestHeader)
+@(
+  user: Option[json.JsObject],
+  lastNote: Option[json.JsObject]
+)(
+  implicit request: play.api.mvc.RequestHeader
+)
 
 @layout {
 
@@ -64,17 +69,27 @@
 
   <script>
     define('routers/server', function() {
-      return serverRoutes.controllers.bookclub.Application;
+      return {
+        signIn: function() {
+          return { url: '/sign-in'};
+        },
+        findAuthors: serverRoutes.controllers.bookclub.Application.findAuthors
+      };
     });
 
-    require(['lib', 'app', 'models/book'], function(lib, App, Book) {
-      var lastNote;
+    require(['lib', 'app', 'models/note'], function(lib, App, Note) {
+      var user, lastNote;
 
-      @lastNote.foreach { lastNote =>
-        lastNote = new Book(@json.Json.stringify(lastNote));
+      @user.map { user =>
+        user = @Html(json.Json.stringify(user));
+      }
+
+      @lastNote.map { lastNote =>
+        lastNote = new Note(@Html(json.Json.stringify(lastNote)));
       }
 
       window.App = new App({
+        user: user,
         lastNote: lastNote
       });
 
