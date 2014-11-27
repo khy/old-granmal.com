@@ -45,24 +45,30 @@ object AccountController extends Controller {
           Some(signUpData.handle),
           Some(signUpData.name),
           Some(signUpData.password)
-        ).map { result =>
+        ).flatMap { result =>
           result.fold(
             error => {
               val formWithError = signUpForm.fill(signUpData).withGlobalError(error)
-              UnprocessableEntity(views.html.account.form(formWithError))
+              Future.successful(UnprocessableEntity(views.html.account.form(formWithError)))
             },
             account => {
               val trustedUselessClient = TrustedUselessClient.instance
               val uselessAccessTokenService = new UselessAccessTokenService(trustedUselessClient)
-              uselessAccessTokenService.ensureAccessToken(account.guid)
 
-              val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
-                map(_.value).getOrElse("/")
+              uselessAccessTokenService.ensureAccessToken(account.guid).map { result =>
+                result.fold(
+                  error => Logger.warn(s"Could not ensure Useless access token [${error}]"),
+                  accessToken => Logger.debug(s"Useless access token ensured [${accessToken.guid}]")
+                )
 
-              Redirect(redirectPath).
-                withSession(request.session + (AuthKeys.session -> account.guid.toString)).
-                discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
-                flashing("success" -> "Signed up successfully")
+                val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
+                  map(_.value).getOrElse("/")
+
+                Redirect(redirectPath).
+                  withSession(request.session + (AuthKeys.session -> account.guid.toString)).
+                  discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
+                  flashing("success" -> "Signed up successfully")
+              }
             }
           )
         }
