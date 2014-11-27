@@ -32,8 +32,14 @@ object Application extends Controller with BooksClient {
   case class Author(guid: UUID, name: String)
   implicit val authorFormat = Json.format[Author]
 
-  def findAuthors(name: String) = Action.async {
-    Future.successful(Ok(Json.arr()))
+  def findAuthors(name: String) = Action.async { implicit request =>
+    request.queryString.get("name").flatMap(_.headOption).map { name =>
+      resourceClient.find[Author]("/authors", "name" -> name).map { authors =>
+        Ok(Json.toJson(authors))
+      }
+    }.getOrElse {
+      Future.successful(Ok(Json.arr()))
+    }
   }
 
   def createAuthor = Action.auth.async(parse.json) { implicit request =>
