@@ -7,15 +7,29 @@ define [
 
   class NewBook extends Backbone.View
 
-    template: Handlebars.compile($("#new-book-template").html())
+    @template: Handlebars.compile($("#new-book-template").html())
+
+    initialize: ->
+      @authorSelector = new AuthorSelector()
+      @listenTo @authorSelector, 'select', @setAuthor
 
     render: ->
-      @$el.html @template()
+      @$el.html NewBook.template
+        authorGuid: @selectedAuthor?.get("guid")
+        authorName: @selectedAuthor?.get("name")
 
     events:
       'click input[name="author_name"]': 'showAuthorSelector'
 
     showAuthorSelector: ->
-      @$el.html @_authorSelector.render().el
+      @authorSelector.delegateEvents()
+      @$el.html @authorSelector.render().el
 
-    _authorSelector: new AuthorSelector()
+    setAuthor: (author) ->
+      @selectedAuthor = author
+      @authorSelector.undelegateEvents()
+      @render()
+
+    remove: ->
+      @authorSelector.remove()
+      super

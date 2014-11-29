@@ -25,10 +25,10 @@
       </div>
 
       <div class="field">
-        <input type="text" name="author_name" placeholder="Author" value="{{author_name}}"></input>
+        <input type="text" name="author_name" placeholder="Author" value="{{authorName}}"></input>
       </div>
 
-      <input type="hidden" name="author_guid" value="{{author_guid}}"></input>
+      <input type="hidden" name="author_guid" value="{{authorGuid}}"></input>
 
       <button type="submit">Add Book</button>
     </form>
@@ -47,12 +47,18 @@
 
     <ol class="authors">
       {{#each authors}}
-        <li data-guid={{guid}}>{{name}}</li>
+        <li >
+          <a href="#" class="existing-author" data-guid={{guid}}>
+            <p class="primary">
+              {{name}}
+            </p>
+          </a>
+        </li>
       {{/each}}
 
       {{#if query}}
         <li>
-          <a href="#" class="add-author">
+          <a href="#" class="new-author">
             <p class="primary">
               <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
               Add <b>{{query}}</b>

@@ -12,7 +12,8 @@ define [
 
     initialize: ->
       @authors = new Authors
-      @listenTo @authors, "reset", @render
+      @listenTo @authors, 'reset', @render
+      @listenTo @authors, 'sync', @selectNewAuthor
 
     queryInput: -> @$('input[name="query"]')
 
@@ -30,17 +31,36 @@ define [
 
     events:
       'keyup input[name="query"]': 'search'
-      'click a.add-author': 'addAuthor'
+      'click a.existing-author': 'selectExistingAuthor'
+      'click a.new-author': 'addAuthor'
 
     search: _.debounce ->
-      @authors.fetch
-        data: name: @queryInput().val()
-        reset: true
+      query = @queryInput().val()
+
+      if query.length > 0
+        @authors.fetch
+          data: name: query
+          reset: true
     , 300
+
+    selectNewAuthor: (collection, response) ->
+      if !_.isUndefined(response.guid)
+        @selectAuthor(response.guid)
+
+    selectExistingAuthor: (e) ->
+      e.preventDefault()
+      guid = $(e.currentTarget).data('guid')
+      @selectAuthor(guid)
+
+    selectAuthor: _.throttle (guid) ->
+      selectedAuthor = @authors.get(guid)
+      @trigger 'select', selectedAuthor
+    , 1000
 
     addAuthor: (e) ->
       e.preventDefault()
       @_addAuthor()
 
-    _addAuthor: _.once ->
+    _addAuthor: _.throttle ->
       @authors.create name: @queryInput().val()
+    , 1000
