@@ -53,4 +53,21 @@ object Application extends Controller with BooksClient {
     }
   }
 
+  case class Edition(guid: UUID, page_count: Int)
+  implicit val editionFormat = Json.format[Edition]
+
+  case class Book(guid: UUID, title: String, author: Author, editions: Seq[Edition])
+  implicit val bookFormat = Json.format[Book]
+
+  def createBook = Action.auth.async(parse.json) { implicit request =>
+    withUselessClient { client =>
+      client.create[Book]("/books", request.body).map { result =>
+        result.fold(
+          error => Conflict(error),
+          book => Created(Json.toJson(book))
+        )
+      }
+    }
+  }
+
 }

@@ -22,12 +22,15 @@ define [
         query: @queryInput().val()
         authors: @authors.toJSON()
 
+      @focusQueryInput()
+
+      @
+
+    focusQueryInput: ->
       queryInput = @queryInput()
       focusOffset = queryInput.val().length * 2
       queryInput.focus()
       queryInput[0].setSelectionRange(focusOffset, focusOffset)
-
-      @
 
     events:
       'keyup input[name="query"]': 'search'

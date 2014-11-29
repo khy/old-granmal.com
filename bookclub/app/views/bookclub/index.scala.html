@@ -21,14 +21,24 @@
 
     <form>
       <div class="field">
-        <input type="text" name="title" placeholder="Title"></input>
+        <input type="text" name="title" placeholder="Title" value="{{title}}"></input>
+
+        {{#if titleError}}
+          <ol class="input-messages">
+            <li class="input-error">{{titleError}}</li>
+          </ol>
+        {{/if}}
       </div>
 
       <div class="field">
         <input type="text" name="author_name" placeholder="Author" value="{{authorName}}"></input>
-      </div>
 
-      <input type="hidden" name="author_guid" value="{{authorGuid}}"></input>
+        {{#if authorError}}
+          <ol class="input-messages">
+            <li class="input-error">{{authorError}}</li>
+          </ol>
+        {{/if}}
+      </div>
 
       <button type="submit">Add Book</button>
     </form>
@@ -70,16 +80,20 @@
   </script>
 
   @views.html.helper.javascriptRouter("serverRoutes")(
-    controllers.bookclub.routes.javascript.Application.findAuthors
+    controllers.bookclub.routes.javascript.Application.findAuthors,
+    controllers.bookclub.routes.javascript.Application.createBook
   )
 
   <script>
     define('routers/server', function() {
+      var app = serverRoutes.controllers.bookclub.Application;
+
       return {
         signIn: function() {
-          return { url: '/sign-in'};
+          return { url: '/sign-in' };
         },
-        findAuthors: serverRoutes.controllers.bookclub.Application.findAuthors
+        findAuthors: app.findAuthors,
+        createBook: app.createBook
       };
     });
 

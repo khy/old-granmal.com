@@ -1,6 +1,8 @@
 GET     /authors        controllers.bookclub.Application.findAuthors(name = "")
 POST    /authors        controllers.bookclub.Application.createAuthor
 
+POST    /books          controllers.bookclub.Application.createBook
+
 GET     /assets/*file   controllers.bookclub.Assets.at(path = "/public", file)
 
 GET     /               controllers.bookclub.Application.index(path = "")
