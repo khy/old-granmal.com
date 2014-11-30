@@ -34,11 +34,9 @@ define [
       'submit form': 'createBook'
 
     showAuthorSelector: ->
+      @undelegateEvents()
       @authorSelector.delegateEvents()
       @$el.html @authorSelector.render().el
-
-      # Focusing on the query input won't work until the element is visible,
-      # and I can't think of a way to handle that within AuthorSelector.
       @authorSelector.focusQueryInput()
 
     setTitle: ->
@@ -56,6 +54,7 @@ define [
 
     setAuthor: (author) ->
       @selectedAuthor = author
+      @delegateEvents()
       @authorSelector.undelegateEvents()
       @render()
 

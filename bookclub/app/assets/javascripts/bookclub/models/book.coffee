@@ -8,6 +8,8 @@ define [
 
     urlRoot: ServerRouter.createBook().url
 
+    idAttribute: "guid"
+
     validate: (attrs) ->
       error = {}
 

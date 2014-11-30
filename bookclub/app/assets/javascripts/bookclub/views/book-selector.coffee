@@ -36,6 +36,7 @@ define [
 
     events:
       'keyup input[name="query"]': 'search'
+      'click a.existing-book': 'selectExistingBook'
       'click a.new-book': 'showNewBook'
 
     search: _.debounce ->
@@ -47,8 +48,21 @@ define [
           reset: true
     , 300
 
+    selectExistingBook: (e) ->
+      e.preventDefault()
+      guid = $(e.currentTarget).data('guid')
+      @selectBook(guid)
+
+    selectBook: _.throttle (guid) ->
+      console.log(guid)
+      console.log(@books)
+      selectedBook = @books.get(guid)
+      @trigger 'select', selectedBook
+    , 1000
+
     showNewBook: (e) ->
       e.preventDefault()
       title = @queryInput().val()
+      @undelegateEvents()
       @newBook.delegateEvents()
       @$el.html @newBook.render(title).el

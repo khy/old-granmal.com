@@ -26,6 +26,8 @@ define [
 
       @
 
+    # Focusing on the query input won't work until the element is visible,
+    # so this needs to be called by whatever is inserting this view.
     focusQueryInput: ->
       queryInput = @queryInput()
       focusOffset = queryInput.val().length * 2

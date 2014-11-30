@@ -17,15 +17,20 @@ define [
 
     render: ->
       @$el.html NewNote.template
-        lastNote: @lastNote
+        bookTitle: @selectedBook?.get('title')
 
     events:
-      'focus input[name="book_name"]': 'showBookSelector'
+      'focus input[name="book_title"]': 'showBookSelector'
 
     showBookSelector: ->
+      @undelegateEvents()
       @bookSelector.delegateEvents()
       @$el.html @bookSelector.render().el
       @bookSelector.focusQueryInput()
 
     setBook: (book) ->
       console.log(book)
+      @selectedBook = book
+      @bookSelector.undelegateEvents()
+      @delegateEvents()
+      @render()
