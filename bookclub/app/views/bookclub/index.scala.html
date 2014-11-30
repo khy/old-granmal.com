@@ -11,7 +11,59 @@
   </div>
 
   <script id="new-note-template" type="text/x-handlebars-template">
-    <h1>New Note</h1>
+    <div class="dialog-header">
+      <h1>New Note</h1>
+    </div>
+
+    <form>
+      <div class="field">
+        <input type="text" name="book_name" placeholder="Book" value="{{bookName}}"></input>
+
+        {{#if bookError}}
+          <ol class="input-messages">
+            <li class="input-error">{{bookError}}</li>
+          </ol>
+        {{/if}}
+      </div>
+
+      <div class="split">
+        <div class="left-split">
+          <div class="field">
+            <input type="text" name="page_number" placeholder="Page" value="{{pageNumber}}"></input>
+
+            {{#if pageNumberError}}
+              <ol class="input-messages">
+                <li class="input-error">{{pageNumberError}}</li>
+              </ol>
+            {{/if}}
+          </div>
+        </div>
+
+        <div class="right-split">
+          <div class="field">
+            <input type="text" name="page_count" placeholder="Total" value="{{pageCount}}"></input>
+
+            {{#if pageCountError}}
+              <ol class="input-messages">
+                <li class="input-error">{{pageCountError}}</li>
+              </ol>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <textarea name="content" rows="5">{{content}}</textarea>
+
+        {{#if contentError}}
+          <ol class="input-messages">
+            <li class="input-error">{{contentError}}</li>
+          </ol>
+        {{/if}}
+      </div>
+
+      <button type="submit">Add Note</button>
+    <form>
   </script>
 
   <script id="new-book-template" type="text/x-handlebars-template">
