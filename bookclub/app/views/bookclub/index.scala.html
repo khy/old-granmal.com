@@ -66,6 +66,40 @@
     <form>
   </script>
 
+  <script id="book-selector-template" type="text/x-handlebars-template">
+    <div class="dialog-header">
+      <h1>Choose Book</h1>
+    </div>
+
+    <form class="selector">
+      <div class="field">
+        <input type="text" name="query" placeholder="Search by title&hellip;" value="{{query}}"></input>
+      </div>
+    </form>
+
+    <ol class="books">
+      {{#each books}}
+        <li >
+          <a href="#" class="existing-book" data-guid={{guid}}>
+            <p class="primary">{{title}}</p>
+            <p class="secondary">{{author.name}}</p>
+          </a>
+        </li>
+      {{/each}}
+
+      {{#if query}}
+        <li>
+          <a href="#" class="new-book">
+            <p class="primary">
+              <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+              Add <b>{{query}}</b>
+            </p>
+          </a>
+        </li>
+      {{/if}}
+    </ol>
+  </script>
+
   <script id="new-book-template" type="text/x-handlebars-template">
     <div class="dialog-header">
       <h1>New Book</h1>
@@ -133,6 +167,7 @@
 
   @views.html.helper.javascriptRouter("serverRoutes")(
     controllers.bookclub.routes.javascript.Application.findAuthors,
+    controllers.bookclub.routes.javascript.Application.findBooks,
     controllers.bookclub.routes.javascript.Application.createBook
   )
 
@@ -145,6 +180,7 @@
           return { url: '/sign-in' };
         },
         findAuthors: app.findAuthors,
+        findBooks: app.findBooks,
         createBook: app.createBook
       };
     });

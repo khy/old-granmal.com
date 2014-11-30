@@ -10,21 +10,23 @@ define [
 
     @template: Handlebars.compile($("#new-book-template").html())
 
-    initialize: ->
+    initialize: (opts) ->
       @book = new Book
       @listenTo @book, 'invalid', @render
 
       @authorSelector = new AuthorSelector()
       @listenTo @authorSelector, 'select', @setAuthor
 
-    render: ->
+    render: (title) ->
       @$el.html NewBook.template
-        title: @title
+        title: title or @title
         titleError: if @book.validationError?.title == 'missing'
           'Title is required.'
         authorName: @selectedAuthor?.get('name')
         authorError: if @book.validationError?.author_guid == 'missing'
           'Author is required.'
+
+      @
 
     events:
       'blur input[name="title"]': 'setTitle'
