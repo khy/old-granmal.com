@@ -16,6 +16,7 @@ define [
       @listenTo @books, 'reset', @render
 
       @newBook = new NewBook
+      @listenTo @newBook, 'create', @selectNewBook
 
     queryInput: -> @$('input[name="query"]')
 
@@ -48,16 +49,17 @@ define [
           reset: true
     , 300
 
+    selectNewBook: (book) ->
+      @selectBook(book)
+
     selectExistingBook: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
-      @selectBook(guid)
-
-    selectBook: _.throttle (guid) ->
-      console.log(guid)
-      console.log(@books)
       selectedBook = @books.get(guid)
-      @trigger 'select', selectedBook
+      @selectBook(selectedBook)
+
+    selectBook: _.throttle (book) ->
+      @trigger 'select', book
     , 1000
 
     showNewBook: (e) ->

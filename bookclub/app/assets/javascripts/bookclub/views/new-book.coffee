@@ -13,13 +13,16 @@ define [
     initialize: (opts) ->
       @book = new Book
       @listenTo @book, 'invalid', @render
+      @listenTo @book, 'sync', @setBook
 
       @authorSelector = new AuthorSelector()
       @listenTo @authorSelector, 'select', @setAuthor
 
     render: (title) ->
+      @title ||= title
+
       @$el.html NewBook.template
-        title: title or @title
+        title: @title
         titleError: if @book.validationError?.title == 'missing'
           'Title is required.'
         authorName: @selectedAuthor?.get('name')
@@ -51,6 +54,10 @@ define [
       @book.save
         title: @title
         author_guid: @selectedAuthor?.get('guid')
+
+    setBook: _.throttle (book) ->
+      @trigger 'create', book
+    , 1000
 
     setAuthor: (author) ->
       @selectedAuthor = author
