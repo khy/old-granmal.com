@@ -10,7 +10,9 @@ define [
     @template: Handlebars.compile($("#new-note-template").html())
 
     initialize: (options) ->
-      @lastNote = options.lastNote
+      @note = new Note
+      @listenTo @note, 'invalid', @render
+      @listenTo @note, 'sync', @setNote
 
       @bookSelector = new BookSelector()
       @listenTo @bookSelector, 'select', @setBook
@@ -21,6 +23,16 @@ define [
 
     events:
       'focus input[name="book_title"]': 'showBookSelector'
+      'submit form': 'createNote'
+
+    createNote: ->
+      e.preventDefault()
+
+      @book.save
+        book_guid: @selectedBook?.get('guid')
+        page_number: @$('input[name="page_number"]').val()
+        page_count: @$('input[name="page_count"]').val()
+        content: @$('input[name="content"]').val()
 
     showBookSelector: ->
       @undelegateEvents()
@@ -29,7 +41,6 @@ define [
       @bookSelector.focusQueryInput()
 
     setBook: (book) ->
-      console.log(book)
       @selectedBook = book
       @bookSelector.undelegateEvents()
       @delegateEvents()
