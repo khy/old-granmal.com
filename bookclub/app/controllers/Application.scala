@@ -80,4 +80,6 @@ object Application extends Controller with BooksClient {
     }
   }
 
+  def createNote = TODO
+
 }

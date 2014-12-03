@@ -19,45 +19,39 @@
       <div class="field">
         <input type="text" name="book_title" placeholder="Book" value="{{bookTitle}}"></input>
 
-        {{#if bookError}}
+        {{#if errors.book}}
           <ol class="input-messages">
-            <li class="input-error">{{bookError}}</li>
+            <li class="input-error">{{errors.book}}</li>
           </ol>
         {{/if}}
       </div>
 
-      <div class="split">
+      <div class="split field-group">
         <div class="left-split">
           <div class="field">
             <input type="text" name="page_number" placeholder="Page" value="{{pageNumber}}"></input>
-
-            {{#if pageNumberError}}
-              <ol class="input-messages">
-                <li class="input-error">{{pageNumberError}}</li>
-              </ol>
-            {{/if}}
           </div>
         </div>
 
         <div class="right-split">
           <div class="field">
             <input type="text" name="page_total" placeholder="Total" value="{{pageTotal}}"></input>
-
-            {{#if pageTotalError}}
-              <ol class="input-messages">
-                <li class="input-error">{{pageTotalError}}</li>
-              </ol>
-            {{/if}}
           </div>
         </div>
+
+        {{#if errors.pages}}
+          <ol class="input-messages">
+            <li class="input-error">{{errors.pages}}</li>
+          </ol>
+        {{/if}}
       </div>
 
       <div class="field">
         <textarea name="content" rows="5">{{content}}</textarea>
 
-        {{#if contentError}}
+        {{#if errors.content}}
           <ol class="input-messages">
-            <li class="input-error">{{contentError}}</li>
+            <li class="input-error">{{errors.content}}</li>
           </ol>
         {{/if}}
       </div>
@@ -168,7 +162,8 @@
   @views.html.helper.javascriptRouter("serverRoutes")(
     controllers.bookclub.routes.javascript.Application.findAuthors,
     controllers.bookclub.routes.javascript.Application.findBooks,
-    controllers.bookclub.routes.javascript.Application.createBook
+    controllers.bookclub.routes.javascript.Application.createBook,
+    controllers.bookclub.routes.javascript.Application.createNote
   )
 
   <script>
@@ -181,7 +176,8 @@
         },
         findAuthors: app.findAuthors,
         findBooks: app.findBooks,
-        createBook: app.createBook
+        createBook: app.createBook,
+        createNote: app.createNote
       };
     });
 

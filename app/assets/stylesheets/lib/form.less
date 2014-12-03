@@ -25,14 +25,26 @@ form {
     textarea {
       border: 1px solid #CCC;
     }
+  }
 
+  .field-group {
+    margin-bottom: 20px;
+
+    .field {
+      margin-bottom: 0;
+    }
+  }
+
+  .field, .field-group {
     .input-messages {
       .unstyled-list;
       padding: 10px 10px 0;
+      clear: both;
 
       li {
         margin-bottom: 10px;
-        &.input-error { color: @state-danger-text }
+        &:last-child { margin-bottom: 0; }
+        &.input-error { color: @state-danger-text; }
       }
     }
   }
