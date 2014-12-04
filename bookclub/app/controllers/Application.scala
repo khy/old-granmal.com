@@ -80,6 +80,67 @@ object Application extends Controller with BooksClient {
     }
   }
 
-  def createNote = TODO
+  case class NewNote(book_guid: UUID, page_number: Int, page_total: Int, content: String)
+  implicit val newNoteFormat = Json.format[NewNote]
+
+  case class Note(guid: UUID, page_number: Int, content: String, edition: Edition, book: Book)
+  implicit val newNote = Json.format[Note]
+
+  def createNote = Action.auth.async(parse.json) { implicit request =>
+    request.body.validate[NewNote].fold(
+      error => Future.successful(Conflict),
+      newNote => withUselessClient { client =>
+
+        // We first need to get the book for which this note is being created.
+        client.get[Book](s"/books/${newNote.book_guid}").flatMap { optBook =>
+          optBook.map { book =>
+
+            // Look for and edition whose page_count that corresponds to the
+            // specified page_total.
+            val optEdition = book.editions.find { edition =>
+              edition.page_count == newNote.page_total
+            }
+
+            val futOptEdition = if (optEdition.isDefined) {
+              // If we found an appropriate edition, use it.
+              Future.successful(optEdition)
+            } else {
+              // Otherwise, create a new edition and use that.
+              client.create[Edition]("/editions", Json.obj(
+                "book_guid" -> book.guid,
+                "page_count" -> newNote.page_total
+              )).map { result =>
+                result.right.toOption
+              }
+            }
+
+            futOptEdition.flatMap { optEdition =>
+              optEdition.map { edition =>
+
+                // Now that we have the edition, we can attempt to create the note.
+                client.create[Note]("/notes", Json.obj(
+                  "edition_guid" -> edition.guid,
+                  "page_number" -> newNote.page_number,
+                  "content" -> newNote.content
+                )).map { result =>
+                  result.fold(
+                    error => Conflict(error),
+                    note => Created(Json.toJson(note))
+                  )
+                }
+              }.getOrElse {
+                // If we couldn't come up with an edition, it's our fault.
+                Future.successful(InternalServerError)
+              }
+            }
+          }.getOrElse {
+            // If we couldn't find the book, then it's the client's fault.
+            Future.successful(Conflict)
+          }
+        }
+      }
+    )
+
+  }
 
 }
