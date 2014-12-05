@@ -17,16 +17,27 @@ object Assets extends controllers.AssetsBuilder
 object Application extends Controller with BooksClient {
 
   def index(path: String = "") = Action.auth.async { implicit request =>
-    Future.successful(Ok(views.html.bookclub.index(
-      user = request.account.map { account =>
-        Json.obj(
-          "guid" -> account.guid,
-          "handle" -> account.handle,
-          "name" -> account.name
-        )
-      },
-      lastNote = None
-    )))
+    // This guy's last note.
+    val futOptNote = request.account.map { account =>
+      resourceClient.find[Note]("/notes",
+        "account_guid" -> account.guid.toString,
+        "p.limit" -> "1"
+      ).map(_.headOption)
+    }.getOrElse(Future.successful(None))
+
+    futOptNote.map { optNote =>
+      Ok(views.html.bookclub.index(
+        // A front-end version of this current, authenticated account.
+        user = request.account.map { account =>
+          Json.obj(
+            "guid" -> account.guid,
+            "handle" -> account.handle,
+            "name" -> account.name
+          )
+        },
+        lastNote = optNote.map(Json.toJson(_))
+      ))
+    }
   }
 
   case class Author(guid: UUID, name: String)
