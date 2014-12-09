@@ -12,15 +12,10 @@ define [
 
     routes:
       'notes/new': 'newNote'
-      'books/new': 'newBook'
 
     newNote: ->
-      view = new NewNote(el: @app.mainEl, lastNote: @app.lastNote)
-      view.render()
-
-    newBook: ->
       if @app.user
-        view = new NewBook(el: @app.mainEl)
+        view = new NewNote(el: @app.mainEl, lastNote: @app.lastNote)
         view.render()
       else
         window.location.replace(ServerRouter.signIn().url)

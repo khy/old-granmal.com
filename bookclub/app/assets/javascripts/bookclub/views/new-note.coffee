@@ -3,9 +3,10 @@ define [
   'backbone'
   'handlebars'
   'models/note'
+  'models/book'
   'views/book-selector'
   'utils/validation/check'
-], ($, Backbone, Handlebars, Note, BookSelector, Check) ->
+], ($, Backbone, Handlebars, Note, Book, BookSelector, Check) ->
 
   class NewNote extends Backbone.View
 
@@ -15,6 +16,11 @@ define [
       @note = new Note
       @listenTo @note, 'sync', @setNote
 
+      @lastNote = options.lastNote
+
+      if bookAttributes = @lastNote.get("book")
+        @selectedBook = new Book(bookAttributes)
+
       @bookSelector = new BookSelector()
       @listenTo @bookSelector, 'select', @setBook
 
@@ -22,7 +28,7 @@ define [
       @$el.html NewNote.template
         bookTitle: @selectedBook?.get('title')
         pageNumber: @input?.page_number
-        pageTotal: @input?.page_total
+        pageTotal: @input?.page_total or @lastNote?.get("edition").page_count
         content: @input?.content
         errors: @errors
 

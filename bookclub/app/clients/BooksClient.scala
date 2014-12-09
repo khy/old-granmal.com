@@ -29,6 +29,7 @@ trait BooksClient
     request.account.map { account =>
       account.uselessAccessToken.map { accessToken =>
         val client = resourceClient.withAuth(accessToken.token)
+        play.api.Logger.debug(s"Using Useless Books client for access token [${accessToken.token}]")
         block(client)
       }.getOrElse {
         Future.successful(Results.Unauthorized("Need access token"))

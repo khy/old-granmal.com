@@ -17,10 +17,10 @@ object Assets extends controllers.AssetsBuilder
 object Application extends Controller with BooksClient {
 
   def index(path: String = "") = Action.auth.async { implicit request =>
-    // This guy's last note.
-    val futOptNote = request.account.map { account =>
+    // This user's last note.
+    val futOptNote = request.account.flatMap(_.uselessAccessToken).map { accessToken =>
       resourceClient.find[Note]("/notes",
-        "account_guid" -> account.guid.toString,
+        "account_guid" -> accessToken.accountId,
         "p.limit" -> "1"
       ).map(_.headOption)
     }.getOrElse(Future.successful(None))
