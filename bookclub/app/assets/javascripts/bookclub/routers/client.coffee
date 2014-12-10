@@ -15,7 +15,7 @@ define [
       'notes/new': 'newNote'
 
     index: ->
-      view = new Index(el: @app.mainEl)
+      view = new Index(el: @app.mainEl, initialNotes: @app.initialNotes)
       view.render()
 
     newNote: ->

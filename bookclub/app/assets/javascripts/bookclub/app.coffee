@@ -4,6 +4,7 @@ define ['jquery', 'backbone', 'routers/client'], ($, Backbone, ClientRouter) ->
     constructor: (data) ->
       @router = new ClientRouter app: @
       @user = data.user
+      @initialNotes = data.initialNotes
       @lastNote = data.lastNote
 
     mainEl: $("#main")

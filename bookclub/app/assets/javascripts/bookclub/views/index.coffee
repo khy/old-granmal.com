@@ -9,8 +9,10 @@ define [
     @template: Handlebars.compile($("#index-template").html())
 
     initialize: (opts) ->
-      @notes = opts.notes
+      @notes = opts.initialNotes
 
     render: ->
-      @$el.html Index.template()
+      @$el.html Index.template
+        notes: @notes.toJSON()
+
       @

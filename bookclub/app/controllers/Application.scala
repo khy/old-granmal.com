@@ -17,27 +17,32 @@ object Assets extends controllers.AssetsBuilder
 object Application extends Controller with BooksClient {
 
   def index(path: String = "") = Action.auth.async { implicit request =>
+    // Notes that should be dispayed initially.
+    val futInitialNotes = resourceClient.find[Note]("/notes", "p.limit" -> "20")
+
     // This user's last note.
-    val futOptNote = request.account.flatMap(_.uselessAccessToken).map { accessToken =>
+    val futOptLastNote = request.account.flatMap(_.uselessAccessToken).map { accessToken =>
       resourceClient.find[Note]("/notes",
         "account_guid" -> accessToken.accountId,
         "p.limit" -> "1"
       ).map(_.headOption)
     }.getOrElse(Future.successful(None))
 
-    futOptNote.map { optNote =>
-      Ok(views.html.bookclub.index(
-        // A front-end version of this current, authenticated account.
-        user = request.account.map { account =>
-          Json.obj(
-            "guid" -> account.guid,
-            "handle" -> account.handle,
-            "name" -> account.name
-          )
-        },
-        lastNote = optNote.map(Json.toJson(_))
-      ))
-    }
+    for {
+      initialNotes <- futInitialNotes
+      optLastNote <- futOptLastNote
+    } yield Ok(views.html.bookclub.index(
+      // A front-end version of this current, authenticated account.
+      user = request.account.map { account =>
+        Json.obj(
+          "guid" -> account.guid,
+          "handle" -> account.handle,
+          "name" -> account.name
+        )
+      },
+      initialNotes = initialNotes,
+      lastNote = optLastNote.map(Json.toJson(_))
+    ))
   }
 
   case class Author(guid: UUID, name: String)
@@ -96,6 +101,10 @@ object Application extends Controller with BooksClient {
 
   case class Note(guid: UUID, page_number: Int, content: String, edition: Edition, book: Book)
   implicit val newNote = Json.format[Note]
+
+  def findNotes = Action.auth.async {
+    Future.successful(Ok(Json.arr()))
+  }
 
   def createNote = Action.auth.async(parse.json) { implicit request =>
     request.body.validate[NewNote].fold(

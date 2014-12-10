@@ -1,5 +1,6 @@
 @(
   user: Option[json.JsObject],
+  initialNotes: Seq[controllers.bookclub.Application.Note],
   lastNote: Option[json.JsValue]
 )(
   implicit request: play.api.mvc.RequestHeader
@@ -18,6 +19,15 @@
         <span class="glyphicon glyphicon-th"></span>
       </a>
     </div>
+
+    <ol class="notes">
+      {{#each notes}}
+        <li>
+          <p class="primary">{{book.title}} {{book.author.name}}</p>
+          <p class="secondary">{{content}}</p>
+        </li>
+      {{/each}}
+    </ol>
   </script>
 
   <script id="new-note-template" type="text/x-handlebars-template">
@@ -170,6 +180,7 @@
   </script>
 
   @views.html.helper.javascriptRouter("serverRoutes")(
+    controllers.bookclub.routes.javascript.Application.findNotes,
     controllers.bookclub.routes.javascript.Application.findAuthors,
     controllers.bookclub.routes.javascript.Application.findBooks,
     controllers.bookclub.routes.javascript.Application.createBook,
@@ -184,6 +195,7 @@
         signIn: function() {
           return { url: '/sign-in' };
         },
+        findNotes: app.findNotes,
         findAuthors: app.findAuthors,
         findBooks: app.findBooks,
         createBook: app.createBook,
@@ -191,12 +203,19 @@
       };
     });
 
-    require(['lib', 'app', 'models/note'], function(lib, App, Note) {
-      var user, lastNote;
+    require([
+      'lib',
+      'app',
+      'collections/notes',
+      'models/note'
+    ], function(lib, App, Notes, Note) {
+      var user, initialNotes, lastNote;
 
       @user.map { user =>
         user = @Html(json.Json.stringify(user));
       }
+
+      initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes))))
 
       @lastNote.map { lastNote =>
         lastNote = new Note(@Html(json.Json.stringify(lastNote)));
@@ -204,6 +223,7 @@
 
       window.App = new App({
         user: user,
+        initialNotes: initialNotes,
         lastNote: lastNote
       });
 

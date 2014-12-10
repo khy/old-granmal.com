@@ -4,6 +4,7 @@ POST    /authors        controllers.bookclub.Application.createAuthor
 GET     /books          controllers.bookclub.Application.findBooks(title = "")
 POST    /books          controllers.bookclub.Application.createBook
 
+GET     /notes          controllers.bookclub.Application.findNotes()
 POST    /notes          controllers.bookclub.Application.createNote
 
 GET     /assets/*file   controllers.bookclub.Assets.at(path = "/public", file)
