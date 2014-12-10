@@ -1,9 +1,9 @@
 define [
   'backbone'
+  'views/index'
   'views/new-note'
-  'views/new-book'
   'routers/server'
-], (Backbone, NewNote, NewBook, ServerRouter) ->
+], (Backbone, Index, NewNote, ServerRouter) ->
 
   class ClientRouter extends Backbone.Router
 
@@ -11,7 +11,12 @@ define [
       @app = options.app
 
     routes:
+      ''         : 'index'
       'notes/new': 'newNote'
+
+    index: ->
+      view = new Index(el: @app.mainEl)
+      view.render()
 
     newNote: ->
       if @app.user
