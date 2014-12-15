@@ -6,6 +6,10 @@
 @container-margin: 20px;
 @component-width-max: (@container-width-max - (2 * @container-margin));
 
+@default-text-color: #333;
+@light-text-color: #777;
+@lightest-text-color: #AAA;
+
 .unstyled-list {
   padding: 0;
   margin: 0;
@@ -36,7 +40,7 @@
       background-color: lightYellow;
     }
 
-    a {
+    & > a {
       .list-item;
       text-decoration: none;
 
@@ -46,12 +50,12 @@
 
       p.primary {
         font-size: 1.2em;
-        color: #333;
+        color: @default-text-color;
         margin: 0;
       }
 
       p.secondary {
-        color: #777;
+        color: @light-text-color;
         margin: 0;
       }
     }

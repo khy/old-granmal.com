@@ -23,8 +23,21 @@
     <ol class="notes">
       {{#each notes}}
         <li>
-          <p class="primary">{{book.title}} {{book.author.name}}</p>
-          <p class="secondary">{{content}}</p>
+          <a class="user" href="#">
+            <strong class="handle">{{created_by.user.handle}}</strong>
+            {{#if created_by.user.name}}
+              <span class="name">{{created_by.user.name}}</span>
+            {{/if}}
+          </a>
+          <a class="book" href="#">
+            p.
+            <span class="page-number">{{page_number}}</span>
+            of
+            <span class="title">{{book.title}}</span>
+            by
+            <span class="author">{{book.author.name}}</span>
+          </a>
+          <p class="content">{{content}}</p>
         </li>
       {{/each}}
     </ol>

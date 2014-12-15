@@ -6,6 +6,8 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.concurrent.Execution.Implicits._
+import io.useless.account.Account
+import io.useless.play.json.account.AccountJson
 
 import com.granmal.auth.AuthRequest
 import com.granmal.auth.AuthAction._
@@ -96,10 +98,13 @@ object Application extends Controller with BooksClient {
     }
   }
 
+  implicit private val accountFormat =
+    Format(AccountJson.accountReads, AccountJson.accountWrites)
+
   case class NewNote(book_guid: UUID, page_number: Int, page_total: Int, content: String)
   implicit val newNoteFormat = Json.format[NewNote]
 
-  case class Note(guid: UUID, page_number: Int, content: String, edition: Edition, book: Book)
+  case class Note(guid: UUID, page_number: Int, content: String, edition: Edition, book: Book, created_by: Account)
   implicit val newNote = Json.format[Note]
 
   def findNotes = Action.auth.async {
