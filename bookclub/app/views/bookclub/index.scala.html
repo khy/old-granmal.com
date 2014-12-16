@@ -23,21 +23,20 @@
     <ol class="notes">
       {{#each notes}}
         <li>
-          <a class="user" href="#">
-            <strong class="handle">{{created_by.user.handle}}</strong>
+          <p class="content">{{content}}</p>
+          <p class="details">
             {{#if created_by.user.name}}
-              <span class="name">{{created_by.user.name}}</span>
+              <a class="name" href="#">{{created_by.user.name}}</a>
+            {{else}}
+              <a class="handle" href="#">{{created_by.user.handle}}</a>
             {{/if}}
-          </a>
-          <a class="book" href="#">
-            p.
-            <span class="page-number">{{page_number}}</span>
+            at
+            <span class="page-number">p.{{page_number}}</span>
             of
-            <span class="title">{{book.title}}</span>
+            <a class="title" href="#">{{book.title}}</a>
             by
             <span class="author">{{book.author.name}}</span>
-          </a>
-          <p class="content">{{content}}</p>
+          </p>
         </li>
       {{/each}}
     </ol>

@@ -27,27 +27,17 @@ ol.notes {
     padding-top: 20px;
     padding-bottom: 20px;
 
-    a {
-      text-decoration: none;
-      color: @default-text-color;
-      display: block;
-
-      &.user {
-        margin-bottom: 0;
-
-        span.name {
-          color: @lightest-text-color;
-        }
-      }
-
-      &.book {
-        margin-top: 0;
-        color: @light-text-color
-      }
+    p.content {
+      font-size: 1.3em;
     }
 
-    p.content {
-      font-size: 20px;
+    p.details {
+      color: @light-text-color;
+      font-size: 0.9em;
+
+      span {
+        color: @default-text-color;
+      }
     }
   }
 }
