@@ -23,17 +23,22 @@ ol.notes {
   li {
     .list-item;
     padding: 10px 20px;
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid @default-border-color;
     padding-top: 20px;
     padding-bottom: 20px;
 
+    &:hover {
+      background-color: @hover-background-color;
+    }
+
     p.content {
-      font-size: 1.3em;
+      font-size: @primary-font-size;
+      color: @default-text-color;
     }
 
     p.details {
+      font-size: @secondary-font-size;
       color: @light-text-color;
-      font-size: 0.9em;
 
       span {
         color: @default-text-color;

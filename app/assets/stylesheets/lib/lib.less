@@ -6,9 +6,15 @@
 @container-margin: 20px;
 @component-width-max: (@container-width-max - (2 * @container-margin));
 
+@primary-font-size: 1.2em;
+@secondary-font-size: 0.9em;
+
 @default-text-color: #333;
 @light-text-color: #777;
 @lightest-text-color: #AAA;
+
+@default-border-color: #DDD;
+@hover-background-color: #EEE;
 
 .unstyled-list {
   padding: 0;
@@ -32,7 +38,7 @@
   .unstyled-list;
 
   li {
-    border-bottom: 1px solid #DDD;
+    border-bottom: 1px solid @default-border-color;
 
     &.alert {
       .alert;
@@ -45,16 +51,17 @@
       text-decoration: none;
 
       &:hover {
-        background-color: #EEE;
+        background-color: @hover-background-color;
       }
 
       p.primary {
-        font-size: 1.2em;
+        font-size: @primary-font-size;
         color: @default-text-color;
         margin: 0;
       }
 
       p.secondary {
+        font-size: @secondary-font-size;
         color: @light-text-color;
         margin: 0;
       }
