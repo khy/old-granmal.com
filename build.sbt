@@ -36,3 +36,5 @@ scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 Docker.defaultSettings
+
+Aws.defaultSettings
