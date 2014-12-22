@@ -6,7 +6,7 @@ object Aws {
   object Keys {
 
     val deploy = taskKey[Unit](
-      "Deploys the current version to AWS."
+      "Deploys the current version to AWS. Assumes that publishDocker has been run."
     )
 
     val uploadDockerfile = taskKey[Unit](
@@ -27,6 +27,12 @@ object Aws {
   import Keys._
 
   val defaultSettings = Seq(
+
+    deploy := {
+      uploadDockerfile.value
+      createApplicationVersion.value
+      deployApplicationVersion.value
+    },
 
     uploadDockerfile := {
       val file = s"Dockerfile.${version.value}"
