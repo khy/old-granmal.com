@@ -37,7 +37,7 @@ class StandardTrustedUselessClient
 
   def getUserByEmail(email: String) = {
     resourceClient.find[UselessAccount]("/accounts", "email" -> email).map { accounts =>
-      accounts.headOption
+      accounts.items.headOption
     }
   }
 
