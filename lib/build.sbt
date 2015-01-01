@@ -23,3 +23,5 @@ TwirlKeys.templateImports ++= Seq(
   "views.html._",
   "com.granmal._"
 )
+
+parallelExecution in Test := false
