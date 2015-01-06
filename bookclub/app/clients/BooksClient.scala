@@ -10,6 +10,7 @@ import com.granmal.auth.AuthRequest
 
 trait BooksClient
   extends DefaultResourceClientComponent
+  with    DefaultJsonClientComponent
   with    ConfigurableBaseClientComponent
   with    ClientConfiguration
   with    Logger
@@ -19,7 +20,9 @@ trait BooksClient
 
   lazy val baseClient = new ConfigurableBaseClient
 
-  def resourceClient = new DefaultResourceClient(baseClient)
+  def jsonClient = new DefaultJsonClient(baseClient)
+
+  def resourceClient = new DefaultResourceClient(jsonClient)
 
   def withUselessClient(
     block: ResourceClient => Future[Result]

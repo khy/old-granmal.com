@@ -1,5 +1,5 @@
 libraryDependencies ++= Seq(ws) ++ Seq(
-  "io.useless"  %% "useless"  % "0.15.0"
+  "io.useless"  %% "useless"  % "0.16.0"
 )
 
 resolvers ++= Seq(
@@ -8,4 +8,7 @@ resolvers ++= Seq(
   "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
 )
 
-TwirlKeys.templateImports := Seq("play.api.libs.json")
+TwirlKeys.templateImports := Seq(
+  "play.api.libs.json",
+  "io.useless.play.client.Page"
+)

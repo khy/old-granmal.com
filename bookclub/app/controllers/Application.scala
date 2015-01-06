@@ -20,14 +20,14 @@ object Application extends Controller with BooksClient {
 
   def index(path: String = "") = Action.auth.async { implicit request =>
     // Notes that should be dispayed initially.
-    val futInitialNotes = resourceClient.find[Note]("/notes", "p.limit" -> "20")
+    val futInitialNotes = jsonClient.find("/notes", "p.limit" -> "20")
 
     // This user's last note.
     val futOptLastNote = request.account.flatMap(_.uselessAccessToken).map { accessToken =>
-      resourceClient.find[Note]("/notes",
+      jsonClient.find("/notes",
         "account_guid" -> accessToken.accountId,
         "p.limit" -> "1"
-      ).map(_.headOption)
+      ).map(_.items.headOption)
     }.getOrElse(Future.successful(None))
 
     for {
@@ -43,7 +43,7 @@ object Application extends Controller with BooksClient {
         )
       },
       initialNotes = initialNotes,
-      lastNote = optLastNote.map(Json.toJson(_))
+      lastNote = optLastNote
     ))
   }
 
@@ -52,8 +52,8 @@ object Application extends Controller with BooksClient {
 
   def findAuthors(name: String) = Action.async { implicit request =>
     request.queryString.get("name").flatMap(_.headOption).map { name =>
-      resourceClient.find[Author]("/authors", "name" -> name).map { authors =>
-        Ok(Json.toJson(authors))
+      jsonClient.find("/authors", "name" -> name).map { authors =>
+        Ok(Json.toJson(authors.items))
       }
     }.getOrElse {
       Future.successful(Ok(Json.arr()))
@@ -79,8 +79,8 @@ object Application extends Controller with BooksClient {
 
   def findBooks(title: String) = Action.async { implicit request =>
     request.queryString.get("title").flatMap(_.headOption).map { title =>
-      resourceClient.find[Book]("/books", "title" -> title).map { books =>
-        Ok(Json.toJson(books))
+      jsonClient.find("/books", "title" -> title).map { books =>
+        Ok(Json.toJson(books.items))
       }
     }.getOrElse {
       Future.successful(Ok(Json.arr()))

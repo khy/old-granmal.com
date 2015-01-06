@@ -1,6 +1,6 @@
 @(
   user: Option[json.JsObject],
-  initialNotes: Seq[controllers.bookclub.Application.Note],
+  initialNotes: Page[json.JsValue],
   lastNote: Option[json.JsValue]
 )(
   implicit request: play.api.mvc.RequestHeader
@@ -227,7 +227,7 @@
         user = @Html(json.Json.stringify(user));
       }
 
-      initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes))))
+      initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes.items))))
 
       @lastNote.map { lastNote =>
         lastNote = new Note(@Html(json.Json.stringify(lastNote)));
