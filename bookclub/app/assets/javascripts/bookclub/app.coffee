@@ -1,10 +1,15 @@
-define ['jquery', 'backbone', 'routers/client'], ($, Backbone, ClientRouter) ->
+define [
+  'jquery'
+  'backbone'
+  'routers/client'
+], ($, Backbone, Router) ->
 
   class App
     constructor: (data) ->
-      @router = new ClientRouter app: @
+      @router = new Router app: @
       @user = data.user
       @initialNotes = data.initialNotes
+      @currentNote = data.currentNote
       @lastNote = data.lastNote
 
     mainEl: $("#main")

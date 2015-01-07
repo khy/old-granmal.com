@@ -1,7 +1,8 @@
 @(
   user: Option[json.JsObject],
   initialNotes: Page[json.JsValue],
-  lastNote: Option[json.JsValue]
+  lastNote: Option[json.JsValue],
+  currentNote: Option[json.JsValue]
 )(
   implicit request: play.api.mvc.RequestHeader
 )
@@ -22,7 +23,7 @@
 
     <ol class="notes">
       {{#each notes}}
-        <li>
+        <li data-guid="{{guid}}">
           <p class="content">{{content}}</p>
           <p class="details">
             {{#if created_by.user.name}}
@@ -40,6 +41,20 @@
         </li>
       {{/each}}
     </ol>
+  </script>
+
+  <script id="show-note-template" type="text/x-handlebars-template">
+    <div class="header">
+      <h1>Book Club</h1>
+
+      <a href="#">
+        <span class="glyphicon glyphicon-th"></span>
+      </a>
+    </div>
+
+    {{#with note}}
+      <h1>{{content}}</h1>
+    {{/with}}
   </script>
 
   <script id="new-note-template" type="text/x-handlebars-template">
@@ -221,13 +236,17 @@
       'collections/notes',
       'models/note'
     ], function(lib, App, Notes, Note) {
-      var user, initialNotes, lastNote;
+      var user, initialNotes, currentNote, lastNote;
 
       @user.map { user =>
         user = @Html(json.Json.stringify(user));
       }
 
       initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes.items))))
+
+      @currentNote.map { currentNote =>
+        currentNote = new Note(@Html(json.Json.stringify(currentNote)))
+      }
 
       @lastNote.map { lastNote =>
         lastNote = new Note(@Html(json.Json.stringify(lastNote)));
@@ -236,6 +255,7 @@
       window.App = new App({
         user: user,
         initialNotes: initialNotes,
+        currentNote: currentNote,
         lastNote: lastNote
       });
 

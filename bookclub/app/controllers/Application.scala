@@ -19,31 +19,14 @@ object Assets extends controllers.AssetsBuilder
 object Application extends Controller with BooksClient {
 
   def index(path: String = "") = Action.auth.async { implicit request =>
-    // Notes that should be dispayed initially.
-    val futInitialNotes = jsonClient.find("/notes", "p.limit" -> "20")
-
-    // This user's last note.
-    val futOptLastNote = request.account.flatMap(_.uselessAccessToken).map { accessToken =>
-      jsonClient.find("/notes",
-        "account_guid" -> accessToken.accountId,
-        "p.limit" -> "1"
-      ).map(_.items.headOption)
-    }.getOrElse(Future.successful(None))
-
     for {
-      initialNotes <- futInitialNotes
-      optLastNote <- futOptLastNote
+      initialNotes <- getInitialNotes()
+      optLastNote <- getLastNote()
     } yield Ok(views.html.bookclub.index(
-      // A front-end version of this current, authenticated account.
-      user = request.account.map { account =>
-        Json.obj(
-          "guid" -> account.guid,
-          "handle" -> account.handle,
-          "name" -> account.name
-        )
-      },
+      user = getCurrentUser(),
       initialNotes = initialNotes,
-      lastNote = optLastNote
+      lastNote = optLastNote,
+      currentNote = None
     ))
   }
 
@@ -107,6 +90,27 @@ object Application extends Controller with BooksClient {
   case class Note(guid: UUID, page_number: Int, content: String, edition: Edition, book: Book, created_by: Account)
   implicit val newNote = Json.format[Note]
 
+  def getNote(guid: UUID) = Action.auth.async { implicit request =>
+    val futOptCurrentNote = jsonClient.get(s"/notes/${guid}")
+
+    render.async {
+      case Accepts.Html() => for {
+        initialNotes <- getInitialNotes()
+        optLastNote <- getLastNote()
+        optCurrentNote <- futOptCurrentNote
+      } yield Ok(views.html.bookclub.index(
+        user = getCurrentUser(),
+        initialNotes = initialNotes,
+        lastNote = optLastNote,
+        currentNote = optCurrentNote
+      ))
+
+      case Accepts.Json() => futOptCurrentNote.map { optNote =>
+        optNote.map(Ok(_)).getOrElse(NotFound)
+      }
+    }
+  }
+
   def findNotes = Action.auth.async {
     Future.successful(Ok(Json.arr()))
   }
@@ -166,6 +170,29 @@ object Application extends Controller with BooksClient {
       }
     )
 
+  }
+
+  // A front-end version of this current, authenticated account.
+  private def getCurrentUser()(implicit request: AuthRequest[_]) = {
+    request.account.map { account =>
+      Json.obj(
+        "guid" -> account.guid,
+        "handle" -> account.handle,
+        "name" -> account.name
+      )
+    }
+  }
+
+  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "20")
+
+  // The last note of the current user.
+  private def getLastNote()(implicit request: AuthRequest[_]) = {
+    request.account.flatMap(_.uselessAccessToken).map { accessToken =>
+      jsonClient.find("/notes",
+        "account_guid" -> accessToken.accountId,
+        "p.limit" -> "1"
+      ).map(_.items.headOption)
+    }.getOrElse(Future.successful(None))
   }
 
 }
