@@ -4,6 +4,7 @@ POST    /authors        controllers.bookclub.Application.createAuthor
 GET     /books          controllers.bookclub.Application.findBooks(title = "")
 POST    /books          controllers.bookclub.Application.createBook
 
+GET     /notes/new      controllers.bookclub.Application.index(path = "/notes/new")
 GET     /notes/:guid    controllers.bookclub.Application.getNote(guid: java.util.UUID)
 GET     /notes          controllers.bookclub.Application.findNotes()
 POST    /notes          controllers.bookclub.Application.createNote
