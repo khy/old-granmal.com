@@ -11,7 +11,6 @@ define [
 
     initialize: (opts) ->
       @router = opts.router
-      @mainEl = opts.mainEl
 
     render: ->
       @$el.html Index.template
@@ -25,7 +24,4 @@ define [
     showNote: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
-      note = @collection.get(guid)
-      view = new ShowNote note: note
-      @mainEl.insertView view
-      @router.navigate("notes/#{guid}")
+      @router.showNote @collection.get(guid)

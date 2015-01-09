@@ -12,13 +12,13 @@ define [
     initialize: (opts) ->
       @guid = opts.guid
 
-      @note = opts.note || new Note guid: @guid
-      @listenTo @note, 'change', @render
+      @model = opts.note || new Note guid: @guid
+      @listenTo @model, 'change', @render
 
-      @note.fetch() if !opts.note
+      @model.fetch() if !opts.note
 
     render: ->
       @$el.html ShowNote.template
-        note: @note.toJSON()
+        note: @model.toJSON()
 
       @

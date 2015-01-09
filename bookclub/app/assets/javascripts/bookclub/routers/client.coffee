@@ -14,24 +14,25 @@ define [
     routes:
       ''            : 'index'
       'notes/new'   : 'newNote'
-      'notes/:guid' : 'showNote'
+      'notes/:guid' : '_showNote'
 
     index: ->
-      view = new Index
-        collection: @app.initialNotes
-        router: @app.router
-        mainEl: @app.mainEl
-
+      view = new Index collection: @app.initialNotes, router: @app.router
       @app.mainEl.insertView(view)
 
     newNote: ->
       if @app.user
-        view = new NewNote lastNote: @app.lastNote
+        view = new NewNote lastNote: @app.lastNote, router: @app.router
         @app.mainEl.insertView(view)
       else
         window.location.replace(ServerRouter.signIn().url)
 
-    showNote: (guid) ->
+    showNote: (note) ->
+      view = new ShowNote note: note
+      @app.mainEl.insertView view
+      @navigate("notes/#{note.id}")
+
+    _showNote: (guid) ->
       view = if @app.currentNote?.get("guid") == guid
         new ShowNote note: @app.currentNote
       else

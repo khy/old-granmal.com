@@ -12,11 +12,13 @@ define [
 
     @template: Handlebars.compile($("#new-note-template").html())
 
-    initialize: (options) ->
+    initialize: (opts) ->
       @note = new Note
-      @listenTo @note, 'sync', @setNote
+      @listenTo @note, 'sync', @showNote
 
-      @lastNote = options.lastNote
+      @lastNote = opts.lastNote
+
+      @router = opts.router
 
       if bookAttributes = @lastNote.get("book")
         @selectedBook = new Book(bookAttributes)
@@ -47,6 +49,8 @@ define [
           page_total: parseInt(@input.page_total)
       else
         @render()
+
+    showNote: -> @router.showNote @note
 
     getInput: ->
       book_guid: @selectedBook?.get('guid')
