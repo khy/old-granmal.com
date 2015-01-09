@@ -2,19 +2,20 @@ define [
   'jquery'
   'backbone'
   'handlebars'
-], ($, Backbone, Handlebars, Router) ->
+  'views/show-note'
+], ($, Backbone, Handlebars, ShowNote) ->
 
   class Index extends Backbone.View
 
     @template: Handlebars.compile($("#index-template").html())
 
     initialize: (opts) ->
-      @notes = opts.initialNotes
       @router = opts.router
+      @mainEl = opts.mainEl
 
     render: ->
       @$el.html Index.template
-        notes: @notes.toJSON()
+        notes: @collection.toJSON()
 
       @
 
@@ -24,4 +25,7 @@ define [
     showNote: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
-      @router.navigate "notes/#{guid}", trigger: true
+      note = @collection.get(guid)
+      view = new ShowNote note: note
+      @mainEl.insertView view
+      @router.navigate("notes/#{guid}")

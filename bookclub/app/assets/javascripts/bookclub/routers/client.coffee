@@ -18,8 +18,9 @@ define [
 
     index: ->
       view = new Index
-        initialNotes: @app.initialNotes
-        router: this
+        collection: @app.initialNotes
+        router: @app.router
+        mainEl: @app.mainEl
 
       @app.mainEl.insertView(view)
 
