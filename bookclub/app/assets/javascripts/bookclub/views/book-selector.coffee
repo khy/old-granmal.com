@@ -68,3 +68,7 @@ define [
       @undelegateEvents()
       @newBook.delegateEvents()
       @$el.html @newBook.render(title).el
+
+    remove: ->
+      @newBook.remove()
+      super

@@ -97,3 +97,7 @@ define [
       @bookSelector.undelegateEvents()
       @delegateEvents()
       @render()
+
+    remove: ->
+      @bookSelector.remove()
+      super
