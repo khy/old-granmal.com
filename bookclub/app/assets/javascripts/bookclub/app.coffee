@@ -2,7 +2,8 @@ define [
   'jquery'
   'backbone'
   'routers/client'
-], ($, Backbone, Router) ->
+  'utils/view-el'
+], ($, Backbone, Router, ViewEl) ->
 
   class App
     constructor: (data) ->
@@ -12,7 +13,7 @@ define [
       @currentNote = data.currentNote
       @lastNote = data.lastNote
 
-    mainEl: $("#main")
+    mainEl: new ViewEl $("#main")
 
     init: ->
       Backbone.history.start
