@@ -1,9 +1,11 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
   'handlebars'
+  'moment'
   'models/note'
-], ($, Backbone, Handlebars, Note) ->
+], ($, _, Backbone, Handlebars, Moment, Note) ->
 
   class ShowNote extends Backbone.View
 
@@ -18,7 +20,9 @@ define [
       @model.fetch() if !opts.note
 
     render: ->
+      createdAt = Moment(@model.get("created_at"), Moment.ISO_8601).format("LLL")
+
       @$el.html ShowNote.template
-        note: @model.toJSON()
+        note: _.extend @model.toJSON(), created_at: createdAt
 
       @
