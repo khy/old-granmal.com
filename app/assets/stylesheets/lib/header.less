@@ -14,10 +14,19 @@
     a { text-decoration: none; }
   }
 
-  a {
-    margin: 5px @container-margin 0 0;
+  ul.right-actions {
+    .unstyled-list;
+    margin: 5px (@container-margin / 2) 0 0;
     float: right;
-    color: #000;
+
+    li {
+      float: left;
+
+      a {
+        padding: (@container-margin / 2);
+        &:hover { color: #777; }
+      }
+    }
   }
 
   .affixed {
