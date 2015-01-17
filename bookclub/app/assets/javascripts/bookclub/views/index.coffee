@@ -20,8 +20,13 @@ define [
 
     events:
       'click ol.notes > li': 'showNote'
+      'click a.new-note': 'newNote'
 
     showNote: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
       @router.showNote @collection.get(guid)
+
+    newNote: (e) ->
+      e.preventDefault()
+      @router.newNote()

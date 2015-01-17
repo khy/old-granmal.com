@@ -13,14 +13,16 @@ define [
 
     routes:
       ''            : 'index'
-      'notes/new'   : 'newNote'
+      'notes/new'   : '_newNote'
       'notes/:guid' : '_showNote'
 
     index: ->
       view = new Index collection: @app.initialNotes, router: @app.router
       @app.mainEl.insertView(view)
 
-    newNote: ->
+    newNote: -> @navigate "notes/new", trigger: true
+
+    _newNote: ->
       if @app.user
         view = new NewNote lastNote: @app.lastNote, router: @app.router
         @app.mainEl.insertView(view)
