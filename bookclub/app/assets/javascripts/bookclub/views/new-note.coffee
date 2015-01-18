@@ -37,6 +37,7 @@ define [
     events:
       'focus input[name="book_title"]': 'showBookSelector'
       'submit form': 'createNote'
+      'click a.close': 'close'
 
     createNote: (e) ->
       e.preventDefault()
@@ -101,3 +102,7 @@ define [
     remove: ->
       @bookSelector.remove()
       super
+
+    close: (e) ->
+      e.preventDefault()
+      @trigger 'close'

@@ -4,9 +4,14 @@ define ->
 
     constructor: (@el) ->
 
-    insertView: (view) ->
+    replace: (view, opts = {}) ->
       previousView = @currentView
       @currentView = view
       @currentView.render()
+      @currentView.delegateEvents()
       @el.html @currentView.el
-      previousView?.remove()
+
+      if opts.hard
+        previousView?.remove()
+      else
+        previousView?.undelegateEvents()

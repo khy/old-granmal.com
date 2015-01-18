@@ -17,21 +17,21 @@ define [
       'notes/:guid' : '_showNote'
 
     index: ->
-      view = new Index collection: @app.initialNotes, router: @app.router
-      @app.mainEl.insertView(view)
+      view = new Index collection: @app.initialNotes, app: @app
+      @app.mainEl.replace(view)
 
     newNote: -> @navigate "notes/new", trigger: true
 
     _newNote: ->
       if @app.user
         view = new NewNote lastNote: @app.lastNote, router: @app.router
-        @app.mainEl.insertView(view)
+        @app.mainEl.replace(view)
       else
         window.location.replace(ServerRouter.signIn().url)
 
     showNote: (note) ->
       view = new ShowNote note: note
-      @app.mainEl.insertView view
+      @app.mainEl.replace view
       @navigate("notes/#{note.id}")
 
     _showNote: (guid) ->
@@ -40,4 +40,4 @@ define [
       else
         new ShowNote guid: guid
 
-      @app.mainEl.insertView(view)
+      @app.mainEl.replace(view)

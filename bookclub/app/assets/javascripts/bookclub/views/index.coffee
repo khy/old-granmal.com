@@ -10,7 +10,7 @@ define [
     @template: Handlebars.compile($("#index-template").html())
 
     initialize: (opts) ->
-      @router = opts.router
+      @app = opts.app
 
     render: ->
       @$el.html Index.template
@@ -25,8 +25,13 @@ define [
     showNote: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
-      @router.showNote @collection.get(guid)
+      @app.router.showNote @collection.get(guid)
 
     newNote: (e) ->
       e.preventDefault()
-      @router.newNote()
+      view = @app.newNoteView()
+      @listenTo view, 'close', @closeNewNote
+      @app.mainEl.replace view
+
+    closeNewNote: ->
+      @app.mainEl.replace @, hard: true
