@@ -38,6 +38,7 @@ define [
       'keyup input[name="query"]': 'search'
       'click a.existing-author': 'selectExistingAuthor'
       'click a.new-author': 'addAuthor'
+      'click a.close': 'close'
 
     search: _.debounce ->
       query = @queryInput().val()
@@ -69,3 +70,7 @@ define [
     _addAuthor: _.throttle ->
       @authors.create name: @queryInput().val()
     , 1000
+
+    close: (e) ->
+      e.preventDefault()
+      @trigger 'close'

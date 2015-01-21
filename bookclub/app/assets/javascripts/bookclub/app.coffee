@@ -3,7 +3,6 @@ define [
   'backbone'
   'routers/client'
   'utils/view-el'
-  'views/new-note'
 ], ($, Backbone, Router, ViewEl, NewNote) ->
 
   class App
@@ -15,9 +14,6 @@ define [
       @lastNote = data.lastNote
 
     mainEl: new ViewEl $("#main")
-
-    newNoteView: ->
-      new NewNote lastNote: @lastNote, router: @router
 
     init: ->
       Backbone.history.start

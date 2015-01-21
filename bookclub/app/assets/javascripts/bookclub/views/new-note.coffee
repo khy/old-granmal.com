@@ -12,25 +12,24 @@ define [
 
     @template: Handlebars.compile($("#new-note-template").html())
 
-    initialize: (opts) ->
+    initialize: (opts = {}) ->
       @note = new Note
       @listenTo @note, 'sync', @showNote
 
-      @lastNote = opts.lastNote
+      @app = opts.app
 
-      @router = opts.router
-
-      if bookAttributes = @lastNote.get("book")
+      if bookAttributes = @app.lastNote.get("book")
         @selectedBook = new Book(bookAttributes)
 
-      @bookSelector = new BookSelector()
+      @bookSelector = new BookSelector app: @app
       @listenTo @bookSelector, 'select', @setBook
+      @listenTo @bookSelector, 'close', @closeBookSelector
 
     render: ->
       @$el.html NewNote.template
         bookTitle: @selectedBook?.get('title')
         pageNumber: @input?.page_number
-        pageTotal: @input?.page_total or @lastNote?.get("edition").page_count
+        pageTotal: @input?.page_total or @app.lastNote?.get("edition").page_count
         content: @input?.content
         errors: @errors
 
@@ -51,7 +50,7 @@ define [
       else
         @render()
 
-    showNote: -> @router.showNote @note
+    showNote: -> @app.router.showNote @note
 
     getInput: ->
       book_guid: @selectedBook?.get('guid')
@@ -88,16 +87,15 @@ define [
       errors
 
     showBookSelector: ->
-      @undelegateEvents()
-      @bookSelector.delegateEvents()
-      @$el.html @bookSelector.render().el
+      @app.mainEl.replace @bookSelector
       @bookSelector.focusQueryInput()
 
     setBook: (book) ->
       @selectedBook = book
-      @bookSelector.undelegateEvents()
-      @delegateEvents()
-      @render()
+      @app.mainEl.replace @
+
+    closeBookSelector: ->
+      @app.mainEl.replace @
 
     remove: ->
       @bookSelector.remove()

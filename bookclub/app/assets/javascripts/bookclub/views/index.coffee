@@ -3,7 +3,8 @@ define [
   'backbone'
   'handlebars'
   'views/show-note'
-], ($, Backbone, Handlebars, ShowNote) ->
+  'views/new-note'
+], ($, Backbone, Handlebars, ShowNote, NewNote) ->
 
   class Index extends Backbone.View
 
@@ -37,7 +38,7 @@ define [
 
     newNote: (e) ->
       e.preventDefault()
-      view = @app.newNoteView()
+      view = new NewNote app: @app
       @listenTo view, 'close', @closeNewNote
       @app.mainEl.replace view
 

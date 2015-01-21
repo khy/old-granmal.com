@@ -11,12 +11,15 @@ define [
 
     @template: Handlebars.compile($('#book-selector-template').html())
 
-    initialize: ->
+    initialize: (opts = {}) ->
       @books = new Books
       @listenTo @books, 'reset', @render
 
-      @newBook = new NewBook
+      @app = opts.app
+
+      @newBook = new NewBook app: @app
       @listenTo @newBook, 'create', @selectNewBook
+      @listenTo @newBook, 'close', @closeNewBook
 
     queryInput: -> @$('input[name="query"]')
 
@@ -39,6 +42,7 @@ define [
       'keyup input[name="query"]': 'search'
       'click a.existing-book': 'selectExistingBook'
       'click a.new-book': 'showNewBook'
+      'click a.close': 'close'
 
     search: _.debounce ->
       query = @queryInput().val()
@@ -65,10 +69,16 @@ define [
     showNewBook: (e) ->
       e.preventDefault()
       title = @queryInput().val()
-      @undelegateEvents()
-      @newBook.delegateEvents()
-      @$el.html @newBook.render(title).el
+      @newBook.setTitle(title)
+      @app.mainEl.replace @newBook
+
+    closeNewBook: ->
+      @app.mainEl.replace @
 
     remove: ->
       @newBook.remove()
       super
+
+    close: (e) ->
+      e.preventDefault()
+      @trigger 'close'
