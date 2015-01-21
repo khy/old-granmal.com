@@ -3,9 +3,8 @@ define [
   'backbone'
   'routers/client'
   'utils/view-el'
-  'views/show-note'
   'views/new-note'
-], ($, Backbone, Router, ViewEl, ShowNote, NewNote) ->
+], ($, Backbone, Router, ViewEl, NewNote) ->
 
   class App
     constructor: (data) ->
@@ -16,9 +15,6 @@ define [
       @lastNote = data.lastNote
 
     mainEl: new ViewEl $("#main")
-
-    showNoteView: (note) ->
-      new ShowNote note: note
 
     newNoteView: ->
       new NewNote lastNote: @lastNote, router: @router
