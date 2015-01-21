@@ -2,8 +2,7 @@ define [
   'jquery'
   'backbone'
   'handlebars'
-  'views/show-note'
-], ($, Backbone, Handlebars, ShowNote) ->
+], ($, Backbone, Handlebars) ->
 
   class Index extends Backbone.View
 
@@ -25,7 +24,15 @@ define [
     showNote: (e) ->
       e.preventDefault()
       guid = $(e.currentTarget).data('guid')
-      @app.router.showNote @collection.get(guid)
+      note = @collection.get(guid)
+      view = @app.showNoteView(note)
+      @listenTo view, 'close', @closeShowNote
+      @app.mainEl.replace view
+      @app.router.navigate("notes/#{note.id}")
+
+    closeShowNote: ->
+      @app.mainEl.replace @, hard: true
+      @app.router.navigate("")
 
     newNote: (e) ->
       e.preventDefault()

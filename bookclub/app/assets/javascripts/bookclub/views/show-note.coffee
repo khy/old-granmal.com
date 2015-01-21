@@ -19,6 +19,9 @@ define [
 
       @model.fetch() if !opts.note
 
+    events:
+      'click a.close': 'close'
+
     render: ->
       createdAt = Moment(@model.get("created_at"), Moment.ISO_8601).format("LLL")
 
@@ -26,3 +29,7 @@ define [
         note: _.extend @model.toJSON(), created_at: createdAt
 
       @
+
+    close: (e) ->
+      e.preventDefault()
+      @trigger 'close'
