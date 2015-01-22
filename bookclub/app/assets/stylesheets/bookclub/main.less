@@ -20,12 +20,13 @@ ol.authors, ol.books {
 ol.notes {
   .unstyled-list;
 
-  li {
+  li.note {
     .list-item;
     padding: 10px 20px;
     border-bottom: 1px solid @default-border-color;
     padding-top: 20px;
     padding-bottom: 20px;
+    cursor: pointer;
 
     &:hover {
       background-color: @hover-background-color;
@@ -44,6 +45,13 @@ ol.notes {
         color: @default-text-color;
       }
     }
+  }
+
+  li.load-more > a {
+    .link-list-item;
+    padding: @container-margin;
+    border-bottom: 1px solid @default-border-color;
+    color: @light-text-color;
   }
 }
 

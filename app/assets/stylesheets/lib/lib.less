@@ -34,6 +34,27 @@
   }
 }
 
+.link-list-item {
+  .list-item;
+  text-decoration: none;
+
+  &:hover {
+    background-color: @hover-background-color;
+  }
+
+  p.primary {
+    font-size: @primary-font-size;
+    color: @default-text-color;
+    margin: 0;
+  }
+
+  p.secondary {
+    font-size: @secondary-font-size;
+    color: @light-text-color;
+    margin: 0;
+  }
+}
+
 .standard-list {
   .unstyled-list;
 
@@ -47,24 +68,7 @@
     }
 
     & > a {
-      .list-item;
-      text-decoration: none;
-
-      &:hover {
-        background-color: @hover-background-color;
-      }
-
-      p.primary {
-        font-size: @primary-font-size;
-        color: @default-text-color;
-        margin: 0;
-      }
-
-      p.secondary {
-        font-size: @secondary-font-size;
-        color: @light-text-color;
-        margin: 0;
-      }
+      .link-list-item;
     }
   }
 }

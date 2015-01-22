@@ -10,6 +10,7 @@ define [
       @router = new Router app: @
       @user = data.user
       @initialNotes = data.initialNotes
+      @nextPageQuery = data.nextPageQuery
       @currentNote = data.currentNote
       @lastNote = data.lastNote
 

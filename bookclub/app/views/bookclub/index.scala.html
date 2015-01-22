@@ -1,3 +1,5 @@
+@import com.granmal.helpers.UrlHelper
+
 @(
   user: Option[json.JsObject],
   initialNotes: Page[json.JsValue],
@@ -33,7 +35,7 @@
 
     <ol class="notes">
       {{#each notes}}
-        <li data-guid="{{guid}}">
+        <li class="note" data-guid="{{guid}}">
           <p class="content">{{content}}</p>
           <p class="details">
             {{#if created_by.user.name}}
@@ -50,6 +52,12 @@
           </p>
         </li>
       {{/each}}
+
+      {{#if hasNextPage}}
+        <li class="load-more">
+          <a href="#">Load More</a>
+        </li>
+      {{/if}}
     </ol>
   </script>
 
@@ -306,16 +314,20 @@
       'collections/notes',
       'models/note'
     ], function(lib, App, Notes, Note) {
-      var user, initialNotes, currentNote, lastNote;
+      var user, initialNotes, nextPageQuery, currentNote, lastNote;
 
       @user.map { user =>
         user = @Html(json.Json.stringify(user));
       }
 
-      initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes.items))))
+      initialNotes = new Notes(@Html(json.Json.stringify(json.Json.toJson(initialNotes.items))));
+
+      @initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)).map { next =>
+        nextPageQuery = "@Html(next)";
+      }
 
       @currentNote.map { currentNote =>
-        currentNote = new Note(@Html(json.Json.stringify(currentNote)))
+        currentNote = new Note(@Html(json.Json.stringify(currentNote)));
       }
 
       @lastNote.map { lastNote =>
@@ -325,6 +337,7 @@
       window.App = new App({
         user: user,
         initialNotes: initialNotes,
+        nextPageQuery: nextPageQuery,
         currentNote: currentNote,
         lastNote: lastNote
       });

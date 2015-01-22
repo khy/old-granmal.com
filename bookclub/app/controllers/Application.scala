@@ -111,8 +111,11 @@ object Application extends Controller with BooksClient {
     }
   }
 
-  def findNotes = Action.auth.async {
-    Future.successful(Ok(Json.arr()))
+  def findNotes = Action.auth.async { request =>
+    val query = request.queryString.mapValues { value => value.head }
+    jsonClient.find("/notes", query.toSeq:_*).map { page =>
+      Ok(Json.toJson(page.items))
+    }
   }
 
   def createNote = Action.auth.async(parse.json) { implicit request =>
@@ -183,7 +186,7 @@ object Application extends Controller with BooksClient {
     }
   }
 
-  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "20")
+  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "2")
 
   // The last note of the current user.
   private def getLastNote()(implicit request: AuthRequest[_]) = {

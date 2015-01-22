@@ -1,10 +1,11 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
   'handlebars'
   'views/show-note'
   'views/new-note'
-], ($, Backbone, Handlebars, ShowNote, NewNote) ->
+], ($, _, Backbone, Handlebars, ShowNote, NewNote) ->
 
   class Index extends Backbone.View
 
@@ -12,16 +13,22 @@ define [
 
     initialize: (opts) ->
       @app = opts.app
+      @nextPageQuery = @app.nextPageQuery
+
+      @listenTo @collection, 'add', @render
+      @listenTo @collection, 'change', @render
 
     render: ->
       @$el.html Index.template
         notes: @collection.toJSON()
+        hasNextPage: !_.isUndefined @nextPageQuery
 
       @
 
     events:
-      'click ol.notes > li': 'showNote'
+      'click ol.notes > li.note': 'showNote'
       'click a.new-note': 'newNote'
+      'click li.load-more a': 'loadMore'
 
     showNote: (e) ->
       e.preventDefault()
@@ -44,3 +51,10 @@ define [
 
     closeNewNote: ->
       @app.mainEl.replace @, hard: true
+
+    loadMore: (e) ->
+      e.preventDefault()
+      if !_.isUndefined @nextPageQuery
+        @collection.fetch
+          data: @nextPageQuery
+          remove: false
