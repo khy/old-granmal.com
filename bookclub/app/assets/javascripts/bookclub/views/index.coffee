@@ -54,7 +54,11 @@ define [
 
     loadMore: (e) ->
       e.preventDefault()
+
       if !_.isUndefined @nextPageQuery
-        @collection.fetch
+        jqXHR = @collection.fetch
           data: @nextPageQuery
           remove: false
+
+        jqXHR.done (data, status, jqXHR) =>
+          @nextPageQuery = jqXHR.getResponseHeader("X-Next-Page-Query")

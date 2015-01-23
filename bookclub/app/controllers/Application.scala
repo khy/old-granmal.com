@@ -11,6 +11,7 @@ import io.useless.play.json.account.AccountJson
 
 import com.granmal.auth.AuthRequest
 import com.granmal.auth.AuthAction._
+import com.granmal.helpers.UrlHelper
 
 import clients.bookclub.BooksClient
 
@@ -114,7 +115,12 @@ object Application extends Controller with BooksClient {
   def findNotes = Action.auth.async { request =>
     val query = request.queryString.mapValues { value => value.head }
     jsonClient.find("/notes", query.toSeq:_*).map { page =>
-      Ok(Json.toJson(page.items))
+      val headers = page.next.
+        flatMap { nextUrl => UrlHelper.getRawQueryString(nextUrl) }.
+        map { nextPageQuery => "X-Next-Page-Query" -> nextPageQuery }.
+        toSeq
+
+      Ok(Json.toJson(page.items)).withHeaders(headers:_*)
     }
   }
 
