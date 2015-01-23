@@ -192,7 +192,7 @@ object Application extends Controller with BooksClient {
     }
   }
 
-  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "2")
+  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "10")
 
   // The last note of the current user.
   private def getLastNote()(implicit request: AuthRequest[_]) = {
