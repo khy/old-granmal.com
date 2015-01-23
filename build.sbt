@@ -39,3 +39,5 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 Docker.defaultSettings
 
 Aws.defaultSettings
+
+Deploy.defaultSettings
