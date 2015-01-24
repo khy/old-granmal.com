@@ -1,8 +1,8 @@
 import sbt._
 import Keys._
 
-import Docker.Keys.publishDocker
-import Aws.Keys.deployElasticBeanstalkApplicationVersion
+import Docker.Keys._
+import Aws.Keys._
 
 object Deploy {
 
@@ -20,7 +20,8 @@ object Deploy {
 
     deploy := {
       Def.taskDyn {
-        publishDocker.value
+        pushPublicDockerImage.value
+        buildPrivateDockerfile.value
         Def.task {
           deployElasticBeanstalkApplicationVersion.value
         }
