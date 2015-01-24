@@ -29,9 +29,13 @@ object Aws {
   val defaultSettings = Seq(
 
     deployToAws := {
-      uploadDockerfileToS3.value
-      createElasticBeanstalkApplicationVersion.value
-      deployElasticBeanstalkApplicationVersion.value
+      Def.taskDyn {
+        uploadDockerfileToS3.value
+        Def.taskDyn {
+          createElasticBeanstalkApplicationVersion.value
+          Def.task { deployElasticBeanstalkApplicationVersion.value }
+        }
+      }
     },
 
     uploadDockerfileToS3 := {
