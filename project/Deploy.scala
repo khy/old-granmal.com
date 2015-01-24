@@ -18,10 +18,12 @@ object Deploy {
 
   val defaultSettings = Seq(
 
-    deploy <<= Seq(
-      publishDocker,
-      deployToAws
-    ).dependOn
+    deploy := {
+      for {
+        publish <- publishDocker.taskValue
+        deploy <- deployToAws.taskValue
+      } yield ()
+    }
 
   )
 
