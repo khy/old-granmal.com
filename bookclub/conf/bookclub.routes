@@ -9,7 +9,7 @@ GET     /notes/:guid    controllers.bookclub.Application.getNote(guid: java.util
 GET     /notes          controllers.bookclub.Application.findNotes()
 POST    /notes          controllers.bookclub.Application.createNote
 
-GET     /assets/*file   controllers.bookclub.Assets.at(path = "/public", file)
+GET     /assets/*file   controllers.bookclub.Assets.versioned(path = "/public", file)
 
 GET     /               controllers.bookclub.Application.index(path = "")
 GET     /*path          controllers.bookclub.Application.index(path)
