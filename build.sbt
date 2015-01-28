@@ -32,6 +32,8 @@ resolvers ++= Seq(
   "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
 )
 
+pipelineStages := Seq(rjs, digest, gzip)
+
 scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
