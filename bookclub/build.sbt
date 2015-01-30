@@ -1,6 +1,6 @@
 libraryDependencies ++= Seq(ws) ++ Seq(
   "io.useless"  %% "useless"  % "0.16.0"
-)
+) ++ Defaults.webJarDependencies
 
 pipelineStages := Seq(rjs, digest, gzip)
 

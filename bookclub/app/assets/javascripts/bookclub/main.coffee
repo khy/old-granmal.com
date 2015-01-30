@@ -1,12 +1,12 @@
 requirejs.config
   baseUrl: '/assets/javascripts/bookclub'
   paths:
-    lib: '/assets/javascripts/lib/lib'
-    jquery: '/assets/lib/jquery/jquery'
-    underscore: '/assets/lib/underscorejs/underscore'
-    backbone: '/assets/lib/backbonejs/backbone'
-    handlebars: '/assets/lib/handlebars/handlebars'
-    moment: '/assets/lib/momentjs/moment'
+    lib: 'lib/lib'
+    jquery: '../lib/jquery/jquery'
+    underscore: '../lib/underscorejs/underscore'
+    backbone: '../lib/backbonejs/backbone'
+    handlebars: '../lib/handlebars/handlebars'
+    moment: '../lib/momentjs/moment'
   shim:
     handlebars:
       exports: 'Handlebars'
