@@ -1,13 +1,15 @@
 define [
   'jquery'
   'backbone'
-  'data'
+  'module'
   'lib/page'
   'routers/client'
   'utils/view-el'
   'collections/notes'
   'models/note'
-], ($, Backbone, Data, Page, Router, ViewEl, Notes, Note) ->
+], ($, Backbone, module, Page, Router, ViewEl, Notes, Note) ->
+
+  data = module.config().data
 
   class App
 
@@ -16,15 +18,15 @@ define [
 
     mainEl: new ViewEl $("#main")
 
-    user: Data.user
+    user: data.user
 
-    nextPageQuery: Data.nextPageQuery
+    nextPageQuery: data.nextPageQuery
 
-    initialNotes: new Notes Data.initialNotes
+    initialNotes: new Notes data.initialNotes
 
-    currentNote: new Note Data.currentNote if Data.currentNote
+    currentNote: new Note data.currentNote if data.currentNote
 
-    lastNote: new Note Data.lastNote if Data.lastNote
+    lastNote: new Note data.lastNote if data.lastNote
 
     init: ->
       Page.ensureFullPage()

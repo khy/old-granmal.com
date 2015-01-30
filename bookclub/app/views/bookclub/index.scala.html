@@ -293,44 +293,33 @@
   )
 
   <script>
-    define('routers/server', function() {
-      var app = serverRoutes.controllers.bookclub.Application;
+    var config = {};
 
-      return {
-        signIn: function() {
-          return { url: '/sign-in' };
-        },
-        findNotes: app.findNotes,
-        findAuthors: app.findAuthors,
-        findBooks: app.findBooks,
-        createBook: app.createBook,
-        createNote: app.createNote
-      };
-    });
+    config.serverRouter = serverRoutes.controllers.bookclub.Application;
 
-    define('data', function() {
-      var data = {}
+    config.serverRouter.signIn = function() { return { url: '/sign-in' }; }
 
-      data.initialNotes = @Html(json.Json.stringify(json.Json.toJson(initialNotes.items)));
+    config.data = {};
 
-      @user.map { user =>
-        data.user = @Html(json.Json.stringify(user));
-      }
+    config.data.initialNotes = @Html(json.Json.stringify(json.Json.toJson(initialNotes.items)));
 
-      @initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)).map { next =>
-        data.nextPageQuery = "@Html(next)";
-      }
+    @user.map { user =>
+      config.data.user = @Html(json.Json.stringify(user));
+    }
 
-      @currentNote.map { currentNote =>
-        data.currentNote = @Html(json.Json.stringify(currentNote));
-      }
+    @initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)).map { next =>
+      config.data.nextPageQuery = "@Html(next)";
+    }
 
-      @lastNote.map { lastNote =>
-        data.lastNote = @Html(json.Json.stringify(lastNote));
-      }
+    @currentNote.map { currentNote =>
+      config.data.currentNote = @Html(json.Json.stringify(currentNote));
+    }
 
-      return data;
-    });
+    @lastNote.map { lastNote =>
+      config.data.lastNote = @Html(json.Json.stringify(lastNote));
+    }
+
+    requirejs.config(config);
   </script>
 
 }
