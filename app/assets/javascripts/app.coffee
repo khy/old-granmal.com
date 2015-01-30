@@ -1,4 +1,4 @@
-define ['jquery', 'lib'], ($, lib) ->
+define ['jquery', 'lib/page'], ($, page) ->
 
   resizeMasthead = ->
     $('.masthead .poster').height $(window).height() - 40
@@ -9,5 +9,5 @@ define ['jquery', 'lib'], ($, lib) ->
     $(window).resize -> resizeMasthead()
 
   init: ->
-    lib.ensureFullPage()
+    page.ensureFullPage()
     $(document).ready -> $('.container').addClass('affix-header')

@@ -1,13 +1,13 @@
 define [
   'jquery'
   'backbone'
-  'lib'
   'data'
+  'lib/page'
   'routers/client'
   'utils/view-el'
   'collections/notes'
   'models/note'
-], ($, Backbone, Lib, Data, Router, ViewEl, Notes, Note) ->
+], ($, Backbone, Data, Page, Router, ViewEl, Notes, Note) ->
 
   class App
 
@@ -27,7 +27,7 @@ define [
     lastNote: new Note Data.lastNote if Data.lastNote
 
     init: ->
-      Lib.ensureFullPage()
+      Page.ensureFullPage()
 
       Backbone.history.start
         pushState: true, root: "book-club"
