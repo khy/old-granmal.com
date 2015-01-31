@@ -1,5 +1,5 @@
 requirejs.config
-  baseUrl: '/assets/javascripts/bookclub'
+  baseUrl: '/book-club/assets/javascripts/bookclub'
   paths:
     lib: '../../lib/lib/javascripts'
     jquery: '../../lib/jquery/jquery'
