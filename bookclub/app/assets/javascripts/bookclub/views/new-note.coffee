@@ -18,7 +18,7 @@ define [
 
       @app = opts.app
 
-      if bookAttributes = @app.lastNote.get("book")
+      if bookAttributes = @app.lastNote?.get("book")
         @selectedBook = new Book(bookAttributes)
 
       @bookSelector = new BookSelector app: @app
