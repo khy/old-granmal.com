@@ -12,4 +12,4 @@ requirejs.config
       exports: 'Handlebars'
 
 require ['app'], (app) ->
-  app.init()
+  app.initMasthead()

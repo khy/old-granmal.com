@@ -1,7 +1,3 @@
-@(appKey: Option[String], assetRoute: String => Call)
-
 <footer class="footer">
   &copy; 2014 Kevin Hyland
 </footer>
-
-<script data-main="@assetRoute(s"javascripts/${appKey.map(_ + "/").getOrElse("")}main.js")" src="@assetRoute("javascripts/require.js").url"></script>

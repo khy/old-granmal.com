@@ -4,8 +4,9 @@
   com.granmal.views.html.layout.simpleHead(appKey, assetRoute)
 }
 
-@foot = @{
-  com.granmal.views.html.layout.simpleFooter(appKey, assetRoute)
+@foot = {
+  @com.granmal.views.html.layout.simpleFooter()
+  <script data-main="@assetRoute(s"javascripts/${appKey.map(_ + "/").getOrElse("")}main.js")" src="@assetRoute("javascripts/require.js").url"></script>
 }
 
 @com.granmal.views.html.layout.baseLayout(title)(head)(content)(foot)
