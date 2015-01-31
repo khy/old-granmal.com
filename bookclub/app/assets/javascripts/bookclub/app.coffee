@@ -9,7 +9,7 @@ define [
   'models/note'
 ], ($, Backbone, module, Page, Router, ViewEl, Notes, Note) ->
 
-  data = module.config().data
+  config = module.config()
 
   class App
 
@@ -18,15 +18,15 @@ define [
 
     mainEl: new ViewEl $("#main")
 
-    user: data.user
+    user: config.user
 
-    nextPageQuery: data.nextPageQuery
+    nextPageQuery: config.nextPageQuery
 
-    initialNotes: new Notes data.initialNotes
+    initialNotes: new Notes config.initialNotes
 
-    currentNote: new Note data.currentNote if data.currentNote
+    currentNote: new Note config.currentNote if config.currentNote
 
-    lastNote: new Note data.lastNote if data.lastNote
+    lastNote: new Note config.lastNote if config.lastNote
 
     init: ->
       Page.ensureFullPage()

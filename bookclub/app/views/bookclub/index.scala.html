@@ -292,34 +292,36 @@
     controllers.bookclub.routes.javascript.Application.createNote
   )
 
-  <script>
-    var config = {};
+  <script type="text/javascript">
+    var serverRouter = serverRouter = serverRoutes.controllers.bookclub.Application;
+    serverRouter.signIn = function() { return { url: '/sign-in' }; }
 
-    config.serverRouter = serverRoutes.controllers.bookclub.Application;
+    var app = {};
 
-    config.serverRouter.signIn = function() { return { url: '/sign-in' }; }
-
-    config.data = {};
-
-    config.data.initialNotes = @Html(json.Json.stringify(json.Json.toJson(initialNotes.items)));
+    app.initialNotes = @Html(json.Json.stringify(json.Json.toJson(initialNotes.items)));
 
     @user.map { user =>
-      config.data.user = @Html(json.Json.stringify(user));
+      app.user = @Html(json.Json.stringify(user));
     }
 
     @initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)).map { next =>
-      config.data.nextPageQuery = "@Html(next)";
+      app.nextPageQuery = "@Html(next)";
     }
 
     @currentNote.map { currentNote =>
-      config.data.currentNote = @Html(json.Json.stringify(currentNote));
+      app.currentNote = @Html(json.Json.stringify(currentNote));
     }
 
     @lastNote.map { lastNote =>
-      config.data.lastNote = @Html(json.Json.stringify(lastNote));
+      app.lastNote = @Html(json.Json.stringify(lastNote));
     }
 
-    requirejs.config(config);
+    var require = {
+      config: {
+        'routers/server': serverRouter,
+        'app': app
+      }
+    };
   </script>
 
 }

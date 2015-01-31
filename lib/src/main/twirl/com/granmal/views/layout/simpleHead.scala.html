@@ -1,10 +1,4 @@
 @(appKey: Option[String], assetRoute: String => Call)
 
-@appPath(appKey: Option[String]) = @{
-  appKey.map(_ + "/").getOrElse("")
-}
-
 <link rel="stylesheet" media="screen" href="@assetRoute("lib/normalize.css/normalize.css")">
-<link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/${appPath(appKey)}main.css")">
-
-<script data-main="@assetRoute(s"javascripts/${appPath(appKey)}main.js")" src="@assetRoute("javascripts/require.js").url"></script>
+<link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/${appKey.map(_ + "/").getOrElse("")}main.css")">

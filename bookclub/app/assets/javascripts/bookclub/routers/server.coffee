@@ -1,1 +1,1 @@
-define ['module'], (module) -> module.config().serverRouter
+define ['module'], (module) -> module.config()
