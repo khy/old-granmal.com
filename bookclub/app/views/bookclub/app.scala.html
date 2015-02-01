@@ -9,7 +9,7 @@
   implicit request: play.api.mvc.RequestHeader
 )
 
-@layout {
+@com.granmal.views.html.layout.simpleLayout(Some("bookclub"), "Book Club")(controllers.bookclub.routes.Assets.versioned) {
 
   <div id="main">
   </div>

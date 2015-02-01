@@ -19,11 +19,11 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller with BooksClient {
 
-  def index(path: String = "") = Action.auth.async { implicit request =>
+  def app(path: String = "") = Action.auth.async { implicit request =>
     for {
       initialNotes <- getInitialNotes()
       optLastNote <- getLastNote()
-    } yield Ok(views.html.bookclub.index(
+    } yield Ok(views.html.bookclub.app(
       user = getCurrentUser(),
       initialNotes = initialNotes,
       lastNote = optLastNote,
@@ -99,7 +99,7 @@ object Application extends Controller with BooksClient {
         initialNotes <- getInitialNotes()
         optLastNote <- getLastNote()
         optCurrentNote <- futOptCurrentNote
-      } yield Ok(views.html.bookclub.index(
+      } yield Ok(views.html.bookclub.app(
         user = getCurrentUser(),
         initialNotes = initialNotes,
         lastNote = optLastNote,

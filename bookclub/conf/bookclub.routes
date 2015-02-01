@@ -4,12 +4,12 @@ POST    /authors        controllers.bookclub.Application.createAuthor
 GET     /books          controllers.bookclub.Application.findBooks(title = "")
 POST    /books          controllers.bookclub.Application.createBook
 
-GET     /notes/new      controllers.bookclub.Application.index(path = "/notes/new")
+GET     /notes/new      controllers.bookclub.Application.app(path = "/notes/new")
 GET     /notes/:guid    controllers.bookclub.Application.getNote(guid: java.util.UUID)
 GET     /notes          controllers.bookclub.Application.findNotes()
 POST    /notes          controllers.bookclub.Application.createNote
 
 GET     /assets/*file   controllers.bookclub.Assets.versioned(path = "/public", file)
 
-GET     /               controllers.bookclub.Application.index(path = "")
-GET     /*path          controllers.bookclub.Application.index(path)
+GET     /               controllers.bookclub.Application.app(path = "")
+GET     /*path          controllers.bookclub.Application.app(path)
