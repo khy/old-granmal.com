@@ -1,4 +1,4 @@
-@(appKey: Option[String], title: String = "Gran Mal")(assetRoute: String => Call)(content: Html)
+@(appKey: Option[String], title: String = "Gran Mal")(assetRoute: controllers.Assets.Asset => Call)(content: Html)
 
 @head = @{
   com.granmal.views.html.layout.simpleHead(appKey, assetRoute)

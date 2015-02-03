@@ -13,7 +13,7 @@ POST    /sign-up        controllers.AccountController.create
 
 GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
-GET     /assets/*file   controllers.Assets.versioned(path="/public", file)
+GET     /assets/*file   controllers.Assets.versioned(path="/public", file: Asset)
 
 ->  /haikunst   haikunst.Routes
 ->  /book-club  bookclub.Routes

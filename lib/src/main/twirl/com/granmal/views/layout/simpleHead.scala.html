@@ -1,4 +1,4 @@
-@(appKey: Option[String], assetRoute: String => Call)
+@(appKey: Option[String], assetRoute: controllers.Assets.Asset => Call)
 
 <link rel="stylesheet" media="screen" href="@assetRoute("lib/normalize.css/normalize.css")">
 <link rel="stylesheet" media="screen" href="@assetRoute(s"stylesheets/${appKey.map(_ + "/").getOrElse("")}main.css")">
