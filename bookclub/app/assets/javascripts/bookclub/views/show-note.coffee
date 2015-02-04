@@ -4,7 +4,7 @@ define [
   'backbone'
   'handlebars'
   'moment'
-  'models/note'
+  'bookclub/models/note'
 ], ($, _, Backbone, Handlebars, Moment, Note) ->
 
   class ShowNote extends Backbone.View

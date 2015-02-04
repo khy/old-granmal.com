@@ -4,6 +4,7 @@ import Keys._
 object Defaults {
 
   val webJarDependencies = Seq(
+    "org.webjars"       % "requirejs"      % "2.1.15",
     "org.webjars"       % "jquery"         % "2.1.1",
     "org.webjars"       % "normalize.css"  % "3.0.1",
     "org.webjars"       % "underscorejs"   % "1.7.0",

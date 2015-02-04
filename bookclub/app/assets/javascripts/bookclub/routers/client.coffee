@@ -1,9 +1,9 @@
 define [
   'backbone'
-  'views/index'
-  'views/show-note'
-  'views/new-note'
-  'routers/server'
+  'bookclub/views/index'
+  'bookclub/views/show-note'
+  'bookclub/views/new-note'
+  'bookclub/routers/server'
 ], (Backbone, Index, ShowNote, NewNote, ServerRouter) ->
 
   class ClientRouter extends Backbone.Router

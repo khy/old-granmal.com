@@ -3,8 +3,8 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'collections/books'
-  'views/new-book'
+  'bookclub/collections/books'
+  'bookclub/views/new-book'
 ], ($, _, Backbone, Handlebars, Books, NewBook) ->
 
   class BookSelector extends Backbone.View

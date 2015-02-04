@@ -2,8 +2,8 @@ define [
   'jquery'
   'backbone'
   'handlebars'
-  'models/book'
-  'views/author-selector'
+  'bookclub/models/book'
+  'bookclub/views/author-selector'
 ], ($, Backbone, Handlebars, Book, AuthorSelector) ->
 
   class NewBook extends Backbone.View

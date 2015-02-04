@@ -1,6 +1,6 @@
 define [
   'backbone'
-  'routers/server'
+  'bookclub/routers/server'
 ], (Backbone, ServerRouter) ->
 
   class Note extends Backbone.Model

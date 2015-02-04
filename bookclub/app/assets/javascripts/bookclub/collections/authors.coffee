@@ -1,7 +1,7 @@
 define [
   'backbone'
-  'models/author'
-  'routers/server'
+  'bookclub/models/author'
+  'bookclub/routers/server'
 ], (Backbone, Author, ServerRouter) ->
 
   class Authors extends Backbone.Collection

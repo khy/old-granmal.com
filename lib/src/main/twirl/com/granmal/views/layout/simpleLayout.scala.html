@@ -6,7 +6,7 @@
 
 @foot = {
   @com.granmal.views.html.layout.simpleFooter()
-  <script data-main="@assetRoute(s"javascripts/${appKey.map(_ + "/").getOrElse("")}main.js")" src="@assetRoute("javascripts/require.js").url"></script>
+  <script data-main="@assetRoute(s"javascripts/main${appKey.map("-" + _).getOrElse("")}.js")" src="@assetRoute("lib/requirejs/require.js").url"></script>
 }
 
 @com.granmal.views.html.layout.baseLayout(title)(head)(content)(foot)

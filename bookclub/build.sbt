@@ -15,4 +15,4 @@ TwirlKeys.templateImports := Seq(
   "io.useless.play.client.Page"
 )
 
-RjsKeys.baseUrl := "javascripts/bookclub"
+RjsKeys.mainModule := "main-bookclub"

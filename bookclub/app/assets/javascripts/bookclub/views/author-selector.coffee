@@ -3,7 +3,7 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'collections/authors'
+  'bookclub/collections/authors'
 ], ($, _, Backbone, Handlebars, Authors) ->
 
   class AuthorSelector extends Backbone.View

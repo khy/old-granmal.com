@@ -1,7 +1,7 @@
 define [
   'underscore'
   'backbone'
-  'routers/server'
+  'bookclub/routers/server'
 ], (_, Backbone, ServerRouter) ->
 
   class Book extends Backbone.Model

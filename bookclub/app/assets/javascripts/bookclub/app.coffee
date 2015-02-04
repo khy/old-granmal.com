@@ -3,10 +3,10 @@ define [
   'backbone'
   'module'
   'lib/page'
-  'routers/client'
-  'utils/view-el'
-  'collections/notes'
-  'models/note'
+  'bookclub/routers/client'
+  'bookclub/utils/view-el'
+  'bookclub/collections/notes'
+  'bookclub/models/note'
 ], ($, Backbone, module, Page, Router, ViewEl, Notes, Note) ->
 
   config = module.config()

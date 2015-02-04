@@ -3,8 +3,8 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'views/show-note'
-  'views/new-note'
+  'bookclub/views/show-note'
+  'bookclub/views/new-note'
 ], ($, _, Backbone, Handlebars, ShowNote, NewNote) ->
 
   class Index extends Backbone.View
