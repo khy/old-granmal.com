@@ -11,20 +11,13 @@ lazy val root = (project in file(".")).
   dependsOn(lib, haikunst, bookclub).
   aggregate(lib, haikunst, bookclub)
 
+Defaults.appSettings(appKey = None)
+
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
-  "io.useless"        %% "useless"       % "0.16.0",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m"
-) ++ Defaults.webJarDependencies
-
-resolvers ++= Seq(
-  "Local Ivy"               at "file://" + Path.userHome.absolutePath + "/.ivy2/local",
-  "Sonatype OSS Snapshots"  at "https://oss.sonatype.org/content/repositories/snapshots",
-  "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
 )
-
-pipelineStages := Seq(rjs, digest, gzip)
 
 JsEngineKeys.engineType := JsEngineKeys.EngineType.Node
 
