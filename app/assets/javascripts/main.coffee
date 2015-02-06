@@ -1,5 +1,4 @@
 requirejs.config
-  baseUrl: '/assets/javascripts'
   paths:
     lib: '../lib/lib/javascripts'
     jquery: '../lib/jquery/jquery'

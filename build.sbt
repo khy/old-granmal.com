@@ -11,7 +11,7 @@ lazy val root = (project in file(".")).
   dependsOn(lib, haikunst, bookclub).
   aggregate(lib, haikunst, bookclub)
 
-Defaults.appSettings(appKey = None)
+Defaults.Settings.root
 
 libraryDependencies ++= Seq(
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",

@@ -1,8 +1,7 @@
-val playVersion = "2.3.4"
+Defaults.Settings.base
 
 libraryDependencies ++= Seq(
-  Defaults.Dependencies.useless,
-  "com.typesafe.play" %% "play"          % playVersion,
+  "com.typesafe.play" %% "play"          % "2.3.7",
   "org.reactivemongo" %% "reactivemongo" % "0.10.5.0.akka23",
   "joda-time"         %  "joda-time"     % "2.2",
   "org.mindrot"       %  "jbcrypt"       % "0.3m",
@@ -10,8 +9,6 @@ libraryDependencies ++= Seq(
 ) ++ Seq(
   "org.scalatestplus" %% "play"          % "1.1.0"      % "test"
 )
-
-resolvers ++= Defaults.resolvers
 
 TwirlKeys.templateImports ++= Seq(
   "play.api.mvc._",

@@ -21,24 +21,36 @@ object Defaults {
       "org.webjars"       % "momentjs"       % "2.8.3"
     )
 
+    val resolvers = Seq(
+      "Local Ivy"               at "file://" + Path.userHome.absolutePath + "/.ivy2/local",
+      "Sonatype OSS Snapshots"  at "https://oss.sonatype.org/content/repositories/snapshots",
+      "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
+    )
+
   }
 
-  val resolvers = Seq(
-    "Local Ivy"               at "file://" + Path.userHome.absolutePath + "/.ivy2/local",
-    "Sonatype OSS Snapshots"  at "https://oss.sonatype.org/content/repositories/snapshots",
-    "Sonatype OSS Releases"   at "https://oss.sonatype.org/content/groups/public"
-  )
+  object Settings {
 
-  def appSettings(appKey: Option[String]) = Seq(
+    val base = Seq(
 
-    libraryDependencies ++= Seq(Dependencies.useless) ++ Dependencies.webJars,
+      libraryDependencies ++= Seq(Dependencies.useless) ++ Dependencies.webJars,
 
-    Keys.resolvers ++= Defaults.resolvers,
+      Keys.resolvers ++= Dependencies.resolvers
 
-    pipelineStages := Seq(rjs, digest, gzip),
+    )
 
-    RjsKeys.mainModule := appKey map { appKey => s"main-${appKey}" } getOrElse("main")
+    val root = Settings.base ++ Seq(
 
-  )
+      pipelineStages := Seq(rjs, digest, gzip)
+
+    )
+
+    def app(appKey: String) = Settings.root ++ Seq(
+
+      RjsKeys.mainModule := s"main-$appKey"
+
+    )
+
+  }
 
 }

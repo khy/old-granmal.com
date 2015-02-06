@@ -1,4 +1,4 @@
-Defaults.appSettings(appKey = Some("bookclub"))
+Defaults.Settings.app("bookclub")
 
 TwirlKeys.templateImports := Seq(
   "play.api.libs.json",
