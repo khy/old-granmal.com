@@ -13,5 +13,6 @@ define [
     mainEl: new ViewEl $("#main")
 
     init: ->
-      Page.ensureFullPage()
-      Backbone.history.start pushState: true
+      $(document).ready ->
+        Page.ensureFullPage()
+        Backbone.history.start pushState: true

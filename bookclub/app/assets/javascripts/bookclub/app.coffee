@@ -29,7 +29,6 @@ define [
     lastNote: new Note config.lastNote if config.lastNote
 
     init: ->
-      Page.ensureFullPage()
-
-      Backbone.history.start
-        pushState: true, root: "book-club"
+      $(document).ready ->
+        Page.ensureFullPage()
+        Backbone.history.start root: "book-club", pushState: true
