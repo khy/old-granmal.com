@@ -41,7 +41,9 @@ object Defaults {
 
     val root = Settings.base ++ Seq(
 
-      pipelineStages := Seq(rjs, digest, gzip)
+      pipelineStages := Seq(rjs, digest, gzip),
+
+      includeFilter in rjs := GlobFilter("*.js") | GlobFilter("*.css") | GlobFilter("*.map") | GlobFilter("*.hbs")
 
     )
 

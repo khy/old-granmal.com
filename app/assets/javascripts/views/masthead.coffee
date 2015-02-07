@@ -2,11 +2,12 @@ define [
   'backbone'
   'handlebars'
   'views/apps'
-], (Backbone, Handlebars, Apps) ->
+  'text!templates/masthead.hbs'
+], (Backbone, Handlebars, Apps, template) ->
 
   class Masthead extends Backbone.View
 
-    @template: Handlebars.compile($("#masthead-template").html())
+    @template: Handlebars.compile(template)
 
     initialize: (opts) ->
       @app = opts.app

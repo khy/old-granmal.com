@@ -6,6 +6,7 @@ requirejs.config
     backbone: '../lib/backbonejs/backbone'
     handlebars: '../lib/handlebars/handlebars'
     moment: '../lib/momentjs/moment'
+    text: 'requirejs/text'
   shim:
     handlebars:
       exports: 'Handlebars'

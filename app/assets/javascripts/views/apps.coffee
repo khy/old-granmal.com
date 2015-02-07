@@ -1,11 +1,12 @@
 define [
   'backbone'
   'handlebars'
-], (Backbone, Handlebars) ->
+  'text!templates/apps.hbs'
+], (Backbone, Handlebars, template) ->
 
   class Apps extends Backbone.View
 
-    @template: Handlebars.compile($("#apps-template").html())
+    @template: Handlebars.compile(template)
 
     render: ->
       @$el.html Apps.template
