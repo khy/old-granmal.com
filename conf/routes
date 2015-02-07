@@ -1,4 +1,3 @@
-GET     /               controllers.IndexController.index
 GET     /masthead       controllers.IndexController.masthead
 GET     /apps           controllers.IndexController.apps
 
@@ -14,6 +13,9 @@ POST    /sign-up        controllers.AccountController.create
 GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 
 GET     /assets/*file   controllers.Assets.versioned(path="/public", file: Asset)
+
+GET     /               controllers.Application.app(path = "")
+GET     /*path          controllers.Application.app(path)
 
 ->  /haikunst   haikunst.Routes
 ->  /book-club  bookclub.Routes

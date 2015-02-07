@@ -1,13 +1,17 @@
-define ['jquery', 'lib/page'], ($, page) ->
+define [
+  'jquery',
+  'lib/page'
+  'lib/view-el'
+  'router/client'
+], ($, Page, ViewEl, Router) ->
 
-  resizeMasthead = ->
-    $('.masthead .poster').height $(window).height() - 40
+  class App
 
-  initMasthead: ->
-    document.ontouchmove = (e) -> e.preventDefault()
-    $(document).ready -> resizeMasthead()
-    $(window).resize -> resizeMasthead()
+    constructor: ->
+      @router = new Router app: @
 
-  init: ->
-    page.ensureFullPage()
-    $(document).ready -> $('.container').addClass('affix-header')
+    mainEl: new ViewEl $("#main")
+
+    init: ->
+      Page.ensureFullPage()
+      Backbone.history.start pushState: true

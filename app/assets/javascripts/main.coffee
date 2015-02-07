@@ -10,5 +10,6 @@ requirejs.config
     handlebars:
       exports: 'Handlebars'
 
-require ['app'], (app) ->
-  app.init()
+require ['app'], (App) ->
+  window.App = new App
+  window.App.init()

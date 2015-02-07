@@ -1,0 +1,38 @@
+@com.granmal.views.html.layout.simpleLayout(None, "Gran Mal")(controllers.routes.Assets.versioned) {
+
+  <div id="main">
+  </div>
+
+  <script id="masthead-template" type="text/x-handlebars-template">
+    <a href="/apps" class="masthead-link">
+      <div class="masthead">
+        <div class="poster">
+          <h1>Gran Mal</h1>
+          <h2>App Log</h2>
+        </div>
+      </div>
+    </a>
+  </script>
+
+  <script id="apps-template" type="text/x-handlebars-template">
+    <div class="header">
+      <h1>Gran Mal</h1>
+
+      <ul class="right-actions">
+        <li>
+          <a href="#"><span class="glyphicon glyphicon-th"></span></a>
+        </li>
+      </ul>
+    </div>
+
+    <ol class="apps">
+      <li>
+        <a href="haikunst">
+          <p class="primary">Haikunst!</p>
+          <p class="secondary">Like Twitter. But with haikus. And vaguely German?</p>
+        </a>
+      </li>
+    </ol>
+  </script>
+
+}
