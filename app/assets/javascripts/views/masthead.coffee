@@ -1,11 +1,16 @@
 define [
   'backbone'
   'handlebars'
-], (Backbone, Handlebars) ->
+  'views/apps'
+], (Backbone, Handlebars, Apps) ->
 
   class Masthead extends Backbone.View
 
     @template: Handlebars.compile($("#masthead-template").html())
+
+    initialize: (opts) ->
+      @app = opts.app
+      @apps = new Apps
 
     render: ->
       @$el.html Masthead.template
@@ -14,3 +19,10 @@ define [
 
     afterInsert: (el) ->
       @$('.masthead .poster').height el.height() - 40
+
+    events:
+      'click': 'showApps'
+
+    showApps: (e) ->
+      e.preventDefault()
+      @app.mainEl.replace @apps

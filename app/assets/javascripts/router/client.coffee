@@ -12,5 +12,5 @@ define [
       '' : 'masthead'
 
     masthead: ->
-      view = new Masthead
+      view = new Masthead app: @app
       @app.mainEl.replace(view)
