@@ -5,6 +5,7 @@ define ->
     constructor: (@el) ->
 
     replace: (view, opts = {}) ->
+      view.beforeInsert?(@el)
       previousView = @currentView
       @currentView = view
       @currentView.render()
@@ -15,3 +16,6 @@ define ->
         previousView?.remove()
       else
         previousView?.undelegateEvents()
+
+      @currentView.afterInsert?(@el)
+      @currentView

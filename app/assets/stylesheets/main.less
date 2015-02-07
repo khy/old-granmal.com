@@ -6,40 +6,36 @@
   .container.affix-header()
 }
 
-a {
-  text-decoration: none;
+.masthead {
+  padding: @container-margin @container-margin;
 
-  .masthead {
-    padding: @container-margin @container-margin;
+  .poster {
+    background: url(/assets/images/bad-ass.jpg) no-repeat center top content-box;
+    background-size: cover;
+    height: 420px; // optimize for iPhone
 
-    .poster {
-      background: url(/assets/images/bad-ass.jpg) no-repeat center top content-box;
-      background-size: cover;
-      height: 420px; // optimize for iPhone
+    h1, h2 {
+      margin: 0;
+      color: #000;
+      font-size: 8em;
+      font-weight: 100;
+      text-align: center;
+      text-transform: uppercase;
+    }
 
-      h1, h2 {
-        margin: 0;
-        color: #000;
-        font-size: 8em;
-        font-weight: 100;
-        text-align: center;
-        text-transform: uppercase;
-      }
-
-      .set-responsive-header-font-size(@max-width, @font-size) {
-        @media all and (max-width: @max-width) {
-          h1, h2 {
-            font-size: @font-size;
-          }
+    .set-responsive-header-font-size(@max-width, @font-size) {
+      @media all and (max-width: @max-width) {
+        h1, h2 {
+          font-size: @font-size;
         }
       }
-
-      .set-responsive-header-font-size(720px, 7em);
-      .set-responsive-header-font-size(635px, 6em);
-      .set-responsive-header-font-size(550px, 5em);
-      .set-responsive-header-font-size(470px, 4em);
-      .set-responsive-header-font-size(385px, 3em);
     }
+
+    .set-responsive-header-font-size(720px, 7em);
+    .set-responsive-header-font-size(635px, 6em);
+    .set-responsive-header-font-size(550px, 5em);
+    .set-responsive-header-font-size(470px, 4em);
+    .set-responsive-header-font-size(385px, 3em);
   }
 }
 
