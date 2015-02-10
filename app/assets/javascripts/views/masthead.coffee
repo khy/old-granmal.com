@@ -11,7 +11,7 @@ define [
 
     initialize: (opts) ->
       @app = opts.app
-      @apps = new Apps
+      @apps = new Apps app: @app
 
     render: ->
       @$el.html Masthead.template
@@ -26,4 +26,4 @@ define [
 
     showApps: (e) ->
       e.preventDefault()
-      @app.mainEl.replace @apps
+      @app.mainEl.replace @apps, hard: true
