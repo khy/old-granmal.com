@@ -12,6 +12,7 @@ import io.useless.play.json.account.AccountJson
 import com.granmal.auth.AuthRequest
 import com.granmal.auth.AuthAction._
 import com.granmal.helpers.UrlHelper
+import com.granmal.models.account.PublicAccount.Json._
 
 import clients.bookclub.BooksClient
 
@@ -24,7 +25,7 @@ object Application extends Controller with BooksClient {
       initialNotes <- getInitialNotes()
       optLastNote <- getLastNote()
     } yield Ok(views.html.bookclub.app(
-      user = getCurrentUser(),
+      user = getCurrentAccount(),
       initialNotes = initialNotes,
       lastNote = optLastNote,
       currentNote = None
@@ -100,7 +101,7 @@ object Application extends Controller with BooksClient {
         optLastNote <- getLastNote()
         optCurrentNote <- futOptCurrentNote
       } yield Ok(views.html.bookclub.app(
-        user = getCurrentUser(),
+        user = getCurrentAccount(),
         initialNotes = initialNotes,
         lastNote = optLastNote,
         currentNote = optCurrentNote
@@ -182,14 +183,8 @@ object Application extends Controller with BooksClient {
   }
 
   // A front-end version of this current, authenticated account.
-  private def getCurrentUser()(implicit request: AuthRequest[_]) = {
-    request.account.map { account =>
-      Json.obj(
-        "guid" -> account.guid,
-        "handle" -> account.handle,
-        "name" -> account.name
-      )
-    }
+  private def getCurrentAccount()(implicit request: AuthRequest[_]) = {
+    request.account.map { account => Json.toJson(account.toPublic).as[JsObject] }
   }
 
   private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "10")

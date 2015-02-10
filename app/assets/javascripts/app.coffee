@@ -1,9 +1,12 @@
 define [
-  'jquery',
+  'jquery'
+  'module'
   'lib/page'
   'lib/view-el'
   'router/client'
-], ($, Page, ViewEl, Router) ->
+], ($, module, Page, ViewEl, Router) ->
+
+  config = module.config()
 
   class App
 
@@ -11,6 +14,8 @@ define [
       @router = new Router app: @
 
     mainEl: new ViewEl $("#main")
+
+    account: config.account
 
     init: ->
       $(document).ready ->

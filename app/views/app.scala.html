@@ -1,6 +1,24 @@
+@(optAccount: Option[com.granmal.models.account.PublicAccount])
+
+@import com.granmal.models.account.PublicAccount.Json._
+
 @com.granmal.views.html.layout.simpleLayout(None, "Gran Mal")(controllers.routes.Assets.versioned) {
 
   <div id="main">
   </div>
+
+  <script type="text/javascript">
+    var app = {};
+
+    @optAccount.map { account =>
+      app.account = Json.stringify(Json.toJson(account))
+    }
+
+    var require = {
+      config: {
+        'app': app
+      }
+    };
+  </script>
 
 }

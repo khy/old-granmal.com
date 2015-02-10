@@ -2,15 +2,16 @@ define [
   'backbone'
   'handlebars'
   'text!templates/apps.hbs'
+  'module'
   'views/menu'
-], (Backbone, Handlebars, template, Menu) ->
+], (Backbone, Handlebars, template, module, Menu) ->
 
   class Apps extends Backbone.View
 
     initialize: (opts) ->
       @app = opts.app
 
-      @menu = new Menu
+      @menu = new Menu app: @app
       @listenTo @menu, 'close', @closeMenu
 
     @template: Handlebars.compile(template)

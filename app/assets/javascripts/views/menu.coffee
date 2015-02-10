@@ -6,10 +6,13 @@ define [
 
   class Menu extends Backbone.View
 
-    @template: Handlebars.compile(template)
+    initialize: (opts) ->
+      @app = opts.app
+
+    @template: Handlebars.compile template
 
     render: ->
-      @$el.html Menu.template
+      @$el.html Menu.template account: @app.account
       @
 
     events:
