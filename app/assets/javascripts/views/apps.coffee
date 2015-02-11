@@ -2,9 +2,8 @@ define [
   'backbone'
   'handlebars'
   'text!templates/apps.hbs'
-  'module'
   'views/menu'
-], (Backbone, Handlebars, template, module, Menu) ->
+], (Backbone, Handlebars, template, Menu) ->
 
   class Apps extends Backbone.View
 

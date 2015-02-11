@@ -1,21 +1,28 @@
 define [
   'jquery'
+  'backbone'
   'module'
   'lib/page'
   'lib/view-el'
   'router/client'
-], ($, module, Page, ViewEl, Router) ->
+  'views/sign-in'
+], ($, Backbone, module, Page, ViewEl, Router, SignIn) ->
 
   config = module.config()
 
-  class App
+  class App extends Backbone.Events
 
     constructor: ->
       @router = new Router app: @
 
-    mainEl: new ViewEl $("#main")
+      @account = config.account
 
-    account: config.account
+      @signInForm = new SignIn app: @
+      @signInForm.on 'signIn', @setAccount
+
+    setAccount: (account) -> @account = account
+
+    mainEl: new ViewEl $("#main")
 
     init: ->
       $(document).ready ->
