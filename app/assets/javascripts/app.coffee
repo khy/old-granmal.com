@@ -6,8 +6,8 @@ define [
   'lib/view-el'
   'router/client'
   'utils/session'
-  'views/sign-in'
-], ($, Backbone, module, Page, ViewEl, Router, Session, SignIn) ->
+  'views/auth'
+], ($, Backbone, module, Page, ViewEl, Router, Session, Auth) ->
 
   config = module.config()
 
@@ -16,7 +16,7 @@ define [
     constructor: ->
       @router = new Router app: @
       @session = new Session config.account
-      @signInForm = new SignIn session: @session
+      @authView = new Auth session: @session
 
     mainEl: new ViewEl $("#main")
 

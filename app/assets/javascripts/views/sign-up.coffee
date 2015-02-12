@@ -2,10 +2,10 @@ define [
   'jquery'
   'backbone'
   'handlebars'
-  'text!templates/sign-in.hbs'
+  'text!templates/sign-up.hbs'
 ], ($, Backbone, Handlebars, template) ->
 
-  class SignIn extends Backbone.View
+  class SignUp extends Backbone.View
 
     @template: Handlebars.compile template
 
@@ -13,28 +13,30 @@ define [
       @session = opts.session
 
     render: ->
-      @$el.html SignIn.template
+      @$el.html SignUp.template
       @
 
     events:
-      'submit form': 'signIn'
-      'click a.sign-up': 'showSignUp'
+      'submit form': 'signUp'
+      'click a.sign-in': 'showSignIn'
       'click a.close': 'close'
 
-    signIn: (e) ->
+    signUp: (e) ->
       e.preventDefault()
 
-      jqxhr = $.post '/sign-in',
-        email: @$("#email").val()
-        password: @$("#password").val()
+      jqxhr = $.post '/sign-up',
+        email: @$('#email').val()
+        password: @$('#password').val()
+        handle: @$('#handle').val()
+        name: @$('#name').val()
 
       jqxhr.done (account) =>
         @session.create account
         @trigger 'close'
 
-    showSignUp: (e) ->
+    showSignIn: (e) ->
       e.preventDefault()
-      @trigger 'showSignUp'
+      @trigger 'showSignIn'
 
     close: (e) ->
       e.preventDefault()

@@ -8,7 +8,7 @@
   </ul>
 </div>
 
-<form action="/sign-in" method="POST" >
+<form action="/sign-up" method="POST" >
 
   <div class="field">
     <input type="email" name="email" id="email" placeholder="Email">
@@ -18,10 +18,18 @@
     <input type="password" name="password" id="password" placeholder="Password">
   </div>
 
-  <button type="submit">Sign In</button>
+  <div class="field">
+    <input type="text" name="handle" id="handle" placeholder="Username">
+  </div>
+
+  <div class="field">
+    <input type="text" name="name" id="name" placeholder="Full Name">
+  </div>
+
+  <button type="submit">Sign Up</button>
 
   <ul class="alternate-actions">
-    <li><a class="sign-up" href="#">Sign Up</a></li>
+    <li><a class="sign-in" href="#">Sign In</a></li>
   </ul>
 
 </form>

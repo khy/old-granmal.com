@@ -3,8 +3,7 @@ define [
   'backbone'
   'handlebars'
   'text!templates/menu.hbs'
-  'views/sign-in'
-], ($, Backbone, Handlebars, template, SignIn) ->
+], ($, Backbone, Handlebars, template) ->
 
   class Menu extends Backbone.View
 
@@ -14,22 +13,22 @@ define [
       @app = opts.app
 
       @listenTo @app.session, 'all', @render
-      @listenTo @app.signInForm, 'close', @closeSignIn
+      @listenTo @app.authView, 'close', @closeAuthView
 
     render: ->
       @$el.html Menu.template account: @app.session.account
       @
 
     events:
-      'click a.sign-in': 'showSignIn'
+      'click a.sign-in': 'showAuthView'
       'click a.sign-out': 'signOut'
       'click a.close': 'close'
 
-    showSignIn: (e) ->
+    showAuthView: (e) ->
       e.preventDefault()
-      @app.mainEl.replace @app.signInForm
+      @app.mainEl.replace @app.authView
 
-    closeSignIn: ->
+    closeAuthView: ->
       @app.mainEl.replace @
 
     signOut: (e) ->
