@@ -5,22 +5,18 @@ define [
   'lib/page'
   'lib/view-el'
   'router/client'
+  'utils/session'
   'views/sign-in'
-], ($, Backbone, module, Page, ViewEl, Router, SignIn) ->
+], ($, Backbone, module, Page, ViewEl, Router, Session, SignIn) ->
 
   config = module.config()
 
-  class App extends Backbone.Events
+  class App
 
     constructor: ->
       @router = new Router app: @
-
-      @account = config.account
-
-      @signInForm = new SignIn app: @
-      @signInForm.on 'signIn', @setAccount
-
-    setAccount: (account) -> @account = account
+      @session = new Session config.account
+      @signInForm = new SignIn session: @session
 
     mainEl: new ViewEl $("#main")
 

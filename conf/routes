@@ -2,7 +2,7 @@ GET     /menu           controllers.MenuController.main
 
 GET     /sign-in        controllers.SessionController.form
 POST    /sign-in        controllers.SessionController.create
-GET     /sign-out       controllers.SessionController.delete
+DELETE  /session        controllers.SessionController.delete
 
 GET     /sign-up        controllers.AccountController.form
 POST    /sign-up        controllers.AccountController.create

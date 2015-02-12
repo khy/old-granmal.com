@@ -3,10 +3,12 @@ package controllers
 import scala.concurrent.Future
 import play.api._
 import play.api.mvc._
+import play.api.libs.json._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+import com.granmal.models.account.PublicAccount.Json._
 import com.granmal.auth.AuthKeys
 import com.granmal.models.account.Account
 
@@ -28,23 +30,15 @@ object SessionController extends Controller {
   def create = Action.async { implicit request =>
     signInForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(UnprocessableEntity(views.html.session.form(formWithErrors)))
+        Future.successful(UnprocessableEntity("Invalid data"))
       },
       signInData => {
         Account.auth(signInData.email, signInData.password).map { optAccount =>
           optAccount.map { account =>
-            val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
-              map(_.value).getOrElse("/")
-
-            Redirect(redirectPath).
-              withSession(request.session + (AuthKeys.session -> account.guid.toString)).
-              discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
-              flashing("success" -> "Signed in successfully")
+            Ok(Json.toJson(account.toPublic)).
+              withSession(request.session + (AuthKeys.session -> account.guid.toString))
           }.getOrElse {
-            val formWithError = signInForm.fill(signInData).
-              withGlobalError("Invalid email / password combination")
-
-            Unauthorized(views.html.session.form(formWithError))
+            Unauthorized("Invalid email / password combination")
           }
         }
       }
@@ -52,9 +46,7 @@ object SessionController extends Controller {
   }
 
   def delete = Action { implicit request =>
-    Redirect("/").
-      withSession(request.session - AuthKeys.session).
-      flashing("success" -> "You have been signed out.")
+    NoContent.withSession(request.session - AuthKeys.session)
   }
 
 }

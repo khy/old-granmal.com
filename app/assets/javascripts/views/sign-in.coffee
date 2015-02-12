@@ -1,15 +1,16 @@
 define [
+  'jquery'
   'backbone'
   'handlebars'
   'text!templates/sign-in.hbs'
-], (Backbone, Handlebars, template) ->
+], ($, Backbone, Handlebars, template) ->
 
   class SignIn extends Backbone.View
 
     @template: Handlebars.compile template
 
     initialize: (opts) ->
-      @app = opts.app
+      @session = opts.session
 
     render: ->
       @$el.html SignIn.template
@@ -22,11 +23,13 @@ define [
     signIn: (e) ->
       e.preventDefault()
 
-      opts =
+      jqxhr = $.post '/sign-in',
         email: @$("#email").val()
         password: @$("#password").val()
 
-      console.log opts
+      jqxhr.done (account) =>
+        @session.create account
+        @trigger 'close'
 
     close: (e) ->
       e.preventDefault()

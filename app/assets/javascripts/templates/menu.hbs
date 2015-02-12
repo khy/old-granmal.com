@@ -10,11 +10,11 @@
 
 {{#if account}}
   <ul class="menu">
-    <li class="header">Signed in as <strong>{{this}}</strong></li>
-    <li><a href="#">Sign Out</a></li>
+    <li class="header">Signed in as <strong>{{account.name}}</strong></li>
+    <li><a class="sign-out" href="#">Sign Out</a></li>
   </ul>
 {{else}}
   <ul class="menu">
-    <li><a href="#" class="sign-in">Sign In</a></li>
+    <li><a class="sign-in" href="#">Sign In</a></li>
   </ul>
 {{/if}}
