@@ -3,12 +3,15 @@ package controllers
 import scala.concurrent.Future
 import play.api._
 import play.api.mvc._
+import play.api.libs.json._
 import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 
+import com.granmal.models.account.PublicAccount.Json._
 import com.granmal.auth.AuthKeys
 import com.granmal.models.account.Account
+
 import clients.useless.TrustedUselessClient
 import services.UselessAccessTokenService
 
@@ -48,8 +51,7 @@ object AccountController extends Controller {
         ).flatMap { result =>
           result.fold(
             error => {
-              val formWithError = signUpForm.fill(signUpData).withGlobalError(error)
-              Future.successful(UnprocessableEntity(views.html.account.form(formWithError)))
+              Future.successful(UnprocessableEntity(error))
             },
             account => {
               val trustedUselessClient = TrustedUselessClient.instance
@@ -61,13 +63,8 @@ object AccountController extends Controller {
                   accessToken => Logger.debug(s"Useless access token ensured [${accessToken.guid}]")
                 )
 
-                val redirectPath = request.cookies.get(AuthKeys.authRedirectPath).
-                  map(_.value).getOrElse("/")
-
-                Redirect(redirectPath).
-                  withSession(request.session + (AuthKeys.session -> account.guid.toString)).
-                  discardingCookies(DiscardingCookie(AuthKeys.authRedirectPath)).
-                  flashing("success" -> "Signed up successfully")
+                Created(Json.toJson(account.toPublic)).
+                  withSession(request.session + (AuthKeys.session -> account.guid.toString))
               }
             }
           )
