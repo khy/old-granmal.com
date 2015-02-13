@@ -11,11 +11,17 @@ define ->
       @currentView.render()
       @currentView.delegateEvents()
       @el.html @currentView.el
+      @currentView.afterInsert?(@el)
 
       if opts.hard
         previousView?.remove()
       else
         previousView?.undelegateEvents()
 
-      @currentView.afterInsert?(@el)
-      @currentView
+      previousView
+
+    clear: ->
+      previousView = @currentView
+      previousView?.undelegateEvents()
+      @currentView = undefined
+      previousView

@@ -1,13 +1,17 @@
 define [
   'backbone'
+  'lib/view-el'
   'views/sign-in'
   'views/sign-up'
-], (Backbone, SignIn, SignUp) ->
+], (Backbone, ViewEl, SignIn, SignUp) ->
 
   class Auth extends Backbone.View
 
+    className: 'auth'
+
     initialize: (opts) ->
       @session = opts.session
+      @viewEl = new ViewEl @$el
 
       @signIn = new SignIn session: @session
       @listenTo @signIn, 'showSignUp', @showSignUp
@@ -18,8 +22,7 @@ define [
       @listenTo @signUp, 'close', @close
 
     render: (view = @signIn) ->
-      view.render()
-      @$el.html view.el
+      @viewEl.replace view
       @
 
     showSignIn: -> @render @signIn
@@ -28,12 +31,6 @@ define [
 
     close: -> @trigger 'close'
 
-    delegateEvents: ->
-      @signIn.delegateEvents()
-      @signUp.delegateEvents()
-      super
-
     remove: ->
-      @signIn.remove()
-      @signUp.remove()
+      @viewEl.clear()
       super

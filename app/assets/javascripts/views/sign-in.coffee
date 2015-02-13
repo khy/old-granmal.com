@@ -9,6 +9,8 @@ define [
 
     @template: Handlebars.compile template
 
+    className: 'sign-in'
+
     initialize: (opts) ->
       @session = opts.session
 
