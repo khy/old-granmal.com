@@ -2,8 +2,9 @@ define [
   'jquery'
   'backbone'
   'handlebars'
+  'routers/server'
   'text!templates/sign-up.hbs'
-], ($, Backbone, Handlebars, template) ->
+], ($, Backbone, Handlebars, ServerRouter, template) ->
 
   class SignUp extends Backbone.View
 
@@ -29,11 +30,12 @@ define [
     signUp: (e) ->
       e.preventDefault()
 
-      jqxhr = $.post '/sign-up',
-        email: @$('#email').val()
-        password: @$('#password').val()
-        handle: @$('#handle').val()
-        name: @$('#name').val()
+      jqxhr = $.ajax _.extend ServerRouter.signUp,
+        data:
+          email: @$('#email').val()
+          password: @$('#password').val()
+          handle: @$('#handle').val()
+          name: @$('#name').val()
 
       jqxhr.done (account) =>
         @session.create account

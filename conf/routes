@@ -1,7 +1,7 @@
-POST    /session        controllers.SessionController.create
-DELETE  /session        controllers.SessionController.delete
+POST    /sessions       controllers.SessionController.create
+DELETE  /sessions       controllers.SessionController.delete
 
-POST    /account        controllers.AccountController.create
+POST    /accounts       controllers.AccountController.create
 
 GET     /oauth/useless  controllers.OAuthController.useless(code: String)
 

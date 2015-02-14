@@ -1,23 +1,19 @@
-@(optAccount: Option[com.granmal.models.account.PublicAccount])
+@import play.api.libs.json.{Json, JsValue}
 
-@import play.api.libs.json._
-@import com.granmal.models.account.PublicAccount.Json._
+@(appConfig: JsValue, javascriptRouter: JavaScript)
 
-@com.granmal.views.html.layout.simpleLayout(None, "Gran Mal")(controllers.routes.Assets.versioned) {
+@com.granmal.views.html.layout.simpleLayout(None, "Gran Mal")(routes.Assets.versioned) {
 
   <div id="main">
   </div>
 
   <script type="text/javascript">
-    var app = {};
-
-    @optAccount.map { account =>
-      app.account = @Html(Json.stringify(Json.toJson(account)))
-    }
+    @Html(javascriptRouter.body)
 
     var require = {
       config: {
-        'app': app
+        'app': @Html(Json.stringify(appConfig)),
+        'routers/server': Router.controllers
       }
     };
   </script>

@@ -2,8 +2,9 @@ define [
   'jquery'
   'backbone'
   'handlebars'
+  'routers/server'
   'text!templates/menu.hbs'
-], ($, Backbone, Handlebars, template) ->
+], ($, Backbone, Handlebars, ServerRouter, template) ->
 
   class Menu extends Backbone.View
 
@@ -33,7 +34,7 @@ define [
 
     signOut: (e) ->
       e.preventDefault()
-      jqxhr = $.ajax type: 'DELETE', url: '/session'
+      jqxhr = ServerRouter.signOut.ajax()
       jqxhr.done =>
         @app.session.destroy()
         @trigger 'close'

@@ -4,8 +4,9 @@ define [
   'backbone'
   'handlebars'
   'lib/validation/check'
+  'routers/server'
   'text!templates/sign-in.hbs'
-], ($, _, Backbone, Handlebars, Check, template) ->
+], ($, _, Backbone, Handlebars, Check, ServerRouter, template) ->
 
   class SignIn extends Backbone.View
 
@@ -34,9 +35,7 @@ define [
       @bind()
 
       if _.isEmpty(@errors)
-        jqxhr = $.post '/sign-in',
-          email: @$("#email").val()
-          password: @$("#password").val()
+        jqxhr = $.ajax _.extend ServerRouter.signIn, data: @input
 
         jqxhr.done (account) =>
           @session.create account

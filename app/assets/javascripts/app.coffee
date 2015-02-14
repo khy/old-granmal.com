@@ -4,7 +4,7 @@ define [
   'module'
   'lib/page'
   'lib/view-el'
-  'router/client'
+  'routers/client'
   'utils/session'
   'views/auth'
 ], ($, Backbone, module, Page, ViewEl, Router, Session, Auth) ->
