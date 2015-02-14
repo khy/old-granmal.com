@@ -19,7 +19,7 @@ define [
     navigate: -> @router.navigate 'sign-up'
 
     render: ->
-      @$el.html SignUp.template
+      @$el.html SignUp.template _.extend @input, errors: @errors
       @
 
     events:
@@ -29,17 +29,16 @@ define [
 
     signUp: (e) ->
       e.preventDefault()
+      @bind()
 
-      jqxhr = $.ajax _.extend ServerRouter.signUp,
-        data:
-          email: @$('#email').val()
-          password: @$('#password').val()
-          handle: @$('#handle').val()
-          name: @$('#name').val()
+      if _.isEmpty(@errors)
+        jqxhr = $.ajax _.extend ServerRouter.signUp, data: @input
 
-      jqxhr.done (account) =>
-        @session.create account
-        @trigger 'close'
+        jqxhr.done (account) =>
+          @session.create account
+          @trigger 'close'
+      else
+        @render()
 
     showSignIn: (e) ->
       e.preventDefault()
@@ -48,3 +47,27 @@ define [
     close: (e) ->
       e.preventDefault()
       @trigger 'close'
+
+    bind: ->
+      @input = @getInput()
+      @errors = @validate(@input)
+
+    getInput: ->
+      email: @$('input[name="email"]').val()
+      password: @$('input[name="password"]').val()
+      handle: @$('input[name="handle"]').val()
+      name: @$('input[name="name"]').val()
+
+    validate: (input) ->
+      errors = {}
+
+      if Check.isMissing(input.email)
+        errors.email = 'Email is required.'
+
+      if Check.isMissing(input.password)
+        errors.password = 'Password is required.'
+
+      if Check.isMissing(input.handle)
+        errors.handle = 'Username is required.'
+
+      errors

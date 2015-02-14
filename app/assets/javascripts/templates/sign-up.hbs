@@ -11,19 +11,43 @@
 <form action="/sign-up" method="POST" >
 
   <div class="field">
-    <input type="email" name="email" id="email" placeholder="Email">
+    <input type="email" name="email" placeholder="Email" value="{{email}}">
+
+    {{#if errors.email}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.email}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <div class="field">
-    <input type="password" name="password" id="password" placeholder="Password">
+    <input type="password" name="password" placeholder="Password" value="{{password}}">
+
+    {{#if errors.password}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.password}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <div class="field">
-    <input type="text" name="handle" id="handle" placeholder="Username">
+    <input type="text" name="handle" placeholder="Username" value="{{handle}}">
+
+    {{#if errors.handle}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.handle}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <div class="field">
-    <input type="text" name="name" id="name" placeholder="Full Name">
+    <input type="text" name="name" placeholder="Full Name" value="{{name}}">
+
+    {{#if errors.name}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.name}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <button type="submit">Sign Up</button>
