@@ -33,14 +33,10 @@ object AccountController extends Controller {
     )(SignUpData.apply)(SignUpData.unapply)
   }
 
-  def form = Action { implicit request =>
-    Ok(views.html.account.form(signUpForm))
-  }
-
   def create = Action.async { implicit request =>
     signUpForm.bindFromRequest.fold(
       formWithErrors => {
-        Future.successful(UnprocessableEntity(views.html.account.form(formWithErrors)))
+        Future.successful(UnprocessableEntity("Invalid data"))
       },
       signUpData => {
         Account.create(

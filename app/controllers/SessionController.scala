@@ -23,10 +23,6 @@ object SessionController extends Controller {
     )(SignInData.apply)(SignInData.unapply)
   }
 
-  def form = Action { implicit request =>
-    Ok(views.html.session.form(signInForm))
-  }
-
   def create = Action.async { implicit request =>
     signInForm.bindFromRequest.fold(
       formWithErrors => {
