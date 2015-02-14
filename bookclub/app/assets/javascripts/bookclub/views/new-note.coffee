@@ -5,7 +5,7 @@ define [
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'
-  'bookclub/utils/validation/check'
+  'lib/validation/check'
 ], ($, Backbone, Handlebars, Note, Book, BookSelector, Check) ->
 
   class NewNote extends Backbone.View

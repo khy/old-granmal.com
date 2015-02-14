@@ -1,9 +1,11 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
   'handlebars'
+  'lib/validation/check'
   'text!templates/sign-in.hbs'
-], ($, Backbone, Handlebars, template) ->
+], ($, _, Backbone, Handlebars, Check, template) ->
 
   class SignIn extends Backbone.View
 
@@ -18,7 +20,8 @@ define [
     navigate: -> @router.navigate 'sign-in'
 
     render: ->
-      @$el.html SignIn.template
+      input = _.extend @input, errors: @errors
+      @$el.html SignIn.template input
       @
 
     events:
@@ -28,14 +31,18 @@ define [
 
     signIn: (e) ->
       e.preventDefault()
+      @bind()
 
-      jqxhr = $.post '/sign-in',
-        email: @$("#email").val()
-        password: @$("#password").val()
+      if _.isEmpty(@errors)
+        jqxhr = $.post '/sign-in',
+          email: @$("#email").val()
+          password: @$("#password").val()
 
-      jqxhr.done (account) =>
-        @session.create account
-        @trigger 'close'
+        jqxhr.done (account) =>
+          @session.create account
+          @trigger 'close'
+      else
+        @render()
 
     showSignUp: (e) ->
       e.preventDefault()
@@ -44,3 +51,22 @@ define [
     close: (e) ->
       e.preventDefault()
       @trigger 'close'
+
+    bind: ->
+      @input = @getInput()
+      @errors = @validate(@input)
+
+    getInput: ->
+      email: @$('input[name="email"]').val()
+      password: @$('input[name="password"]').val()
+
+    validate: (input) ->
+      errors = {}
+
+      if Check.isMissing(input.email)
+        errors.email = 'Email is required.'
+
+      if Check.isMissing(input.password)
+        errors.password = 'Password is required.'
+
+      errors

@@ -11,11 +11,23 @@
 <form action="/sign-in" method="POST" >
 
   <div class="field">
-    <input type="email" name="email" id="email" placeholder="Email">
+    <input type="email" name="email" placeholder="Email" value="{{email}}">
+
+    {{#if errors.email}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.email}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <div class="field">
-    <input type="password" name="password" id="password" placeholder="Password">
+    <input type="password" name="password" placeholder="Password" value="{{password}}">
+
+    {{#if errors.password}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.password}}</li>
+      </ol>
+    {{/if}}
   </div>
 
   <button type="submit">Sign In</button>
