@@ -16,7 +16,7 @@ define [
     constructor: ->
       @router = new Router app: @
       @session = new Session config.account
-      @authView = new Auth session: @session
+      @authView = new Auth session: @session, router: @router
 
     mainEl: new ViewEl $("#main")
 

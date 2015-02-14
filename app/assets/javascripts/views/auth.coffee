@@ -10,26 +10,29 @@ define [
     className: 'auth'
 
     initialize: (opts) ->
-      @session = opts.session
       @viewEl = new ViewEl @$el
 
-      @signIn = new SignIn session: @session
-      @listenTo @signIn, 'showSignUp', @showSignUp
-      @listenTo @signIn, 'close', @close
+      @signIn = new SignIn opts
+      @listenTo @signIn, 'showSignUp', ->
+        @setView @signUp
+        @render()
+      @listenTo @signIn, 'close', -> @trigger 'close'
 
-      @signUp = new SignUp session: @session
-      @listenTo @signUp, 'showSignIn', @showSignIn
-      @listenTo @signUp, 'close', @close
+      @signUp = new SignUp opts
+      @listenTo @signUp, 'showSignIn', ->
+        @setView @signIn
+        @render()
+      @listenTo @signUp, 'close', -> @trigger 'close'
 
-    render: (view = @signIn) ->
-      @viewEl.replace view
+      @setView @signIn
+
+    render: ->
+      @viewEl.replace @view
+      @view.navigate()
       @
 
-    showSignIn: -> @render @signIn
-
-    showSignUp: -> @render @signUp
-
-    close: -> @trigger 'close'
+    setView: (view) ->
+      @view = view
 
     remove: ->
       @viewEl.clear()

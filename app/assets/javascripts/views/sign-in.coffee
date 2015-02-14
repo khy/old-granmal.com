@@ -13,6 +13,9 @@ define [
 
     initialize: (opts) ->
       @session = opts.session
+      @router = opts.router
+
+    navigate: -> @router.navigate 'sign-in'
 
     render: ->
       @$el.html SignIn.template
