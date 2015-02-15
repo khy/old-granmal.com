@@ -10,45 +10,21 @@
 
 <form action="/sign-up" method="POST" >
 
-  <div class="field">
-    <input type="email" name="email" placeholder="Email" value="{{email}}">
+  {{#field email}}
+    <input type="email" name="email" placeholder="Email" value="{{this}}">
+  {{/field}}
 
-    {{#if errors.email}}
-      <ol class="input-messages">
-        <li class="input-error">{{errors.email}}</li>
-      </ol>
-    {{/if}}
-  </div>
+  {{#field password}}
+    <input type="password" name="password" placeholder="Password" value="{{this}}">
+  {{/field}}
 
-  <div class="field">
-    <input type="password" name="password" placeholder="Password" value="{{password}}">
+  {{#field handle}}
+    <input type="text" name="handle" placeholder="Username" value="{{this}}">
+  {{/field}}
 
-    {{#if errors.password}}
-      <ol class="input-messages">
-        <li class="input-error">{{errors.password}}</li>
-      </ol>
-    {{/if}}
-  </div>
-
-  <div class="field">
-    <input type="text" name="handle" placeholder="Username" value="{{handle}}">
-
-    {{#if errors.handle}}
-      <ol class="input-messages">
-        <li class="input-error">{{errors.handle}}</li>
-      </ol>
-    {{/if}}
-  </div>
-
-  <div class="field">
-    <input type="text" name="name" placeholder="Full Name" value="{{name}}">
-
-    {{#if errors.name}}
-      <ol class="input-messages">
-        <li class="input-error">{{errors.name}}</li>
-      </ol>
-    {{/if}}
-  </div>
+  {{#field name}}
+    <input type="text" name="name" placeholder="Full Name" value="{{this}}">
+  {{/field}}
 
   <button type="submit">Sign Up</button>
 

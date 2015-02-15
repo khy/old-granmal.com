@@ -4,9 +4,12 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/validation/check'
+  'lib/javascripts/form/field'
   'routers/server'
   'text!templates/sign-up.hbs'
-], ($, _, Backbone, Handlebars, Check, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, Field, ServerRouter, template) ->
+
+  Field.registerHelpers Handlebars
 
   class SignUp extends Backbone.View
 
@@ -21,7 +24,8 @@ define [
     navigate: -> @router.navigate 'sign-up'
 
     render: ->
-      @$el.html SignUp.template _.extend @input, errors: @errors
+      context = Field.buildData @input, @errors
+      @$el.html SignUp.template context
       @
 
     events:
@@ -61,15 +65,15 @@ define [
       name: @$('input[name="name"]').val()
 
     validate: (input) ->
-      errors = {}
+      errors = email: [], password: [], handle: []
 
       if Check.isMissing(input.email)
-        errors.email = 'Email is required.'
+        errors.email.push 'Email is required.'
 
       if Check.isMissing(input.password)
-        errors.password = 'Password is required.'
+        errors.password.push 'Password is required.'
 
       if Check.isMissing(input.handle)
-        errors.handle = 'Username is required.'
+        errors.handle.push 'Username is required.'
 
       errors
