@@ -1,10 +1,12 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/validation/check'
   'routers/server'
   'text!templates/sign-up.hbs'
-], ($, Backbone, Handlebars, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, ServerRouter, template) ->
 
   class SignUp extends Backbone.View
 

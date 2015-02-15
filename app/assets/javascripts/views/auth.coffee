@@ -1,6 +1,6 @@
 define [
   'backbone'
-  'lib/view-el'
+  'lib/javascripts/view-el'
   'views/sign-in'
   'views/sign-up'
 ], (Backbone, ViewEl, SignIn, SignUp) ->

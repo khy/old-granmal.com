@@ -1,6 +1,6 @@
 requirejs.config
   paths:
-    lib: '../lib/lib/javascripts'
+    lib: '../lib/lib'
     jquery: '../lib/jquery/jquery'
     underscore: '../lib/underscorejs/underscore'
     backbone: '../lib/backbonejs/backbone'

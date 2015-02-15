@@ -1,0 +1,11 @@
+<div class="field">
+  {{{input}}}
+
+  {{#if errors}}
+    <ol class="input-messages">
+      {{#each errors}}
+        <li class="input-error">{{this}}</li>
+      {{/each}}
+    </ol>
+  {{/if}}
+</div>

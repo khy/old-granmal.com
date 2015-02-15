@@ -3,10 +3,13 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'lib/validation/check'
+  'lib/javascripts/validation/check'
+  'lib/javascripts/form/field'
   'routers/server'
   'text!templates/sign-in.hbs'
-], ($, _, Backbone, Handlebars, Check, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, Field, ServerRouter, template) ->
+
+  Field.registerHelpers Handlebars
 
   class SignIn extends Backbone.View
 
@@ -17,12 +20,14 @@ define [
     initialize: (opts) ->
       @session = opts.session
       @router = opts.router
+      @input = {}
+      @errors = {}
 
     navigate: -> @router.navigate 'sign-in'
 
     render: ->
-      input = _.extend @input, errors: @errors
-      @$el.html SignIn.template input
+      context = Field.buildData @input, @errors
+      @$el.html SignIn.template context
       @
 
     events:
@@ -60,12 +65,12 @@ define [
       password: @$('input[name="password"]').val()
 
     validate: (input) ->
-      errors = {}
+      errors = email: [], password: []
 
       if Check.isMissing(input.email)
-        errors.email = 'Email is required.'
+        errors.email.push 'Email is required.'
 
       if Check.isMissing(input.password)
-        errors.password = 'Password is required.'
+        errors.password.push 'Password is required.'
 
       errors
