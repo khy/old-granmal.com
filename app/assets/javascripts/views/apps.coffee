@@ -9,6 +9,7 @@ define [
 
     initialize: (opts) ->
       @mainEl = opts.mainEl
+      @router = opts.router
       @menuView = new Menu opts
 
       @listenTo @menuView, 'close', @closeMenu
@@ -19,12 +20,16 @@ define [
       @$el.html Apps.template
       @
 
+    navigate: -> @router.navigate ''
+
     events:
       'click a.menu': 'showMenu'
 
     showMenu: (e) ->
       e.preventDefault()
       @mainEl.replace @menuView
+      @menuView.navigate()
 
     closeMenu: ->
       @mainEl.replace @
+      @navigate()

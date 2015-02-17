@@ -14,6 +14,7 @@ define [
     initialize: (opts) ->
       @mainEl = opts.mainEl
       @session = opts.session
+      @router = opts.router
       @authView = new Auth opts
 
       @listenTo @session, 'all', @render
@@ -22,6 +23,8 @@ define [
     render: ->
       @$el.html Menu.template account: @session.account
       @
+
+    navigate: -> @router.navigate 'menu'
 
     events:
       'click a.sign-in': 'showAuthView'
@@ -34,6 +37,7 @@ define [
 
     closeAuthView: ->
       @mainEl.replace @
+      @navigate()
 
     signOut: (e) ->
       e.preventDefault()

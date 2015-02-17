@@ -19,10 +19,15 @@ define [
       '' :       'masthead'
       'sign-in': 'signIn'
       'sign-up': 'signUp'
+      '*path':   'apps'
 
     masthead: ->
       view = new Masthead mainEl: @mainEl, session: @session, router: @
       @mainEl.replace(view)
+
+    apps: ->
+      @mainEl.replace @appsView
+      @appsView.navigate()
 
     signIn: -> @auth 'signIn'
 
@@ -33,5 +38,5 @@ define [
       authView.setView authView[view]
       @listenToOnce authView, 'close', =>
         @mainEl.replace @appsView, hard: true
-        @navigate ''
+        @appsView.navigate()
       @mainEl.replace authView
