@@ -37,7 +37,7 @@ define [
       e.preventDefault()
       @bind()
 
-      if _.isEmpty(@errors)
+      if _.every(@errors, (errors) -> _.isEmpty errors)
         jqxhr = $.ajax _.extend ServerRouter.signUp, data: @input
 
         jqxhr.done (account) =>

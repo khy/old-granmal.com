@@ -3,21 +3,24 @@ define [
   'backbone'
   'handlebars'
   'routers/server'
+  'views/auth'
   'text!templates/menu.hbs'
-], ($, Backbone, Handlebars, ServerRouter, template) ->
+], ($, Backbone, Handlebars, ServerRouter, Auth, template) ->
 
   class Menu extends Backbone.View
 
     @template: Handlebars.compile template
 
     initialize: (opts) ->
-      @app = opts.app
+      @mainEl = opts.mainEl
+      @session = opts.session
+      @authView = new Auth opts
 
-      @listenTo @app.session, 'all', @render
-      @listenTo @app.authView, 'close', @closeAuthView
+      @listenTo @session, 'all', @render
+      @listenTo @authView, 'close', @closeAuthView
 
     render: ->
-      @$el.html Menu.template account: @app.session.account
+      @$el.html Menu.template account: @session.account
       @
 
     events:
@@ -27,18 +30,22 @@ define [
 
     showAuthView: (e) ->
       e.preventDefault()
-      @app.mainEl.replace @app.authView
+      @mainEl.replace @authView
 
     closeAuthView: ->
-      @app.mainEl.replace @
+      @mainEl.replace @
 
     signOut: (e) ->
       e.preventDefault()
       jqxhr = ServerRouter.signOut.ajax()
       jqxhr.done =>
-        @app.session.destroy()
+        @session.destroy()
         @trigger 'close'
 
     close: (e) ->
       e.preventDefault()
       @trigger 'close'
+
+    remove: ->
+      @authView.remove()
+      super

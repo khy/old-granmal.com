@@ -1,12 +1,19 @@
 define [
+  'jquery'
   'backbone'
+  'lib/javascripts/view-el'
+  'utils/session'
   'views/masthead'
-], (Backbone, Masthead) ->
+  'views/apps'
+  'views/auth'
+], ($, Backbone, ViewEl, Session, Masthead, Apps, Auth) ->
 
   class ClientRouter extends Backbone.Router
 
-    initialize: (options) ->
-      @app = options.app
+    initialize: (config) ->
+      @mainEl = new ViewEl $("#main")
+      @session = new Session config.account
+      @appsView = new Apps mainEl: @mainEl, session: @session, router: @
 
     routes:
       '' :       'masthead'
@@ -14,15 +21,17 @@ define [
       'sign-up': 'signUp'
 
     masthead: ->
-      view = new Masthead app: @app
-      @app.mainEl.replace(view)
+      view = new Masthead mainEl: @mainEl, session: @session, router: @
+      @mainEl.replace(view)
 
-    signIn: ->
-      auth = @app.authView
-      auth.setView auth.signIn
-      @app.mainEl.replace auth
+    signIn: -> @auth 'signIn'
 
-    signUp: ->
-      auth = @app.authView
-      auth.setView auth.signUp
-      @app.mainEl.replace auth
+    signUp: -> @auth 'signUp'
+
+    auth: (view) ->
+      authView = new Auth session: @session, router: @
+      authView.setView authView[view]
+      @listenToOnce authView, 'close', =>
+        @mainEl.replace @appsView, hard: true
+        @navigate ''
+      @mainEl.replace authView

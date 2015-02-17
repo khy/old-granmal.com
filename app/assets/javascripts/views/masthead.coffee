@@ -10,8 +10,8 @@ define [
     @template: Handlebars.compile(template)
 
     initialize: (opts) ->
-      @app = opts.app
-      @apps = new Apps app: @app
+      @mainEl = opts.mainEl
+      @appsView = new Apps opts
 
     render: ->
       @$el.html Masthead.template
@@ -26,4 +26,4 @@ define [
 
     showApps: (e) ->
       e.preventDefault()
-      @app.mainEl.replace @apps, hard: true
+      @mainEl.replace @appsView, hard: true

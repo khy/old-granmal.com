@@ -11,6 +11,15 @@ requirejs.config
     handlebars:
       exports: 'Handlebars'
 
-require ['app'], (App) ->
-  window.App = new App
-  window.App.init()
+define 'main', [
+  'jquery'
+  'backbone'
+  'lib/javascripts/page'
+  'module'
+  'routers/client'
+], ($, Backbone, Page, module, ClientRouter) ->
+  window.router = new ClientRouter module.config()
+
+  $(document).ready ->
+    Page.ensureFullPage()
+    Backbone.history.start pushState: true

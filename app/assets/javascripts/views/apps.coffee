@@ -8,10 +8,10 @@ define [
   class Apps extends Backbone.View
 
     initialize: (opts) ->
-      @app = opts.app
+      @mainEl = opts.mainEl
+      @menuView = new Menu opts
 
-      @menu = new Menu app: @app
-      @listenTo @menu, 'close', @closeMenu
+      @listenTo @menuView, 'close', @closeMenu
 
     @template: Handlebars.compile(template)
 
@@ -24,7 +24,7 @@ define [
 
     showMenu: (e) ->
       e.preventDefault()
-      @app.mainEl.replace @menu
+      @mainEl.replace @menuView
 
     closeMenu: ->
-      @app.mainEl.replace @
+      @mainEl.replace @
