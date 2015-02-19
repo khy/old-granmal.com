@@ -24,7 +24,7 @@ define [
       @$el.html Menu.template account: @session.account
       @
 
-    navigate: -> @router.navigate 'menu'
+    navigate: -> @router.navigate ''
 
     events:
       'click a.sign-in': 'showAuthView'
