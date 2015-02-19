@@ -34,6 +34,15 @@ define [
     setView: (view) ->
       @view = view
 
+    delegateEvents: ->
+      @view.delegateEvents()
+      super
+
+    undelegateEvents: ->
+      @view.undelegateEvents()
+      super
+
     remove: ->
-      @viewEl.clear()
+      @signIn.remove()
+      @signUp.remove()
       super
