@@ -1,6 +1,6 @@
 @import play.api.libs.json.{Json, JsValue}
 
-@(appConfig: JsValue, javascriptRouter: JavaScript)
+@(bootstrap: JsValue, javascriptRouter: JavaScript)
 
 @com.granmal.views.html.layout.simpleLayout(None, "Gran Mal")(routes.Assets.versioned) {
 
@@ -12,7 +12,7 @@
 
     var require = {
       config: {
-        'main': @Html(Json.stringify(appConfig)),
+        'bootstrap': @Html(Json.stringify(bootstrap)),
         'routers/server': Router.controllers
       }
     };

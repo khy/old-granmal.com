@@ -11,14 +11,16 @@ requirejs.config
     handlebars:
       exports: 'Handlebars'
 
-define 'main', [
+define 'bootstrap', ['module'], (module) -> module.config()
+
+require [
   'jquery'
   'backbone'
   'lib/javascripts/page'
-  'module'
   'routers/client'
-], ($, Backbone, Page, module, ClientRouter) ->
-  window.router = new ClientRouter module.config()
+  'bootstrap'
+], ($, Backbone, Page, ClientRouter, bootstrap) ->
+  window.router = new ClientRouter bootstrap
 
   $(document).ready ->
     Page.ensureFullPage()

@@ -12,12 +12,12 @@ object Application extends Controller {
 
   def app(path: String = "") = Action.auth { implicit request =>
     Ok(views.html.app(
-      appConfig = appConfig(),
-      javascriptRouter = javascriptRouter()
+      bootstrap = buildBootstrap(),
+      javascriptRouter = buildJavascriptRouter()
     ))
   }
 
-  private def appConfig[T]()(implicit request: AuthRequest[T]) = {
+  private def buildBootstrap[T]()(implicit request: AuthRequest[T]) = {
     var config = Json.obj()
 
     request.account.map(_.toPublic).foreach { account =>
@@ -27,7 +27,7 @@ object Application extends Controller {
     config
   }
 
-  private def javascriptRouter()(implicit request: RequestHeader) = {
+  private def buildJavascriptRouter()(implicit request: RequestHeader) = {
     import routes.javascript._
 
     Routes.javascriptRouter()(
