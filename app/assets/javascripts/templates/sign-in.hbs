@@ -10,11 +10,18 @@
 
 <form action="/sign-in" method="POST" >
 
-  {{#field email}}
+  {{#if formError}}
+    <div class="form-error">
+      <span class="glyphicon glyphicon-ban-circle"></span>
+      <span class="message">{{formError}}</span>
+    </div>
+  {{/if}}
+
+  {{#field fields.email}}
     <input type="email" name="email" placeholder="Email" value="{{this}}">
   {{/field}}
 
-  {{#field password}}
+  {{#field fields.password}}
     <input type="password" name="password" placeholder="Password" value="{{this}}">
   {{/field}}
 

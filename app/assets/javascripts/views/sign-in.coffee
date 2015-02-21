@@ -20,14 +20,16 @@ define [
     initialize: (opts) ->
       @session = opts.session
       @router = opts.router
+
       @input = {}
-      @errors = {}
+      @fieldErrors = {}
 
     navigate: -> @router.navigate 'sign-in'
 
     render: ->
-      context = Field.buildData @input, @errors
-      @$el.html SignIn.template context
+      @$el.html SignIn.template
+        formError: @formError
+        fields: Field.buildData @input, @fieldErrors
       @
 
     events:
@@ -37,16 +39,37 @@ define [
 
     signIn: (e) ->
       e.preventDefault()
-      @bind()
+      @input = @getInput()
+      @fieldErrors = @validate(@input)
 
-      if _.every(@errors, (errors) -> _.isEmpty errors)
+      if _.every(@fieldErrors, (errors) -> _.isEmpty errors)
         jqxhr = $.ajax _.extend ServerRouter.signIn, data: @input
 
         jqxhr.done (account) =>
           @session.create account
           @trigger 'close'
+
+        jqxhr.fail (jqxhr) =>
+          @formError = jqxhr.responseText
+          @render()
+
       else
         @render()
+
+    getInput: ->
+      email: @$('input[name="email"]').val()
+      password: @$('input[name="password"]').val()
+
+    validate: (input) ->
+      fieldErrors = email: [], password: []
+
+      if Check.isMissing(input.email)
+        fieldErrors.email.push 'Email is required.'
+
+      if Check.isMissing(input.password)
+        fieldErrors.password.push 'Password is required.'
+
+      fieldErrors
 
     showSignUp: (e) ->
       e.preventDefault()
@@ -55,22 +78,3 @@ define [
     close: (e) ->
       e.preventDefault()
       @trigger 'close'
-
-    bind: ->
-      @input = @getInput()
-      @errors = @validate(@input)
-
-    getInput: ->
-      email: @$('input[name="email"]').val()
-      password: @$('input[name="password"]').val()
-
-    validate: (input) ->
-      errors = email: [], password: []
-
-      if Check.isMissing(input.email)
-        errors.email.push 'Email is required.'
-
-      if Check.isMissing(input.password)
-        errors.password.push 'Password is required.'
-
-      errors
