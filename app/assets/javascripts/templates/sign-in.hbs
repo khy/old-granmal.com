@@ -10,12 +10,7 @@
 
 <form action="/sign-in" method="POST" >
 
-  {{#if formError}}
-    <div class="form-error">
-      <span class="glyphicon glyphicon-ban-circle"></span>
-      <span class="message">{{formError}}</span>
-    </div>
-  {{/if}}
+  {{formError formError}}
 
   {{#field fields.email}}
     <input type="email" name="email" placeholder="Email" value="{{this}}">

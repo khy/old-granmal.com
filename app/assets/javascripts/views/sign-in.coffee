@@ -4,12 +4,12 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/validation/check'
-  'lib/javascripts/form/field'
+  'lib/javascripts/form'
   'routers/server'
   'text!templates/sign-in.hbs'
-], ($, _, Backbone, Handlebars, Check, Field, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, Form, ServerRouter, template) ->
 
-  Field.registerHelpers Handlebars
+  Form.registerHelpers Handlebars
 
   class SignIn extends Backbone.View
 
@@ -29,7 +29,7 @@ define [
     render: ->
       @$el.html SignIn.template
         formError: @formError
-        fields: Field.buildData @input, @fieldErrors
+        fields: Form.buildFields @input, @fieldErrors
       @
 
     events:

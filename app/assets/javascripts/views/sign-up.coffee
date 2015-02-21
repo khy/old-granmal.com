@@ -4,12 +4,12 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/validation/check'
-  'lib/javascripts/form/field'
+  'lib/javascripts/form'
   'routers/server'
   'text!templates/sign-up.hbs'
-], ($, _, Backbone, Handlebars, Check, Field, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, Form, ServerRouter, template) ->
 
-  Field.registerHelpers Handlebars
+  Form.registerHelpers Handlebars
 
   class SignUp extends Backbone.View
 
@@ -24,7 +24,7 @@ define [
     navigate: -> @router.navigate 'sign-up'
 
     render: ->
-      context = Field.buildData @input, @errors
+      context = Form.buildFields @input, @errors
       @$el.html SignUp.template context
       @
 
