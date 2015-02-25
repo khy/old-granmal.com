@@ -59,22 +59,26 @@ class UselessAccessTokenService(trustedUselessClient: TrustedUselessClient) {
           Future.successful(Right(accessToken))
         } else {
           account.email.map { email =>
-            trustedUselessClient.getUserByEmail(email).flatMap { optUselessAccount =>
-              optUselessAccount.map { uselessAccount =>
-                Logger.debug(s"Useless account [${uselessAccount.guid}] found for email [${email}].")
-                createAndAddAccessToken(account, uselessAccount.guid)
-              }.getOrElse {
-                trustedUselessClient.createUser(email, account.handle, account.name).flatMap { result =>
-
-                  result.fold(
-                    error => Future.successful(Left(error)),
-                    uselessAccount => {
-                      Logger.debug(s"Created Useless account for email [${email}].")
-                      createAndAddAccessToken(account, uselessAccount.guid)
-                    }
-                  )
+            account.handle.map { handle =>
+              trustedUselessClient.getUserByEmail(email).flatMap { optUselessAccount =>
+                optUselessAccount.map { uselessAccount =>
+                  Logger.debug(s"Useless account [${uselessAccount.guid}] found for email [${email}].")
+                  createAndAddAccessToken(account, uselessAccount.guid)
+                }.getOrElse {
+                  trustedUselessClient.createUser(email, handle, account.name).flatMap { result =>
+                    result.fold(
+                      error => Future.successful(Left(error)),
+                      uselessAccount => {
+                        Logger.debug(s"Created Useless account for email [${email}].")
+                        createAndAddAccessToken(account, uselessAccount.guid)
+                      }
+                    )
+                  }
                 }
               }
+            }.getOrElse {
+              Logger.debug(s"Could not ensure Useless acess token for account [${account.guid}] because it had no handle.")
+              Future.successful(Left("useless_access_token.error.no_account_handle"))
             }
           }.getOrElse {
             Logger.debug(s"Could not ensure Useless acess token for account [${account.guid}] because it had no email.")

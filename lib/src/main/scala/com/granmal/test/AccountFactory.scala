@@ -14,13 +14,14 @@ class AccountFactory(collection: BSONCollection) {
 
   def buildAccountDocument(
     email: Option[String] = None,
+    handle: Option[String] = None,
     password: Option[String] = None,
     accessTokens: Seq[AccessTokenDocument] = Seq.empty
   ) = {
     new AccountDocument(
       guid = UUID.randomUUID,
       email = email,
-      handle = None,
+      handle = handle,
       name = None,
       password = password,
       accessTokens = accessTokens,

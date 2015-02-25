@@ -52,7 +52,7 @@ class StandardUselessClient
         account match {
           case user: User => new ExternalAccount(
             email = None,
-            handle = user.handle,
+            handle = Some(user.handle),
             name = user.name
           )
           case other => throw new RuntimeException(s"Unexpected account type for GUID [$account.guid]")

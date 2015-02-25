@@ -28,9 +28,13 @@ class UselessAccessTokenServiceSpec extends Specification {
       users.find(_.email == email)
     }
 
+    def getUserByHandle(handle: String) = Future.successful {
+      users.find(_.handle == handle)
+    }
+
     def createUser(
       email: String,
-      handle: Option[String],
+      handle: String,
       name: Option[String]
     ) = Future.successful {
       val user = User.authorized(UUID.randomUUID, email, handle, name)
@@ -58,7 +62,7 @@ class UselessAccessTokenServiceSpec extends Specification {
   "UselessAccessTokenServiceSpec.MockTrustedUselessClient" should {
 
     "return a user specified at initialization from getUserByEmail" in new Context {
-      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
       val client = new MockTrustedUselessClient(accessToken = None, users = Seq(user))
       val result = Helpers.await { client.getUserByEmail("khy@granmal.com") }
       result.get.guid must beEqualTo(user.guid)
@@ -66,22 +70,44 @@ class UselessAccessTokenServiceSpec extends Specification {
 
     "return a user from getUserByEmail created via createUser" in new Context {
       val client = new MockTrustedUselessClient(accessToken = None, users = Seq.empty)
-      val result1 = Helpers.await { client.createUser("khy@granmal.com", None, None) }
+      val result1 = Helpers.await { client.createUser("khy@granmal.com", "khy", None) }
       val user = result1.right.get
       val result2 = Helpers.await { client.getUserByEmail("khy@granmal.com") }
       result2.get.guid must beEqualTo(user.guid)
     }
 
     "return None from getUserByEmail if the user was never added" in new Context {
-      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
       val client = new MockTrustedUselessClient(accessToken = None, users = Seq(user))
       val result = Helpers.await { client.getUserByEmail("bill@granmal.com") }
       result must beNone
     }
 
+    "return a user specified at initialization from getUserByHandle" in new Context {
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
+      val client = new MockTrustedUselessClient(accessToken = None, users = Seq(user))
+      val result = Helpers.await { client.getUserByHandle("khy") }
+      result.get.guid must beEqualTo(user.guid)
+    }
+
+    "return a user from getUserByHandle created via createUser" in new Context {
+      val client = new MockTrustedUselessClient(accessToken = None, users = Seq.empty)
+      val result1 = Helpers.await { client.createUser("khy@granmal.com", "khy", None) }
+      val user = result1.right.get
+      val result2 = Helpers.await { client.getUserByHandle("khy") }
+      result2.get.guid must beEqualTo(user.guid)
+    }
+
+    "return None from getUserByEmail if the user was never added" in new Context {
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
+      val client = new MockTrustedUselessClient(accessToken = None, users = Seq(user))
+      val result = Helpers.await { client.getUserByHandle("bill") }
+      result must beNone
+    }
+
     "return Left from createAccessToken if the specified accountId doesn't " +
     "correspond to an added User's GUID" in new Context {
-      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
       val client = new MockTrustedUselessClient(accessToken = None, users = Seq(user))
       val result = Helpers.await { client.createAccessToken(UUID.randomUUID) }
       result must beLeft
@@ -93,7 +119,7 @@ class UselessAccessTokenServiceSpec extends Specification {
       val appAccessToken = AccessToken(
         guid = UUID.randomUUID, resourceOwner = app, client = None, scopes = Seq.empty
       )
-      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val user = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
       val _client = new MockTrustedUselessClient(Some(appAccessToken), Seq(user))
       val result = Helpers.await { _client.createAccessToken(user.guid) }
       val newAccessToken = result.right.get
@@ -136,7 +162,16 @@ class UselessAccessTokenServiceSpec extends Specification {
     }
 
     "it should return a Left if the specified account doesn't have an email" in new Context {
-      val accountDocument = factory.buildAccountDocument()
+      val accountDocument = factory.buildAccountDocument(handle = Some("khy"))
+      val account = factory.createAccount(accountDocument)
+
+      val service = buildService()
+      val result = Helpers.await { service.ensureAccessToken(account.guid) }
+      result must beLeft
+    }
+
+    "it should return a Left if the specified account doesn't have an handle" in new Context {
+      val accountDocument = factory.buildAccountDocument(email = Some("khy@me.com"))
       val account = factory.createAccount(accountDocument)
 
       val service = buildService()
@@ -146,10 +181,10 @@ class UselessAccessTokenServiceSpec extends Specification {
 
     "it should add an access token to the Useless user corresponding to the " +
     "account's email, and store it" in new Context {
-      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"))
+      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"), handle = Some("khy"))
       val account = factory.createAccount(accountDocument)
 
-      val uselessUser = User.authorized(UUID.randomUUID, "khy@granmal.com", None, None)
+      val uselessUser = User.authorized(UUID.randomUUID, "khy@granmal.com", "khy", None)
       val service = buildService(users = Seq(uselessUser))
       Helpers.await { service.ensureAccessToken(account.guid) }
       val _account = Helpers.await{ account.reload() }
@@ -157,7 +192,7 @@ class UselessAccessTokenServiceSpec extends Specification {
     }
 
     "it should add a Useless user and an access token, and store the access token" in new Context {
-      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"))
+      val accountDocument = factory.buildAccountDocument(email = Some("khy@granmal.com"), handle = Some("khy"))
       val account = factory.createAccount(accountDocument)
 
       val service = buildService()

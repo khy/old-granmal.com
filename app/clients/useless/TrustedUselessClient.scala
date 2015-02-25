@@ -20,9 +20,11 @@ trait TrustedUselessClient {
 
   def getUserByEmail(email: String): Future[Option[UselessAccount]]
 
+  def getUserByHandle(handle: String): Future[Option[UselessAccount]]
+
   def createUser(
     email: String,
-    handle: Option[String],
+    handle: String,
     name: Option[String]
   ): Future[Either[String, UselessAccount]]
 
@@ -41,9 +43,15 @@ class StandardTrustedUselessClient
     }
   }
 
+  def getUserByHandle(handle: String) = {
+    resourceClient.find[UselessAccount]("/accounts", "handle" -> handle).map { accounts =>
+      accounts.items.headOption
+    }
+  }
+
   def createUser(
     email: String,
-    handle: Option[String],
+    handle: String,
     name: Option[String]
   ) = {
     val body = Json.obj(
