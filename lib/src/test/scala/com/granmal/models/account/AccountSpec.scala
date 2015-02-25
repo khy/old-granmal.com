@@ -69,6 +69,16 @@ class AccountSpec
       account.name must be (None)
       account.password must be (None)
     }
+
+    "return an error if the email is invalid" in {
+      val result = await { Account.create(email = Some("khy@me")) }
+      result must be (Left("'khy@me' is not a valid email."))
+    }
+
+    "return an error if the handle is invalid" in {
+      val result = await { Account.create(handle = Some("Kevin Hyland")) }
+      result must be (Left("'Kevin Hyland' is not a valid handle."))
+    }
   }
 
   "Account.auth" should {

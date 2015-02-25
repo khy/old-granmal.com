@@ -7,6 +7,7 @@ import org.mindrot.jbcrypt.BCrypt
 import reactivemongo.bson._
 import reactivemongo.api.indexes.{ Index, IndexType }
 import play.api.libs.concurrent.Execution.Implicits._
+import io.useless.util.Validator
 import io.useless.reactivemongo.MongoAccess
 import io.useless.reactivemongo.bson.UuidBson._
 
@@ -56,23 +57,29 @@ object Account extends MongoAccess {
     name: Option[String] = None,
     password: Option[String] = None
   ): Future[Either[String, Account]] = {
-     val accountDocument = new AccountDocument(
-      guid = UUID.randomUUID,
-      email = email,
-      handle = handle,
-      name = name,
-      password = password.map(BCrypt.hashpw(_, BCrypt.gensalt)),
-      accessTokens = Seq.empty,
-      createdAt = DateTime.now,
-      updatedAt = DateTime.now,
-      deletedAt = None
-    )
+    if (!email.map(Validator.isValidEmail(_)).getOrElse(true)) {
+      Future.successful(Left(s"'${email.get}' is not a valid email."))
+    } else if (!handle.map(Validator.isValidHandle(_)).getOrElse(true)) {
+      Future.successful(Left(s"'${handle.get}' is not a valid handle."))
+    } else {
+      val accountDocument = new AccountDocument(
+        guid = UUID.randomUUID,
+        email = email,
+        handle = handle,
+        name = name,
+        password = password.map(BCrypt.hashpw(_, BCrypt.gensalt)),
+        accessTokens = Seq.empty,
+        createdAt = DateTime.now,
+        updatedAt = DateTime.now,
+        deletedAt = None
+      )
 
-    collection.insert(accountDocument).map { lastError =>
-      if (lastError.ok) {
-        Right(new Account(accountDocument))
-      } else {
-        throw lastError
+      collection.insert(accountDocument).map { lastError =>
+        if (lastError.ok) {
+          Right(new Account(accountDocument))
+        } else {
+          throw lastError
+        }
       }
     }
   }
