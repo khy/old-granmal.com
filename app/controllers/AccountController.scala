@@ -14,6 +14,8 @@ import com.granmal.models.account.Account
 
 import clients.useless.TrustedUselessClient
 import services.UselessAccessTokenService
+import lib.ValidationErrors
+import lib.ValidationErrorsJson._
 
 object AccountController extends Controller {
 
@@ -47,7 +49,8 @@ object AccountController extends Controller {
         ).flatMap { result =>
           result.fold(
             error => {
-              Future.successful(UnprocessableEntity(error))
+              val validationErrors = ValidationErrors(Seq(error), Map.empty)
+              Future.successful(UnprocessableEntity(Json.toJson(validationErrors)))
             },
             account => {
               val trustedUselessClient = TrustedUselessClient.instance

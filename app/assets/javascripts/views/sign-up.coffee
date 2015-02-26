@@ -46,8 +46,15 @@ define [
           @trigger 'close'
 
         jqxhr.fail (jqxhr) =>
-          @formError = jqxhr.responseText
+          if jqxhr.status == 422
+            errors = $.parseJSON(jqxhr.responseText)
+            @formError = errors.resource?[0]
+            @fieldError = errors.attributes
+          else
+            @formError = "An unknown error occurred."
+
           @render()
+
       else
         @render()
 
