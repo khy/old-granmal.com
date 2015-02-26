@@ -19,7 +19,10 @@ class AccountSpec
   with BeforeAndAfterEach
 {
 
-  override def beforeEach = MongoUtil.clearDb()
+  override def beforeEach = {
+    MongoUtil.clearDb()
+    Account.ensureIndexes()
+  }
 
   def factory = new AccountFactory(Account.collection)
 
@@ -75,9 +78,21 @@ class AccountSpec
       result must be (Left("'khy@me' is not a valid email."))
     }
 
+    "return an error if the email has already been used" in {
+      await { Account.create(email = Some("khy@me.com")) }
+      val result = await { Account.create(email = Some("khy@me.com")) }
+      result must be (Left("'khy@me.com' has already been used."))
+    }
+
     "return an error if the handle is invalid" in {
       val result = await { Account.create(handle = Some("Kevin Hyland")) }
       result must be (Left("'Kevin Hyland' is not a valid handle."))
+    }
+
+    "return an error if the handle has already been used" in {
+      await { Account.create(handle = Some("khy")) }
+      val result = await { Account.create(handle = Some("khy")) }
+      result must be (Left("'khy' has already been used."))
     }
   }
 

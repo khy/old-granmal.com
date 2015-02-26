@@ -27,6 +27,12 @@ object Account extends MongoAccess {
     ))
 
     collection.indexesManager.ensure(new Index(
+      key = Seq("handle" -> IndexType.Ascending),
+      unique = true,
+      sparse = true
+    ))
+
+    collection.indexesManager.ensure(new Index(
       key = Seq(
         "access_tokens.oauth_provider" -> IndexType.Ascending,
         "access_tokens.code" -> IndexType.Ascending
@@ -62,23 +68,41 @@ object Account extends MongoAccess {
     } else if (!handle.map(Validator.isValidHandle(_)).getOrElse(true)) {
       Future.successful(Left(s"'${handle.get}' is not a valid handle."))
     } else {
-      val accountDocument = new AccountDocument(
-        guid = UUID.randomUUID,
-        email = email,
-        handle = handle,
-        name = name,
-        password = password.map(BCrypt.hashpw(_, BCrypt.gensalt)),
-        accessTokens = Seq.empty,
-        createdAt = DateTime.now,
-        updatedAt = DateTime.now,
-        deletedAt = None
-      )
+      val existingAccountForEmail = email.map { email =>
+        findOne("email" -> email)
+      }.getOrElse(Future.successful(None))
 
-      collection.insert(accountDocument).map { lastError =>
-        if (lastError.ok) {
-          Right(new Account(accountDocument))
-        } else {
-          throw lastError
+      val existingAccountForHandle = handle.map { handle =>
+        findOne("handle" -> handle)
+      }.getOrElse(Future.successful(None))
+
+      existingAccountForEmail.flatMap { existingAccountForEmail =>
+        existingAccountForHandle.flatMap { existingAccountForHandle =>
+          if (existingAccountForEmail.isDefined) {
+            Future.successful(Left(s"'${email.get}' has already been used."))
+          } else if (existingAccountForHandle.isDefined) {
+            Future.successful(Left(s"'${handle.get}' has already been used."))
+          } else {
+            val accountDocument = new AccountDocument(
+              guid = UUID.randomUUID,
+              email = email,
+              handle = handle,
+              name = name,
+              password = password.map(BCrypt.hashpw(_, BCrypt.gensalt)),
+              accessTokens = Seq.empty,
+              createdAt = DateTime.now,
+              updatedAt = DateTime.now,
+              deletedAt = None
+            )
+
+            collection.insert(accountDocument).map { lastError =>
+              if (lastError.ok) {
+                Right(new Account(accountDocument))
+              } else {
+                throw lastError
+              }
+            }
+          }
         }
       }
     }
