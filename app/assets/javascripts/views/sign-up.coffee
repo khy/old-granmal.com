@@ -24,8 +24,9 @@ define [
     navigate: -> @router.navigate 'sign-up'
 
     render: ->
-      context = Form.buildFields @input, @errors
-      @$el.html SignUp.template context
+      @$el.html SignUp.template
+        formError: @formError
+        fields: Form.buildFields @input, @fieldErrors
       @
 
     events:
@@ -37,12 +38,16 @@ define [
       e.preventDefault()
       @bind()
 
-      if _.every(@errors, (errors) -> _.isEmpty errors)
+      if _.every(@fieldErrors, (errors) -> _.isEmpty errors)
         jqxhr = $.ajax _.extend ServerRouter.signUp, data: @input
 
         jqxhr.done (account) =>
           @session.create account
           @trigger 'close'
+
+        jqxhr.fail (jqxhr) =>
+          @formError = jqxhr.responseText
+          @render()
       else
         @render()
 
@@ -56,7 +61,7 @@ define [
 
     bind: ->
       @input = @getInput()
-      @errors = @validate(@input)
+      @fieldErrors = @validate(@input)
 
     getInput: ->
       email: @$('input[name="email"]').val()
@@ -65,15 +70,15 @@ define [
       name: @$('input[name="name"]').val()
 
     validate: (input) ->
-      errors = email: [], password: [], handle: []
+      fieldErrors = email: [], password: [], handle: []
 
       if Check.isMissing(input.email)
-        errors.email.push 'Email is required.'
+        fieldErrors.email.push 'Email is required.'
 
       if Check.isMissing(input.password)
-        errors.password.push 'Password is required.'
+        fieldErrors.password.push 'Password is required.'
 
       if Check.isMissing(input.handle)
-        errors.handle.push 'Username is required.'
+        fieldErrors.handle.push 'Username is required.'
 
-      errors
+      fieldErrors

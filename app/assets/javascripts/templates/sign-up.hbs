@@ -10,19 +10,21 @@
 
 <form action="/sign-up" method="POST" >
 
-  {{#field email}}
+  {{formError formError}}
+
+  {{#field fields.email}}
     <input type="email" name="email" placeholder="Email" value="{{this}}">
   {{/field}}
 
-  {{#field password}}
+  {{#field fields.password}}
     <input type="password" name="password" placeholder="Password" value="{{this}}">
   {{/field}}
 
-  {{#field handle}}
+  {{#field fields.handle}}
     <input type="text" name="handle" placeholder="Username" value="{{this}}">
   {{/field}}
 
-  {{#field name}}
+  {{#field fields.name}}
     <input type="text" name="name" placeholder="Full Name" value="{{this}}">
   {{/field}}
 
