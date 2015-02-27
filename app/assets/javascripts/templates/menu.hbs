@@ -14,7 +14,7 @@
     <li><a class="sign-out" href="#">Sign Out</a></li>
 
     {{#unless account.oauth.useless.linked}}
-      <li><a href="{{oauth.useless.url}}">Link Useless</a></li>
+      <li><a href="{{account.oauth.useless.url}}">Link Useless</a></li>
     {{/unless}}
   {{else}}
     <li><a class="sign-in" href="#">Sign In</a></li>
