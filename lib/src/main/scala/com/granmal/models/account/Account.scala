@@ -163,6 +163,6 @@ class Account(document: AccountDocument) {
     accessToken.oauthProvider == OAuthProvider.Useless
   }
 
-  def toPublic: PublicAccount = PublicAccount(guid, handle, name)
+  def toPublic: PublicAccount = PublicAccount.build(this)
 
 }
