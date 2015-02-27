@@ -8,13 +8,15 @@
   </ul>
 </div>
 
-{{#if account}}
-  <ul class="menu">
+<ul class="menu">
+  {{#if account}}
     <li class="header">Signed in as <strong>{{account.name}}</strong></li>
     <li><a class="sign-out" href="#">Sign Out</a></li>
-  </ul>
-{{else}}
-  <ul class="menu">
+
+    {{#unless account.oauth.useless.linked}}
+      <li><a href="{{oauth.useless.url}}">Link Useless</a></li>
+    {{/unless}}
+  {{else}}
     <li><a class="sign-in" href="#">Sign In</a></li>
-  </ul>
-{{/if}}
+  {{/if}}
+</ul>
