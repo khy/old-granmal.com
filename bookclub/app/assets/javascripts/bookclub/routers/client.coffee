@@ -27,10 +27,10 @@ define [
       else
         window.location.replace(ServerRouter.signIn().url)
 
-    showNote: (guid) ->
-      view = if @app.currentNote?.get("guid") == guid
+    showNote: (opts) ->
+      view = if @app.currentNote?.get("guid") == opts.guid
         new ShowNote note: @app.currentNote
       else
-        new ShowNote guid: guid
+        new ShowNote opts
 
       @app.mainEl.replace view

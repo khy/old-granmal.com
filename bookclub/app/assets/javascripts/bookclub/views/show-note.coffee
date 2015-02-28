@@ -12,9 +12,7 @@ define [
     @template: Handlebars.compile($("#show-note-template").html())
 
     initialize: (opts) ->
-      @guid = opts.guid
-
-      @model = opts.note || new Note guid: @guid
+      @model = opts.note || new Note guid: opts.guid
       @listenTo @model, 'change', @render
 
       @model.fetch() if !opts.note

@@ -5,8 +5,9 @@ define [
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'
+  'bookclub/views/show-note'
   'lib/validation/check'
-], ($, Backbone, Handlebars, Note, Book, BookSelector, Check) ->
+], ($, Backbone, Handlebars, Note, Book, BookSelector, ShowNote, Check) ->
 
   class NewNote extends Backbone.View
 
@@ -50,7 +51,12 @@ define [
       else
         @render()
 
-    showNote: -> @app.router.showNote @note
+    showNote: ->
+      view = new ShowNote note: @note
+      @listenTo view, 'close', =>
+        @app.router.navigate "", trigger: true
+      @app.mainEl.replace view
+      @app.router.navigate("notes/#{@note.id}")
 
     getInput: ->
       book_guid: @selectedBook?.get('guid')
