@@ -1,14 +1,18 @@
 define [
+  'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/el-manager'
   'text!templates/apps.hbs'
   'views/menu'
-], (Backbone, Handlebars, template, Menu) ->
+], (_, Backbone, Handlebars, ElManager, template, Menu) ->
 
   class Apps extends Backbone.View
 
     initialize: (opts) ->
-      @mainEl = opts.mainEl
+      @currentView = @
+      _.extend @, ElManager
+
       @router = opts.router
       @menuView = new Menu opts
 
@@ -27,9 +31,7 @@ define [
 
     showMenu: (e) ->
       e.preventDefault()
-      @mainEl.replace @menuView
-      @menuView.navigate()
+      @setView @menuView
 
     closeMenu: ->
-      @mainEl.replace @
-      @navigate()
+      @setView @

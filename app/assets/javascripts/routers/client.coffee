@@ -1,19 +1,22 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
-  'lib/javascripts/view-el'
+  'lib/javascripts/el-manager'
   'utils/session'
   'views/masthead'
   'views/apps'
   'views/auth'
-], ($, Backbone, ViewEl, Session, Masthead, Apps, Auth) ->
+], ($, _, Backbone, ElManager, Session, Masthead, Apps, Auth) ->
 
   class ClientRouter extends Backbone.Router
 
     initialize: (config) ->
-      @mainEl = new ViewEl $("#main")
+      @el = $("#main")
+      _.extend @, ElManager
+
       @session = new Session config.account
-      @appsView = new Apps mainEl: @mainEl, session: @session, router: @
+      @appsView = new Apps session: @session, router: @
 
     routes:
       '' :       'masthead'
@@ -22,8 +25,7 @@ define [
       '*path':   'apps'
 
     masthead: ->
-      view = new Masthead mainEl: @mainEl, session: @session, router: @
-      @mainEl.replace(view)
+      @setView @appsView
 
     apps: ->
       @mainEl.replace @appsView
