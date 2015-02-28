@@ -4,8 +4,9 @@ define [
   'handlebars'
   'lib/javascripts/el-manager'
   'text!templates/apps.hbs'
+  'views/masthead'
   'views/menu'
-], (_, Backbone, Handlebars, ElManager, template, Menu) ->
+], (_, Backbone, Handlebars, ElManager, template, Masthead, Menu) ->
 
   class Apps extends Backbone.View
 
@@ -15,13 +16,18 @@ define [
 
       @router = opts.router
       @menuView = new Menu opts
+      @shouldShowMasthead = true
 
-      @listenTo @menuView, 'close', @closeMenu
+      @listenTo @menuView, 'close', -> @setView @
 
     @template: Handlebars.compile(template)
 
     render: ->
-      @$el.html Apps.template
+      if @shouldShowMasthead
+        @showMasthead()
+      else
+        @$el.html Apps.template
+
       @
 
     navigate: -> @router.navigate ''
@@ -29,9 +35,13 @@ define [
     events:
       'click a.menu': 'showMenu'
 
+    showMasthead: ->
+      view = new Masthead
+      @listenToOnce view, 'close', ->
+        @shouldShowMasthead = false
+        @setView @
+      @setView view
+
     showMenu: (e) ->
       e.preventDefault()
       @setView @menuView
-
-    closeMenu: ->
-      @setView @

@@ -4,10 +4,9 @@ define [
   'backbone'
   'lib/javascripts/el-manager'
   'utils/session'
-  'views/masthead'
   'views/apps'
   'views/auth'
-], ($, _, Backbone, ElManager, Session, Masthead, Apps, Auth) ->
+], ($, _, Backbone, ElManager, Session, Apps, Auth) ->
 
   class ClientRouter extends Backbone.Router
 
@@ -19,17 +18,12 @@ define [
       @appsView = new Apps session: @session, router: @
 
     routes:
-      '' :       'masthead'
+      '' :       'apps'
       'sign-in': 'signIn'
       'sign-up': 'signUp'
       '*path':   'apps'
 
-    masthead: ->
-      @setView @appsView
-
-    apps: ->
-      @mainEl.replace @appsView
-      @appsView.navigate()
+    apps: -> @setView @appsView
 
     signIn: -> @auth 'signIn'
 
@@ -38,7 +32,5 @@ define [
     auth: (view) ->
       authView = new Auth session: @session, router: @
       authView.setView authView[view]
-      @listenToOnce authView, 'close', =>
-        @mainEl.replace @appsView, hard: true
-        @appsView.navigate()
-      @mainEl.replace authView
+      @listenToOnce authView, 'close', => @setView @appsView
+      @setView authView
