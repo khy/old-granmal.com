@@ -44,6 +44,10 @@ object Account extends MongoAccess {
 
   def accountForGuid(guid: UUID) = findOne("_id" -> guid)
 
+  def accountForEmail(email: String) = findOne("email" -> email)
+
+  def accountForHandle(handle: String) = findOne("handle" -> handle)
+
   def accountForAccessTokenCode(oauthProvider: OAuthProvider, code: String) =
     findOne("access_tokens.oauth_provider" -> oauthProvider.toString, "access_tokens.code" -> code)
 
@@ -68,13 +72,11 @@ object Account extends MongoAccess {
     } else if (!handle.map(Validator.isValidHandle(_)).getOrElse(true)) {
       Future.successful(Left(s"'${handle.get}' is not a valid handle."))
     } else {
-      val existingAccountForEmail = email.map { email =>
-        findOne("email" -> email)
-      }.getOrElse(Future.successful(None))
+      val existingAccountForEmail = email.map(accountForEmail(_)).
+        getOrElse(Future.successful(None))
 
-      val existingAccountForHandle = handle.map { handle =>
-        findOne("handle" -> handle)
-      }.getOrElse(Future.successful(None))
+      val existingAccountForHandle = handle.map(accountForHandle(_)).
+        getOrElse(Future.successful(None))
 
       existingAccountForEmail.flatMap { existingAccountForEmail =>
         existingAccountForHandle.flatMap { existingAccountForHandle =>
