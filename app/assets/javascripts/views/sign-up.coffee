@@ -15,8 +15,6 @@ define [
 
     @template: Handlebars.compile template
 
-    className: 'sign-up'
-
     initialize: (opts) ->
       @session = opts.session
       @router = opts.router

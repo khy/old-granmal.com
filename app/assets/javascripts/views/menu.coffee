@@ -1,24 +1,27 @@
 define [
   'jquery'
+  'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/el-manager'
   'routers/server'
   'views/auth'
   'text!templates/menu.hbs'
-], ($, Backbone, Handlebars, ServerRouter, Auth, template) ->
+], ($, _, Backbone, Handlebars, ElManager, ServerRouter, Auth, template) ->
 
   class Menu extends Backbone.View
 
     @template: Handlebars.compile template
 
     initialize: (opts) ->
-      @mainEl = opts.mainEl
+      _.extend @, ElManager
+
       @session = opts.session
       @router = opts.router
       @authView = new Auth opts
 
       @listenTo @session, 'all', @render
-      @listenTo @authView, 'close', @closeAuthView
+      @listenTo @authView, 'close', -> @setView @
 
     render: ->
       @$el.html Menu.template account: @session.account
@@ -33,11 +36,7 @@ define [
 
     showAuthView: (e) ->
       e.preventDefault()
-      @mainEl.replace @authView
-
-    closeAuthView: ->
-      @mainEl.replace @
-      @navigate()
+      @setView @authView
 
     signOut: (e) ->
       e.preventDefault()

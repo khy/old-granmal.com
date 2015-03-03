@@ -31,6 +31,6 @@ define [
 
     auth: (view) ->
       authView = new Auth session: @session, router: @
-      authView.setView authView[view]
+      authView.view = authView[view]
       @listenToOnce authView, 'close', => @setView @appsView
       @setView authView

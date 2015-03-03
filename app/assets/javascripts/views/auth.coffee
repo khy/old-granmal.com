@@ -1,48 +1,39 @@
 define [
+  'underscore'
   'backbone'
-  'lib/javascripts/view-el'
+  'lib/javascripts/el-manager'
   'views/sign-in'
   'views/sign-up'
-], (Backbone, ViewEl, SignIn, SignUp) ->
+], (_, Backbone, ElManager, SignIn, SignUp) ->
 
   class Auth extends Backbone.View
 
-    className: 'auth'
-
     initialize: (opts) ->
-      @viewEl = new ViewEl @$el
+      _.extend @, ElManager
 
       @signIn = new SignIn opts
       @listenTo @signIn, 'showSignUp', ->
-        @setView @signUp
+        @view = @signUp
         @render()
       @listenTo @signIn, 'close', -> @trigger 'close'
 
       @signUp = new SignUp opts
       @listenTo @signUp, 'showSignIn', ->
-        @setView @signIn
+        @view = @signIn
         @render()
       @listenTo @signUp, 'close', -> @trigger 'close'
 
-      @setView @signIn
+      @view = @signIn
 
     render: ->
-      @viewEl.replace @view
+      @setView @view
       @view.navigate()
       @
 
-    setView: (view) ->
-      @view = view
-
     delegateEvents: ->
       @view.delegateEvents()
-      super
+      @
 
     undelegateEvents: ->
       @view.undelegateEvents()
-      super
-
-    remove: ->
-      @signIn.remove()
-      @signUp.remove()
-      super
+      @
