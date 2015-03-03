@@ -21,13 +21,13 @@ define [
       @authView = new Auth opts
 
       @listenTo @session, 'all', @render
-      @listenTo @authView, 'close', -> @setView @
+      @listenTo @authView, 'close', ->
+        @setView @
+        @router.navigate ''
 
     render: ->
       @$el.html Menu.template account: @session.account
       @
-
-    navigate: -> @router.navigate ''
 
     events:
       'click a.sign-in': 'showAuthView'
