@@ -11,7 +11,6 @@ define [
   class Apps extends Backbone.View
 
     initialize: (opts) ->
-      @currentView = @
       _.extend @, ElManager
 
       @router = opts.router
