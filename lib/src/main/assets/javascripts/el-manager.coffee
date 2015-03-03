@@ -13,6 +13,11 @@ define ['underscore', 'backbone'], (_, Backbone) ->
 
     @currentView = view
     previousView?.undelegateEvents()
-    @currentView.setElement @el
+
+    if @currentView.$el.is @el
+      @currentView.delegateEvents()
+    else
+      @currentView.setElement @el
+
     @currentView.render()
     previousView
