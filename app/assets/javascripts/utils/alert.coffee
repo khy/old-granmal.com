@@ -2,10 +2,10 @@ define [
   'jquery'
   'underscore'
   'handlebars'
-  'text!templates/snackbar.hbs'
+  'text!templates/alert.hbs'
 ], ($, _, Handlebars, rawTemplate) ->
 
-  el = $(".snackbar")
+  el = $(".alert")
 
   template = Handlebars.compile rawTemplate
 
