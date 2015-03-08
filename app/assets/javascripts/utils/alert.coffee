@@ -9,15 +9,25 @@ define [
 
   template = Handlebars.compile rawTemplate
 
-  isActive = false
+  show = -> el.show()
 
-  display: (text, action, callback) ->
-    # Drop calls made when active, for now.
-    unless isActive
-      isActive = true
-      el.html template text: text
-      el.show()
-      _.delay ->
-        el.hide()
-        isActive = false
-      , 5000
+  hide = -> el.hide()
+
+  display = (klass, text, action, callback) ->
+    hide()
+    el.html template text: text, action: action
+    el.addClass klass
+    show()
+    _.delay hide, 5000
+
+  success: (text, action, callback) ->
+    display 'success', text, action, callback
+
+  info: (text, action, callback) ->
+    display 'info', text, action, callback
+
+  warning: (text, action, callback) ->
+    display 'warning', text, action, callback
+
+  danger: (text, action, callback) ->
+    display 'danger', text, action, callback

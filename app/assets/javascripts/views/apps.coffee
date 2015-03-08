@@ -17,7 +17,9 @@ define [
       @menuView = new Menu opts
       @shouldShowMasthead = true
 
-      @listenTo @menuView, 'close', -> @setView @
+      @listenTo @menuView, 'close', ->
+        @navigate()
+        @setView @
 
     @template: Handlebars.compile(template)
 

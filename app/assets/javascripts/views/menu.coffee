@@ -23,7 +23,7 @@ define [
 
       @listenTo @session, 'create', (account) =>
         @trigger 'close'
-        Alert.display 'Signed in'
+        Alert.success 'Signed in'
 
       @listenTo @authView, 'close', ->
         @setView @
@@ -48,7 +48,7 @@ define [
       jqxhr.done =>
         @session.destroy()
         @trigger 'close'
-        Alert.display 'Signed out'
+        Alert.success 'Signed out'
 
     close: (e) ->
       e.preventDefault()

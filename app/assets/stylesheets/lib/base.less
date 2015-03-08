@@ -43,6 +43,8 @@ footer.footer {
 
 .alert {
   display: none;
+  font-size: 1.2em;
+  text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -50,4 +52,16 @@ footer.footer {
   padding: 20px;
   color: #EEE;
   background-color: #323232;
+
+  &.success .alert-text {
+    color: #67B168;
+  }
+
+  &.warning .alert-text {
+    color: #FF9;
+  }
+
+  &.danger .alert-text {
+    color: #CE8483;
+  }
 }
