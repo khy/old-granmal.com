@@ -9,9 +9,9 @@ define [
 
   template = Handlebars.compile rawTemplate
 
-  show = -> el.show()
+  show = -> el.fadeIn()
 
-  hide = -> el.hide()
+  hide = -> el.fadeOut()
 
   display = (klass, text, action, callback) ->
     hide()
