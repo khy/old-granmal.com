@@ -41,7 +41,6 @@ define [
 
         jqxhr.done (account) =>
           @session.create account
-          @trigger 'close'
 
         jqxhr.fail (jqxhr) =>
           if jqxhr.status == 422

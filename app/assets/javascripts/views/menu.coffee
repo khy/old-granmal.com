@@ -4,10 +4,11 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/el-manager'
+  'utils/alert'
   'routers/server'
   'views/auth'
   'text!templates/menu.hbs'
-], ($, _, Backbone, Handlebars, ElManager, ServerRouter, Auth, template) ->
+], ($, _, Backbone, Handlebars, ElManager, Alert, ServerRouter, Auth, template) ->
 
   class Menu extends Backbone.View
 
@@ -20,7 +21,10 @@ define [
       @router = opts.router
       @authView = new Auth opts
 
-      @listenTo @session, 'all', @render
+      @listenTo @session, 'create', (account) =>
+        @trigger 'close'
+        Alert.display 'Signed in'
+
       @listenTo @authView, 'close', ->
         @setView @
         @router.navigate ''
@@ -44,6 +48,7 @@ define [
       jqxhr.done =>
         @session.destroy()
         @trigger 'close'
+        Alert.display 'Signed out'
 
     close: (e) ->
       e.preventDefault()

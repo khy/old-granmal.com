@@ -45,7 +45,6 @@ define [
 
         jqxhr.done (account) =>
           @session.create account
-          @trigger 'close'
 
         jqxhr.fail (jqxhr) =>
           @formError = jqxhr.responseText
