@@ -14,14 +14,21 @@ a {
   color: @default-text-color;
 }
 
-.container {
+.contained {
   width: @container-width-max;
   margin: 0 auto;
+
+  @media all and (max-width: @container-width-max) {
+    width: 100%;
+  }
+}
+
+.container {
+  .contained;
   border-left: 1px solid #DDD;
   border-right: 1px solid #DDD;
 
   @media all and (max-width: @container-width-max) {
-    width: 100%;
     border-width: 0;
   }
 
@@ -44,7 +51,6 @@ footer.footer {
 .alert {
   display: none;
   font-size: 1.2em;
-  text-align: center;
   position: fixed;
   bottom: 0;
   left: 0;
@@ -52,6 +58,19 @@ footer.footer {
   padding: 20px;
   color: #EEE;
   background-color: #323232;
+
+  .alert-container {
+    .contained;
+  }
+
+  .alert-text {
+    float: left
+  }
+
+  .alert-action {
+    float: right;
+    cursor: pointer;
+  }
 
   &.success .alert-text {
     color: #67B168;

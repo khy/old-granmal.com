@@ -17,6 +17,9 @@ define [
     hide()
     el.html template text: text, action: action
     el.addClass klass
+    el.off 'click', '.alert-action'
+    unless _.isUndefined callback
+      el.on 'click', '.alert-action', callback
     show()
     _.delay hide, 5000
 
