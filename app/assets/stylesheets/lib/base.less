@@ -14,22 +14,15 @@ a {
   color: @default-text-color;
 }
 
-.contained {
+.container {
   width: @container-width-max;
   margin: 0 auto;
-
-  @media all and (max-width: @container-width-max) {
-    width: 100%;
-  }
-}
-
-.container {
-  .contained;
   border-left: 1px solid #DDD;
   border-right: 1px solid #DDD;
 
   @media all and (max-width: @container-width-max) {
     border-width: 0;
+    width: 100%;
   }
 
   .affix-header {
@@ -48,6 +41,8 @@ footer.footer {
   color: #999;
 }
 
+@alert-padding: 20px;
+
 .alert {
   display: none;
   font-size: 1.2em;
@@ -55,32 +50,28 @@ footer.footer {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px;
+  padding: @alert-padding;
   color: #EEE;
   background-color: #323232;
 
   .alert-container {
-    .contained;
-  }
+    width: @container-width-max - (@alert-padding * 2);
+    margin: 0 auto;
 
-  .alert-text {
-    float: left
-  }
+    @media all and (max-width: @container-width-max) {
+      width: 100%;
+    }
 
-  .alert-action {
-    float: right;
-    cursor: pointer;
-  }
+    .alert-text {
+      float: left;
+      &.success { color: #67B168; }
+      &.warning { color: #FF9; }
+      &.danger { color: #CE8483; }
+    }
 
-  &.success .alert-text {
-    color: #67B168;
-  }
-
-  &.warning .alert-text {
-    color: #FF9;
-  }
-
-  &.danger .alert-text {
-    color: #CE8483;
+    .alert-action {
+      float: right;
+      cursor: pointer;
+    }
   }
 }

@@ -15,9 +15,9 @@ define [
 
   display = (klass, text, action, callback) ->
     hide()
-    el.html template text: text, action: action
-    el.addClass klass
-    el.off 'click', '.alert-action'
+    el.html template klass: klass, text: text, action: action
+    el.off 'click'
+    el.on 'click', hide
     unless _.isUndefined callback
       el.on 'click', '.alert-action', callback
     show()

@@ -1,9 +1,11 @@
 <div class="alert-container">
-  <span class="alert-text">
+  <span class="alert-text {{klass}}">
     {{text}}
   </span>
 
-  <span class="alert-action">
-    {{action}}
-  </span>
+  {{#if action}}
+    <span class="alert-action">
+      {{action}}
+    </span>
+  {{/if}}
 </div>
