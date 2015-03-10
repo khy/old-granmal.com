@@ -4,11 +4,12 @@ define [
   'backbone'
   'handlebars'
   'bookclub/collections/authors'
-], ($, _, Backbone, Handlebars, Authors) ->
+  'text!bookclub/templates/author-selector.hbs'
+], ($, _, Backbone, Handlebars, Authors, template) ->
 
   class AuthorSelector extends Backbone.View
 
-    @template: Handlebars.compile($('#author-selector-template').html())
+    @template: Handlebars.compile(template)
 
     initialize: ->
       @authors = new Authors

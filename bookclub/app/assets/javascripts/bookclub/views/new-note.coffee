@@ -7,11 +7,12 @@ define [
   'bookclub/views/book-selector'
   'bookclub/views/show-note'
   'lib/validation/check'
-], ($, Backbone, Handlebars, Note, Book, BookSelector, ShowNote, Check) ->
+  'text!bookclub/templates/new-note.hbs'
+], ($, Backbone, Handlebars, Note, Book, BookSelector, ShowNote, Check, template) ->
 
   class NewNote extends Backbone.View
 
-    @template: Handlebars.compile($("#new-note-template").html())
+    @template: Handlebars.compile(template)
 
     initialize: (opts = {}) ->
       @note = new Note

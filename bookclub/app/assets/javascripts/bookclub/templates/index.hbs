@@ -1,0 +1,44 @@
+<div class="header">
+  <h1>Book Club</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="/">
+        <span class="glyphicon glyphicon-home"></span>
+      </a>
+    </li>
+
+    <li>
+      <a class="new-note" href="#">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<ol class="notes">
+  {{#each notes}}
+    <li class="note" data-guid="{{guid}}">
+      <p class="content">{{content}}</p>
+      <p class="details">
+        {{#if created_by.user.name}}
+          <a class="name" href="#">{{created_by.user.name}}</a>
+        {{else}}
+          <a class="handle" href="#">{{created_by.user.handle}}</a>
+        {{/if}}
+        at
+        <span class="page-number">p.{{page_number}}</span>
+        of
+        <a class="title" href="#">{{book.title}}</a>
+        by
+        <span class="author">{{book.author.name}}</span>
+      </p>
+    </li>
+  {{/each}}
+
+  {{#if hasNextPage}}
+    <li class="load-more">
+      <a href="#">Load More</a>
+    </li>
+  {{/if}}
+</ol>

@@ -1,0 +1,35 @@
+<div class="dialog-header">
+  <h1>New Book</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<form>
+  <div class="field">
+    <input type="text" name="title" placeholder="Title" value="{{title}}"></input>
+
+    {{#if titleError}}
+      <ol class="input-messages">
+        <li class="input-error">{{titleError}}</li>
+      </ol>
+    {{/if}}
+  </div>
+
+  <div class="field">
+    <input type="text" name="author_name" placeholder="Author" value="{{authorName}}"></input>
+
+    {{#if authorError}}
+      <ol class="input-messages">
+        <li class="input-error">{{authorError}}</li>
+      </ol>
+    {{/if}}
+  </div>
+
+  <button type="submit">Add Book</button>
+</form>

@@ -5,11 +5,12 @@ define [
   'handlebars'
   'moment'
   'bookclub/models/note'
-], ($, _, Backbone, Handlebars, Moment, Note) ->
+  'text!bookclub/templates/show-note.hbs'
+], ($, _, Backbone, Handlebars, Moment, Note, template) ->
 
   class ShowNote extends Backbone.View
 
-    @template: Handlebars.compile($("#show-note-template").html())
+    @template: Handlebars.compile(template)
 
     initialize: (opts) ->
       @model = opts.note || new Note guid: opts.guid

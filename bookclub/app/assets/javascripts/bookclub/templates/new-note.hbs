@@ -1,0 +1,55 @@
+<div class="dialog-header">
+  <h1>New Note</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<form>
+  <div class="field">
+    <input type="text" name="book_title" placeholder="Book" value="{{bookTitle}}"></input>
+
+    {{#if errors.book}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.book}}</li>
+      </ol>
+    {{/if}}
+  </div>
+
+  <div class="split field-group">
+    <div class="left-split">
+      <div class="field">
+        <input type="text" name="page_number" placeholder="Page" value="{{pageNumber}}"></input>
+      </div>
+    </div>
+
+    <div class="right-split">
+      <div class="field">
+        <input type="text" name="page_total" placeholder="Total" value="{{pageTotal}}"></input>
+      </div>
+    </div>
+
+    {{#if errors.pages}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.pages}}</li>
+      </ol>
+    {{/if}}
+  </div>
+
+  <div class="field">
+    <textarea name="content" rows="5">{{content}}</textarea>
+
+    {{#if errors.content}}
+      <ol class="input-messages">
+        <li class="input-error">{{errors.content}}</li>
+      </ol>
+    {{/if}}
+  </div>
+
+  <button type="submit">Add Note</button>
+<form>

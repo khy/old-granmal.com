@@ -1,0 +1,39 @@
+<div class="header">
+  <h1>
+    Book Club
+  </h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+{{#with note}}
+  <div class="note">
+    <p class="content">{{content}}</p>
+
+    <p class="created-by">
+      {{#if created_by.user.name}}
+        <a class="name" href="#">{{created_by.user.name}}</a>
+      {{else}}
+        <a class="handle" href="#">{{created_by.user.handle}}</a>
+      {{/if}}
+    </p>
+
+    <p class="page-details">
+      <span class="page-number">p.{{page_number}}</span>
+      of
+      <a class="title" href="#">{{book.title}}</a>
+      by
+      <span class="author">{{book.author.name}}</span>
+    </p>
+
+    <p class="created-at">
+      {{created_at}}
+    </p>
+  </div>
+{{/with}}

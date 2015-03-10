@@ -5,11 +5,12 @@ define [
   'handlebars'
   'bookclub/views/show-note'
   'bookclub/views/new-note'
-], ($, _, Backbone, Handlebars, ShowNote, NewNote) ->
+  'text!bookclub/templates/index.hbs'
+], ($, _, Backbone, Handlebars, ShowNote, NewNote, template) ->
 
   class Index extends Backbone.View
 
-    @template: Handlebars.compile($("#index-template").html())
+    @template: Handlebars.compile(template)
 
     initialize: (opts) ->
       @app = opts.app

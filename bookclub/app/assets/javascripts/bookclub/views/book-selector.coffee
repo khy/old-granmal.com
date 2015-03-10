@@ -5,11 +5,12 @@ define [
   'handlebars'
   'bookclub/collections/books'
   'bookclub/views/new-book'
-], ($, _, Backbone, Handlebars, Books, NewBook) ->
+  'text!bookclub/templates/book-selector.hbs'
+], ($, _, Backbone, Handlebars, Books, NewBook, template) ->
 
   class BookSelector extends Backbone.View
 
-    @template: Handlebars.compile($('#book-selector-template').html())
+    @template: Handlebars.compile(template)
 
     initialize: (opts = {}) ->
       @books = new Books
