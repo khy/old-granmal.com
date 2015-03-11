@@ -1,55 +1,22 @@
-@import com.granmal.helpers.UrlHelper
+@import play.api.libs.json.{ Json, Writes }
+@import controllers.bookclub.Application.Bootstrap
 
-@(
-  user: Option[json.JsObject],
-  initialNotes: Page[json.JsValue],
-  lastNote: Option[json.JsValue],
-  currentNote: Option[json.JsValue]
-)(
-  implicit request: play.api.mvc.RequestHeader
-)
+@(bootstrap: Bootstrap, javascriptRouter: JavaScript)(implicit writes: Writes[Bootstrap])
 
 @com.granmal.views.html.layout.simpleLayout(Some("bookclub"), "Book Club")(controllers.bookclub.routes.Assets.versioned) {
 
   <div id="main">
   </div>
 
-  @views.html.helper.javascriptRouter("serverRoutes")(
-    controllers.bookclub.routes.javascript.Application.findNotes,
-    controllers.bookclub.routes.javascript.Application.findAuthors,
-    controllers.bookclub.routes.javascript.Application.findBooks,
-    controllers.bookclub.routes.javascript.Application.createBook,
-    controllers.bookclub.routes.javascript.Application.createNote
-  )
+  <div class="alert"></div>
 
   <script type="text/javascript">
-    var serverRouter = serverRouter = serverRoutes.controllers.bookclub.Application;
-    serverRouter.signIn = function() { return { url: '/sign-in' }; }
-
-    var app = {};
-
-    app.initialNotes = @Html(json.Json.stringify(json.Json.toJson(initialNotes.items)));
-
-    @user.map { user =>
-      app.user = @Html(json.Json.stringify(user));
-    }
-
-    @initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)).map { next =>
-      app.nextPageQuery = "@Html(next)";
-    }
-
-    @currentNote.map { currentNote =>
-      app.currentNote = @Html(json.Json.stringify(currentNote));
-    }
-
-    @lastNote.map { lastNote =>
-      app.lastNote = @Html(json.Json.stringify(lastNote));
-    }
+    @Html(javascriptRouter.body)
 
     var require = {
       config: {
-        'bookclub/routers/server': serverRouter,
-        'bookclub/app': app
+        'bootstrap': @Html(Json.stringify(Json.toJson(bootstrap))),
+        'routers/server': Router.controllers
       }
     };
   </script>

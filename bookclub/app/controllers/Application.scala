@@ -12,6 +12,7 @@ import io.useless.play.json.account.AccountJson
 import com.granmal.auth.AuthRequest
 import com.granmal.auth.AuthAction._
 import com.granmal.helpers.UrlHelper
+import com.granmal.models.account.PublicAccount
 import com.granmal.models.account.PublicAccount.Json._
 
 import clients.bookclub.BooksClient
@@ -20,16 +21,22 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller with BooksClient {
 
+  case class Bootstrap(
+    account: Option[PublicAccount],
+    initialNotes: Seq[JsValue],
+    nextPageQuery: Option[String],
+    lastNote: Option[JsValue],
+    currentNote: Option[JsValue]
+  )
+  implicit val bootstrapFormat = Json.format[Bootstrap]
+
   def app(path: String = "") = Action.auth.async { implicit request =>
-    for {
-      initialNotes <- getInitialNotes()
-      optLastNote <- getLastNote()
-    } yield Ok(views.html.bookclub.app(
-      user = getCurrentAccount(),
-      initialNotes = initialNotes,
-      lastNote = optLastNote,
-      currentNote = None
-    ))
+    buildBootstrap().map { bootstrap =>
+      Ok(views.html.bookclub.app(
+        bootstrap = bootstrap,
+        javascriptRouter = buildJavascriptRouter()
+      ))
+    }
   }
 
   case class Author(guid: UUID, name: String)
@@ -96,16 +103,12 @@ object Application extends Controller with BooksClient {
     val futOptCurrentNote = jsonClient.get(s"/notes/${guid}")
 
     render.async {
-      case Accepts.Html() => for {
-        initialNotes <- getInitialNotes()
-        optLastNote <- getLastNote()
-        optCurrentNote <- futOptCurrentNote
-      } yield Ok(views.html.bookclub.app(
-        user = getCurrentAccount(),
-        initialNotes = initialNotes,
-        lastNote = optLastNote,
-        currentNote = optCurrentNote
-      ))
+      case Accepts.Html() => buildBootstrap().map { bootstrap =>
+        Ok(views.html.bookclub.app(
+          bootstrap = bootstrap,
+          javascriptRouter = buildJavascriptRouter()
+        ))
+      }
 
       case Accepts.Json() => futOptCurrentNote.map { optNote =>
         optNote.map(Ok(_)).getOrElse(NotFound)
@@ -182,9 +185,29 @@ object Application extends Controller with BooksClient {
 
   }
 
-  // A front-end version of this current, authenticated account.
-  private def getCurrentAccount()(implicit request: AuthRequest[_]) = {
-    request.account.map { account => Json.toJson(account.toPublic).as[JsObject] }
+  private def buildBootstrap[T]()(implicit request: AuthRequest[T]): Future[Bootstrap] = {
+    for {
+      initialNotes <- getInitialNotes()
+      lastNote <- getLastNote()
+    } yield Bootstrap(
+      account = request.account.map(_.toPublic),
+      initialNotes = initialNotes.items,
+      nextPageQuery = initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)),
+      lastNote = lastNote,
+      currentNote = None
+    )
+  }
+
+  private def buildJavascriptRouter()(implicit request: RequestHeader) = {
+    import routes.javascript
+
+    Routes.javascriptRouter()(
+      javascript.Application.findNotes,
+      javascript.Application.findAuthors,
+      javascript.Application.findBooks,
+      javascript.Application.createBook,
+      javascript.Application.createNote
+    )
   }
 
   private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "10")

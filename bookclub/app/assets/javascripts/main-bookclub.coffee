@@ -11,6 +11,8 @@ requirejs.config
     handlebars:
       exports: 'Handlebars'
 
-require ['bookclub/app'], (App) ->
-  window.App = new App
+define 'bootstrap', ['module'], (module) -> module.config()
+
+require ['bookclub/app', 'bootstrap'], (App, bootstrap) ->
+  window.App = new App bootstrap
   window.App.init()
