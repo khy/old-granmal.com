@@ -3,18 +3,24 @@ define [
   'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/el-manager'
   'bookclub/views/show-note'
   'bookclub/views/new-note'
   'text!bookclub/templates/index.hbs'
-], ($, _, Backbone, Handlebars, ShowNote, NewNote, template) ->
+], ($, _, Backbone, Handlebars, ElManager, ShowNote, NewNote, template) ->
 
   class Index extends Backbone.View
 
     @template: Handlebars.compile(template)
 
     initialize: (opts) ->
-      @app = opts.app
-      @nextPageQuery = @app.nextPageQuery
+      _.extend @, ElManager
+
+      @router = opts.router
+      @lastNoteCreated = opts.lastNoteCreated
+      @nextPageQuery = opts.nextPageQuery
+
+      console.log @lastNoteCreated
 
       @listenTo @collection, 'add', @render
       @listenTo @collection, 'change', @render
@@ -37,21 +43,21 @@ define [
       note = @collection.get(guid)
       view = new ShowNote note: note
       @listenTo view, 'close', @closeShowNote
-      @app.mainEl.replace view
-      @app.router.navigate("notes/#{note.id}")
+      @setView view
+      @router.navigate("notes/#{note.id}")
 
     closeShowNote: ->
-      @app.mainEl.replace @, hard: true
-      @app.router.navigate("")
+      @setView @
+      @router.navigate("")
 
     newNote: (e) ->
       e.preventDefault()
-      view = new NewNote app: @app
+      view = new NewNote lastNoteCreated: @lastNoteCreated, router: @router
       @listenTo view, 'close', @closeNewNote
-      @app.mainEl.replace view
+      @setView view
 
     closeNewNote: ->
-      @app.mainEl.replace @, hard: true
+      @setView @
 
     loadMore: (e) ->
       e.preventDefault()

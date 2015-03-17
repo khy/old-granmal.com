@@ -3,22 +3,23 @@ define [
   'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/el-manager'
   'bookclub/collections/books'
   'bookclub/views/new-book'
   'text!bookclub/templates/book-selector.hbs'
-], ($, _, Backbone, Handlebars, Books, NewBook, template) ->
+], ($, _, Backbone, Handlebars, ElManager, Books, NewBook, template) ->
 
   class BookSelector extends Backbone.View
 
     @template: Handlebars.compile(template)
 
     initialize: (opts = {}) ->
+      _.extend @, ElManager
+
       @books = new Books
       @listenTo @books, 'reset', @render
 
-      @app = opts.app
-
-      @newBook = new NewBook app: @app
+      @newBook = new NewBook
       @listenTo @newBook, 'create', @selectNewBook
       @listenTo @newBook, 'close', @closeNewBook
 
@@ -71,10 +72,10 @@ define [
       e.preventDefault()
       title = @queryInput().val()
       @newBook.setTitle(title)
-      @app.mainEl.replace @newBook
+      @setView @newBook
 
     closeNewBook: ->
-      @app.mainEl.replace @
+      @setView @
 
     remove: ->
       @newBook.remove()

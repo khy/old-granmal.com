@@ -25,9 +25,10 @@ object Application extends Controller with BooksClient {
     account: Option[PublicAccount],
     initialNotes: Seq[JsValue],
     nextPageQuery: Option[String],
-    lastNote: Option[JsValue],
+    lastNoteCreated: Option[JsValue],
     currentNote: Option[JsValue]
   )
+
   implicit val bootstrapFormat = Json.format[Bootstrap]
 
   def app(path: String = "") = Action.auth.async { implicit request =>
@@ -188,12 +189,12 @@ object Application extends Controller with BooksClient {
   private def buildBootstrap[T]()(implicit request: AuthRequest[T]): Future[Bootstrap] = {
     for {
       initialNotes <- getInitialNotes()
-      lastNote <- getLastNote()
+      lastNoteCreated <- getLastNoteCreated()
     } yield Bootstrap(
       account = request.account.map(_.toPublic),
       initialNotes = initialNotes.items,
       nextPageQuery = initialNotes.next.flatMap(UrlHelper.getRawQueryString(_)),
-      lastNote = lastNote,
+      lastNoteCreated = lastNoteCreated,
       currentNote = None
     )
   }
@@ -213,7 +214,7 @@ object Application extends Controller with BooksClient {
   private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "10")
 
   // The last note of the current user.
-  private def getLastNote()(implicit request: AuthRequest[_]) = {
+  private def getLastNoteCreated()(implicit request: AuthRequest[_]) = {
     request.account.flatMap(_.uselessAccessToken).map { accessToken =>
       jsonClient.find("/notes",
         "account_guid" -> accessToken.accountId,

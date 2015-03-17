@@ -3,7 +3,7 @@ define [
   'underscore'
   'backbone'
   'lib/javascripts/el-manager'
-  'utils/session'
+  'lib/javascripts/session'
   'views/apps'
   'views/auth'
 ], ($, _, Backbone, ElManager, Session, Apps, Auth) ->

@@ -2,23 +2,24 @@ define [
   'jquery'
   'backbone'
   'handlebars'
+  'lib/javascripts/el-manager'
   'bookclub/models/book'
   'bookclub/views/author-selector'
   'text!bookclub/templates/new-book.hbs'
-], ($, Backbone, Handlebars, Book, AuthorSelector, template) ->
+], ($, Backbone, Handlebars, ElManager, Book, AuthorSelector, template) ->
 
   class NewBook extends Backbone.View
 
     @template: Handlebars.compile(template)
 
     initialize: (opts = {}) ->
+      _.extend @, ElManager
+
       @book = new Book
       @listenTo @book, 'invalid', @render
       @listenTo @book, 'sync', @setBook
 
-      @app = opts.app
-
-      @authorSelector = new AuthorSelector()
+      @authorSelector = new AuthorSelector
       @listenTo @authorSelector, 'select', @setAuthor
       @listenTo @authorSelector, 'close', @closeAuthorSelector
 
@@ -43,15 +44,15 @@ define [
       @title = title
 
     showAuthorSelector: ->
-      @app.mainEl.replace @authorSelector
+      @setView @authorSelector
       @authorSelector.focusQueryInput()
 
     setAuthor: (author) ->
       @selectedAuthor = author
-      @app.mainEl.replace @
+      @setView @
 
     closeAuthorSelector: ->
-      @app.mainEl.replace @
+      @setView @
 
     saveTitle: ->
       # Save title outside of model so that input value does not get wiped out

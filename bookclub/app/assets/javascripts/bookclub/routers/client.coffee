@@ -1,36 +1,49 @@
 define [
   'backbone'
+  'lib/javascripts/el-manager'
+  'lib/javascripts/session'
+  'bookclub/models/note'
+  'bookclub/collections/notes'
   'bookclub/views/index'
   'bookclub/views/show-note'
   'bookclub/views/new-note'
-  'bookclub/routers/server'
-], (Backbone, Index, ShowNote, NewNote, ServerRouter) ->
+], (Backbone, ElManager, Session, Note, Notes, Index, ShowNote, NewNote) ->
 
   class ClientRouter extends Backbone.Router
 
-    initialize: (options) ->
-      @app = options.app
+    initialize: (config) ->
+      @el = $("#main")
+      _.extend @, ElManager
+
+      @initialNotes = new Notes config.initialNotes
+      @currentNote = new Note config.currentNote if config.currentNote
+      @lastNoteCreated = new Note config.lastNoteCreated if config.lastNoteCreated
+
+      @session = new Session config.account
+      @index = new Index
+        collection: @initialNotes
+        router: @
+        nextPageQuery: config.nextPageQuery
+        lastNoteCreated: @lastNoteCreated
 
     routes:
       ''            : 'index'
       'notes/new'   : 'newNote'
       'notes/:guid' : 'showNote'
 
-    index: ->
-      view = new Index collection: @app.initialNotes, app: @app
-      @app.mainEl.replace(view)
+    index: -> @setView @index
 
     newNote: ->
-      if @app.user
-        view = @app.newNoteView()
-        @app.mainEl.replace view
+      if @session
+        view = new NewNote
+        @setView view
       else
-        window.location.replace(ServerRouter.signIn().url)
+        alert "NEED TO IMPLEMENT SIGN IN"
 
     showNote: (opts) ->
-      view = if @app.currentNote?.get("guid") == opts.guid
-        new ShowNote note: @app.currentNote
+      view = if @currentNote?.get("guid") == opts.guid
+        new ShowNote note: @currentNote
       else
         new ShowNote opts
 
-      @app.mainEl.replace view
+      @setView view

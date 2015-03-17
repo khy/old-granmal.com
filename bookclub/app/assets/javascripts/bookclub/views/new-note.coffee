@@ -2,28 +2,34 @@ define [
   'jquery'
   'backbone'
   'handlebars'
+  'lib/javascripts/validation/check'
+  'lib/javascripts/el-manager'
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'
   'bookclub/views/show-note'
-  'lib/validation/check'
   'text!bookclub/templates/new-note.hbs'
-], ($, Backbone, Handlebars, Note, Book, BookSelector, ShowNote, Check, template) ->
+], ($, Backbone, Handlebars, Check, ElManager, Note, Book, BookSelector, ShowNote, template) ->
 
   class NewNote extends Backbone.View
 
     @template: Handlebars.compile(template)
 
     initialize: (opts = {}) ->
+      _.extend @, ElManager
+
       @note = new Note
       @listenTo @note, 'sync', @showNote
 
-      @app = opts.app
+      @router = opts.router
+      @lastNoteCreated = opts.lastNoteCreated
 
-      if bookAttributes = @app.lastNote?.get("book")
-        @selectedBook = new Book(bookAttributes)
+      console.log @lastNoteCreated
 
-      @bookSelector = new BookSelector app: @app
+      if bookAttributes = @lastNoteCreated?.get("book")
+        @selectedBook = new Book bookAttributes
+
+      @bookSelector = new BookSelector
       @listenTo @bookSelector, 'select', @setBook
       @listenTo @bookSelector, 'close', @closeBookSelector
 
@@ -31,7 +37,7 @@ define [
       @$el.html NewNote.template
         bookTitle: @selectedBook?.get('title')
         pageNumber: @input?.page_number
-        pageTotal: @input?.page_total or @app.lastNote?.get("edition").page_count
+        pageTotal: @input?.page_total or @lastNoteCreated?.get("edition").page_count
         content: @input?.content
         errors: @errors
 
@@ -55,9 +61,9 @@ define [
     showNote: ->
       view = new ShowNote note: @note
       @listenTo view, 'close', =>
-        @app.router.navigate "", trigger: true
-      @app.mainEl.replace view
-      @app.router.navigate("notes/#{@note.id}")
+        @router.navigate "", trigger: true
+      @setView view
+      @router.navigate("notes/#{@note.id}")
 
     getInput: ->
       book_guid: @selectedBook?.get('guid')
@@ -94,15 +100,15 @@ define [
       errors
 
     showBookSelector: ->
-      @app.mainEl.replace @bookSelector
+      @setView @bookSelector
       @bookSelector.focusQueryInput()
 
     setBook: (book) ->
       @selectedBook = book
-      @app.mainEl.replace @
+      @setView @
 
     closeBookSelector: ->
-      @app.mainEl.replace @
+      @setView @
 
     remove: ->
       @bookSelector.remove()

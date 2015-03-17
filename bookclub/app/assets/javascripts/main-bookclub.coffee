@@ -1,6 +1,6 @@
 requirejs.config
   paths:
-    lib: '../lib/lib/javascripts'
+    lib: '../lib/lib'
     jquery: '../lib/jquery/jquery'
     underscore: '../lib/underscorejs/underscore'
     backbone: '../lib/backbonejs/backbone'
@@ -13,6 +13,15 @@ requirejs.config
 
 define 'bootstrap', ['module'], (module) -> module.config()
 
-require ['bookclub/app', 'bootstrap'], (App, bootstrap) ->
-  window.App = new App bootstrap
-  window.App.init()
+require [
+  'jquery'
+  'backbone'
+  'lib/javascripts/page'
+  'bookclub/routers/client'
+  'bootstrap'
+], ($, Backbone, Page, ClientRouter, bootstrap) ->
+  window.router = new ClientRouter bootstrap
+
+  $(document).ready ->
+    Page.ensureFullPage()
+    Backbone.history.start root: "book-club", pushState: true
