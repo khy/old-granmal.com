@@ -56,6 +56,7 @@ define [
     , 300
 
     selectNewBook: (book) ->
+      @clearView()
       @selectBook(book)
 
     selectExistingBook: (e) ->

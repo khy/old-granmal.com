@@ -24,8 +24,6 @@ define [
       @router = opts.router
       @lastNoteCreated = opts.lastNoteCreated
 
-      console.log @lastNoteCreated
-
       if bookAttributes = @lastNoteCreated?.get("book")
         @selectedBook = new Book bookAttributes
 

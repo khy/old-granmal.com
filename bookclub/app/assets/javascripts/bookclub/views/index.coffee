@@ -20,8 +20,6 @@ define [
       @lastNoteCreated = opts.lastNoteCreated
       @nextPageQuery = opts.nextPageQuery
 
-      console.log @lastNoteCreated
-
       @listenTo @collection, 'add', @render
       @listenTo @collection, 'change', @render
 
