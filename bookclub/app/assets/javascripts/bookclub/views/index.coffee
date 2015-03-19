@@ -3,7 +3,7 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'bookclub/views/show-note'
   'bookclub/views/new-note'
   'text!bookclub/templates/index.hbs'

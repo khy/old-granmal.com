@@ -2,7 +2,7 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'text!templates/apps.hbs'
   'views/masthead'
   'views/menu'

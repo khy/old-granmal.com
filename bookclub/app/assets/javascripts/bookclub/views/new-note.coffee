@@ -3,7 +3,7 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/validation/check'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'

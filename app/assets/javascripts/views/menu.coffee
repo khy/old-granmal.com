@@ -3,7 +3,7 @@ define [
   'underscore'
   'backbone'
   'handlebars'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'utils/alert'
   'routers/server'
   'views/auth'

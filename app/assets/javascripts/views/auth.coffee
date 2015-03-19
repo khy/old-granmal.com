@@ -1,7 +1,7 @@
 define [
   'underscore'
   'backbone'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'views/sign-in'
   'views/sign-up'
 ], (_, Backbone, ElManager, SignIn, SignUp) ->

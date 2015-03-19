@@ -2,7 +2,7 @@ define [
   'jquery'
   'underscore'
   'backbone'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'lib/javascripts/session'
   'views/apps'
   'views/auth'

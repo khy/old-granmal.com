@@ -2,7 +2,7 @@ define [
   'jquery'
   'backbone'
   'handlebars'
-  'lib/javascripts/el-manager'
+  'lib/javascripts/backbone/el-manager'
   'bookclub/models/book'
   'bookclub/views/author-selector'
   'text!bookclub/templates/new-book.hbs'
