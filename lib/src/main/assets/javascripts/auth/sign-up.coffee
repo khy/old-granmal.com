@@ -6,7 +6,7 @@ define [
   'lib/javascripts/validation/check'
   'lib/javascripts/form'
   'routers/server'
-  'text!templates/sign-up.hbs'
+  'text!lib/templates/auth/sign-up.hbs'
 ], ($, _, Backbone, Handlebars, Check, Form, ServerRouter, template) ->
 
   Form.registerHelpers Handlebars
@@ -17,9 +17,10 @@ define [
 
     initialize: (opts) ->
       @session = opts.session
-      @router = opts.router
+      @clientRouter = opts.clientRouter
+      @serverRouter = opts.serverRouter
 
-    navigate: -> @router.navigate 'sign-up'
+    navigate: -> @clientRouter.navigate 'sign-up'
 
     render: ->
       @$el.html SignUp.template
@@ -37,7 +38,7 @@ define [
       @bind()
 
       if _.every(@fieldErrors, (errors) -> _.isEmpty errors)
-        jqxhr = $.ajax _.extend ServerRouter.signUp, data: @input
+        jqxhr = $.ajax _.extend @serverRouter.signUp, data: @input
 
         jqxhr.done (account) =>
           @session.create account

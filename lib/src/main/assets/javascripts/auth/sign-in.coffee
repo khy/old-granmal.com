@@ -5,9 +5,8 @@ define [
   'handlebars'
   'lib/javascripts/validation/check'
   'lib/javascripts/form'
-  'routers/server'
-  'text!templates/sign-in.hbs'
-], ($, _, Backbone, Handlebars, Check, Form, ServerRouter, template) ->
+  'text!lib/templates/auth/sign-in.hbs'
+], ($, _, Backbone, Handlebars, Check, Form, template) ->
 
   Form.registerHelpers Handlebars
 
@@ -17,12 +16,13 @@ define [
 
     initialize: (opts) ->
       @session = opts.session
-      @router = opts.router
+      @clientRouter = opts.clientRouter
+      @serverRouter = opts.serverRouter
 
       @input = {}
       @fieldErrors = {}
 
-    navigate: -> @router.navigate 'sign-in'
+    navigate: -> @clientRouter.navigate 'sign-in'
 
     render: ->
       @$el.html SignIn.template
@@ -41,7 +41,7 @@ define [
       @fieldErrors = @validate(@input)
 
       if _.every(@fieldErrors, (errors) -> _.isEmpty errors)
-        jqxhr = $.ajax _.extend ServerRouter.signIn, data: @input
+        jqxhr = $.ajax _.extend @serverRouter.signIn, data: @input
 
         jqxhr.done (account) =>
           @session.create account

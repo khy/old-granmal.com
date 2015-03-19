@@ -4,9 +4,10 @@ define [
   'backbone'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/auth/session'
+  'lib/javascripts/auth/form'
   'views/apps'
-  'views/auth'
-], ($, _, Backbone, ElManager, Session, Apps, Auth) ->
+  'routers/server'
+], ($, _, Backbone, ElManager, Session, AuthForm, Apps, ServerRouter) ->
 
   class ClientRouter extends Backbone.Router
 
@@ -30,9 +31,15 @@ define [
     signUp: -> @auth 'signUp'
 
     auth: (view) ->
-      authView = new Auth session: @session, router: @
+      authView = new AuthForm
+        session: @session,
+        clientRouter: @,
+        serverRouter: ServerRouter
+
       authView.view = authView[view]
+
       @listenToOnce authView, 'close', =>
         @setView @appsView
         @navigate ''
+
       @setView authView

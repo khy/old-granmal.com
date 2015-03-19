@@ -4,11 +4,11 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/backbone/el-manager'
+  'lib/javascripts/auth/form'
   'utils/alert'
   'routers/server'
-  'views/auth'
   'text!templates/menu.hbs'
-], ($, _, Backbone, Handlebars, ElManager, Alert, ServerRouter, Auth, template) ->
+], ($, _, Backbone, Handlebars, ElManager, AuthForm, Alert, ServerRouter, template) ->
 
   class Menu extends Backbone.View
 
@@ -19,7 +19,9 @@ define [
 
       @session = opts.session
       @router = opts.router
-      @authView = new Auth opts
+      @authView = new AuthForm _.extend opts,
+        clientRouter: opts.router
+        serverRouter: ServerRouter
 
       @listenTo @session, 'create', (account) =>
         @trigger 'close'

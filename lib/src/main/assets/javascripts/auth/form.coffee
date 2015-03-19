@@ -2,8 +2,8 @@ define [
   'underscore'
   'backbone'
   'lib/javascripts/backbone/el-manager'
-  'views/sign-in'
-  'views/sign-up'
+  'lib/javascripts/auth/sign-in'
+  'lib/javascripts/auth/sign-up'
 ], (_, Backbone, ElManager, SignIn, SignUp) ->
 
   class Auth extends Backbone.View
