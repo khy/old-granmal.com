@@ -1,7 +1,7 @@
 define [
   'backbone'
   'lib/javascripts/backbone/el-manager'
-  'lib/javascripts/session'
+  'lib/javascripts/auth/session'
   'bookclub/models/note'
   'bookclub/collections/notes'
   'bookclub/views/index'
