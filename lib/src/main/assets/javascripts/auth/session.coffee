@@ -9,12 +9,14 @@ define [
       _.extend @, Backbone.Events
       @create(account)
 
-    create: (account) =>
+    isSignedIn: -> !_.isUndefined(@account)
+
+    create: (account) ->
       @account = account
       unless _.isUndefined @account
         @trigger 'create', @account
 
-    destroy: =>
+    destroy: ->
       oldAccount = @account
       @account = undefined
       unless _.isUndefined oldAccount

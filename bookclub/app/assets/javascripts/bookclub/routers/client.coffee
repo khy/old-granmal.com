@@ -23,6 +23,7 @@ define [
       @index = new Index
         collection: @initialNotes
         router: @
+        session: @session
         nextPageQuery: config.nextPageQuery
         lastNoteCreated: @lastNoteCreated
 
@@ -34,11 +35,8 @@ define [
     index: -> @setView @index
 
     newNote: ->
-      if @session
-        view = new NewNote
-        @setView view
-      else
-        alert "NEED TO IMPLEMENT SIGN IN"
+      view = new NewNote
+      @setView view
 
     showNote: (opts) ->
       view = if @currentNote?.get("guid") == opts.guid

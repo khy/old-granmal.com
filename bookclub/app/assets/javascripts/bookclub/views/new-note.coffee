@@ -4,12 +4,15 @@ define [
   'handlebars'
   'lib/javascripts/validation/check'
   'lib/javascripts/backbone/el-manager'
+  'lib/javascripts/auth/form'
+  'bookclub/routers/server'
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'
   'bookclub/views/show-note'
   'text!bookclub/templates/new-note.hbs'
-], ($, Backbone, Handlebars, Check, ElManager, Note, Book, BookSelector, ShowNote, template) ->
+], ($, Backbone, Handlebars, Check, ElManager, AuthForm, ServerRouter, Note,
+    Book, BookSelector, ShowNote, template) ->
 
   class NewNote extends Backbone.View
 
@@ -22,6 +25,7 @@ define [
       @listenTo @note, 'sync', @showNote
 
       @router = opts.router
+      @session = opts.session
       @lastNoteCreated = opts.lastNoteCreated
 
       if bookAttributes = @lastNoteCreated?.get("book")
@@ -32,12 +36,15 @@ define [
       @listenTo @bookSelector, 'close', @closeBookSelector
 
     render: ->
-      @$el.html NewNote.template
-        bookTitle: @selectedBook?.get('title')
-        pageNumber: @input?.page_number
-        pageTotal: @input?.page_total or @lastNoteCreated?.get("edition").page_count
-        content: @input?.content
-        errors: @errors
+      if @session.isSignedIn()
+        @$el.html NewNote.template
+          bookTitle: @selectedBook?.get('title')
+          pageNumber: @input?.page_number
+          pageTotal: @input?.page_total or @lastNoteCreated?.get("edition").page_count
+          content: @input?.content
+          errors: @errors
+      else
+        @showAuth()
 
     events:
       'focus input[name="book_title"]': 'showBookSelector'
@@ -55,13 +62,6 @@ define [
           page_total: parseInt(@input.page_total)
       else
         @render()
-
-    showNote: ->
-      view = new ShowNote note: @note
-      @listenTo view, 'close', =>
-        @router.navigate "", trigger: true
-      @setView view
-      @router.navigate("notes/#{@note.id}")
 
     getInput: ->
       book_guid: @selectedBook?.get('guid')
@@ -97,15 +97,33 @@ define [
 
       errors
 
+    showAuth: ->
+      authForm = new AuthForm
+        session: @session
+        clientRouter: @router
+        serverRouter: ServerRouter
+
+      @listenTo authForm, 'close', ->
+        @trigger 'close'
+
+      @setView authForm
+
+    showNote: ->
+      view = new ShowNote note: @note
+      @listenTo view, 'close', =>
+        @router.navigate "", trigger: true
+      @setView view
+      @router.navigate("notes/#{@note.id}")
+
     showBookSelector: ->
       @setView @bookSelector
       @bookSelector.focusQueryInput()
 
-    setBook: (book) ->
-      @selectedBook = book
+    closeBookSelector: ->
       @setView @
 
-    closeBookSelector: ->
+    setBook: (book) ->
+      @selectedBook = book
       @setView @
 
     remove: ->

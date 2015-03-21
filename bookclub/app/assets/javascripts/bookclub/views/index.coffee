@@ -17,6 +17,7 @@ define [
       _.extend @, ElManager
 
       @router = opts.router
+      @session = opts.session
       @lastNoteCreated = opts.lastNoteCreated
       @nextPageQuery = opts.nextPageQuery
 
@@ -50,7 +51,10 @@ define [
 
     newNote: (e) ->
       e.preventDefault()
-      view = new NewNote lastNoteCreated: @lastNoteCreated, router: @router
+      view = new NewNote
+        router: @router
+        session: @session
+        lastNoteCreated: @lastNoteCreated
       @listenTo view, 'close', @closeNewNote
       @setView view
 

@@ -5,9 +5,8 @@ define [
   'handlebars'
   'lib/javascripts/validation/check'
   'lib/javascripts/form'
-  'routers/server'
   'text!lib/templates/auth/sign-up.hbs'
-], ($, _, Backbone, Handlebars, Check, Form, ServerRouter, template) ->
+], ($, _, Backbone, Handlebars, Check, Form, template) ->
 
   Form.registerHelpers Handlebars
 
