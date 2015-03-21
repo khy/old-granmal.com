@@ -16,10 +16,10 @@ define [
 
     initialize: (opts) ->
       @session = opts.session
-      @clientRouter = opts.clientRouter
-      @serverRouter = opts.serverRouter
+      @router = opts.router
+      @formError = opts.formError
 
-    navigate: -> @clientRouter.navigate 'sign-up'
+    navigate: -> @router?.navigate 'sign-up'
 
     render: ->
       @$el.html SignUp.template
@@ -37,7 +37,7 @@ define [
       @bind()
 
       if _.every(@fieldErrors, (errors) -> _.isEmpty errors)
-        jqxhr = $.ajax _.extend @serverRouter.signUp, data: @input
+        jqxhr = $.ajax url: '/accounts', method: 'POST', data: @input
 
         jqxhr.done (account) =>
           @session.create account

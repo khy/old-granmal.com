@@ -5,14 +5,15 @@ define [
   'lib/javascripts/validation/check'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/auth/form'
+  'lib/javascripts/alert'
   'bookclub/routers/server'
   'bookclub/models/note'
   'bookclub/models/book'
   'bookclub/views/book-selector'
   'bookclub/views/show-note'
   'text!bookclub/templates/new-note.hbs'
-], ($, Backbone, Handlebars, Check, ElManager, AuthForm, ServerRouter, Note,
-    Book, BookSelector, ShowNote, template) ->
+], ($, Backbone, Handlebars, Check, ElManager, AuthForm, Alert, ServerRouter,
+    Note, Book, BookSelector, ShowNote, template) ->
 
   class NewNote extends Backbone.View
 
@@ -25,7 +26,12 @@ define [
       @listenTo @note, 'sync', @showNote
 
       @router = opts.router
+
       @session = opts.session
+      @listenTo @session, 'create', ->
+        Alert.success 'Signed in'
+        @setView @
+
       @lastNoteCreated = opts.lastNoteCreated
 
       if bookAttributes = @lastNoteCreated?.get("book")
@@ -100,8 +106,7 @@ define [
     showAuth: ->
       authForm = new AuthForm
         session: @session
-        clientRouter: @router
-        serverRouter: ServerRouter
+        formError: "You must sign-in to add a note."
 
       @listenTo authForm, 'close', ->
         @trigger 'close'

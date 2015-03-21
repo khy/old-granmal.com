@@ -31,11 +31,7 @@ define [
     signUp: -> @auth 'signUp'
 
     auth: (view) ->
-      authView = new AuthForm
-        session: @session,
-        clientRouter: @,
-        serverRouter: ServerRouter
-
+      authView = new AuthForm session: @session, router: @
       authView.view = authView[view]
 
       @listenToOnce authView, 'close', =>

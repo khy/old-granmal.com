@@ -19,9 +19,7 @@ define [
 
       @session = opts.session
       @router = opts.router
-      @authView = new AuthForm _.extend opts,
-        clientRouter: opts.router
-        serverRouter: ServerRouter
+      @authView = new AuthForm opts
 
       @listenTo @session, 'create', (account) =>
         @trigger 'close'
