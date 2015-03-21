@@ -5,7 +5,7 @@ define [
   'handlebars'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/auth/form'
-  'utils/alert'
+  'lib/javascripts/alert'
   'routers/server'
   'text!templates/menu.hbs'
 ], ($, _, Backbone, Handlebars, ElManager, AuthForm, Alert, ServerRouter, template) ->

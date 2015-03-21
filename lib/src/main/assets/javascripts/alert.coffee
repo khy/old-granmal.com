@@ -2,7 +2,7 @@ define [
   'jquery'
   'underscore'
   'handlebars'
-  'text!templates/alert.hbs'
+  'text!lib/templates/alert.hbs'
 ], ($, _, Handlebars, rawTemplate) ->
 
   el = $(".alert")
