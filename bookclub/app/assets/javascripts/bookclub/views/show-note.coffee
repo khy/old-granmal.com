@@ -4,9 +4,12 @@ define [
   'backbone'
   'handlebars'
   'moment'
+  'lib/javascripts/handlebars/markdown'
   'bookclub/models/note'
   'text!bookclub/templates/show-note.hbs'
-], ($, _, Backbone, Handlebars, Moment, Note, template) ->
+], ($, _, Backbone, Handlebars, Moment, Markdown, Note, template) ->
+
+  Markdown.registerHelpers Handlebars
 
   class ShowNote extends Backbone.View
 
