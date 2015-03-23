@@ -4,10 +4,13 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/backbone/el-manager'
+  'lib/javascripts/handlebars/markdown'
   'bookclub/views/show-note'
   'bookclub/views/new-note'
   'text!bookclub/templates/index.hbs'
-], ($, _, Backbone, Handlebars, ElManager, ShowNote, NewNote, template) ->
+], ($, _, Backbone, Handlebars, ElManager, Markdown, ShowNote, NewNote, template) ->
+
+  Markdown.registerHelpers Handlebars
 
   class Index extends Backbone.View
 

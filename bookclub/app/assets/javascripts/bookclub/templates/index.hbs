@@ -19,7 +19,7 @@
 <ol class="notes">
   {{#each notes}}
     <li class="note" data-guid="{{guid}}">
-      <p class="content">{{content}}</p>
+      <p class="content">{{markdown content}}</p>
       <p class="details">
         {{#if created_by.user.name}}
           <a class="name" href="#">{{created_by.user.name}}</a>

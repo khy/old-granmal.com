@@ -18,7 +18,8 @@ object Defaults {
       "org.webjars" % "underscorejs"   % "1.7.0",
       "org.webjars" % "backbonejs"     % "1.1.2-2",
       "org.webjars" % "handlebars"     % "2.0.0-alpha.2",
-      "org.webjars" % "momentjs"       % "2.8.3"
+      "org.webjars" % "momentjs"       % "2.8.3",
+      "org.webjars" % "markdown-js"    % "0.5.0-1"
     )
 
     val resolvers = Seq(

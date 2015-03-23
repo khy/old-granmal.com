@@ -6,10 +6,13 @@ requirejs.config
     backbone: '../lib/backbonejs/backbone'
     handlebars: '../lib/handlebars/handlebars'
     moment: '../lib/momentjs/moment'
+    markdown: '../lib/markdown-js/markdown'
     text: 'requirejs/text'
   shim:
     handlebars:
       exports: 'Handlebars'
+    markdown:
+      exports: 'markdown'
 
 define 'bootstrap', ['module'], (module) -> module.config()
 
