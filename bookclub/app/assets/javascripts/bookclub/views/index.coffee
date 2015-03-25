@@ -36,7 +36,7 @@ define [
 
     events:
       'click ol.notes > li.note': 'showNote'
-      'click a.new-note': 'newNote'
+      'click a.new-note': 'showNewNote'
       'click li.load-more a': 'loadMore'
 
     showNote: (e) ->
@@ -52,7 +52,7 @@ define [
       @setView @
       @router.navigate("")
 
-    newNote: (e) ->
+    showNewNote: (e) ->
       e.preventDefault()
       view = new NewNote
         router: @router
@@ -60,9 +60,11 @@ define [
         lastNoteCreated: @lastNoteCreated
       @listenTo view, 'close', @closeNewNote
       @setView view
+      @router.navigate("notes/new")
 
     closeNewNote: ->
       @setView @
+      @router.navigate("")
 
     loadMore: (e) ->
       e.preventDefault()
