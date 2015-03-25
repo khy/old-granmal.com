@@ -63,6 +63,7 @@ define [
       @listenTo view, 'close', @closeNewNote
       @listenTo view, 'create', (note) ->
         @collection.unshift note
+        @lastNoteCreated = note
         @closeNewNote()
 
       @setView view
