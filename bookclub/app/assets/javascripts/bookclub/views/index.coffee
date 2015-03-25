@@ -54,11 +54,17 @@ define [
 
     showNewNote: (e) ->
       e.preventDefault()
+
       view = new NewNote
         router: @router
         session: @session
         lastNoteCreated: @lastNoteCreated
+
       @listenTo view, 'close', @closeNewNote
+      @listenTo view, 'create', (note) ->
+        @collection.unshift note
+        @closeNewNote()
+
       @setView view
       @router.navigate("notes/new")
 

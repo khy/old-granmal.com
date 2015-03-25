@@ -23,7 +23,8 @@ define [
       _.extend @, ElManager
 
       @note = new Note
-      @listenTo @note, 'sync', @showNote
+      @listenTo @note, 'sync', ->
+        @trigger 'create', @note
 
       @router = opts.router
 
@@ -112,13 +113,6 @@ define [
         @trigger 'close'
 
       @setView authForm
-
-    showNote: ->
-      view = new ShowNote note: @note
-      @listenTo view, 'close', =>
-        @router.navigate "", trigger: true
-      @setView view
-      @router.navigate("notes/#{@note.id}")
 
     showBookSelector: ->
       @setView @bookSelector
