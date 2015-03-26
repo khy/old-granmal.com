@@ -7,7 +7,7 @@ requirejs.config
     handlebars: '../lib/handlebars/handlebars'
     moment: '../lib/momentjs/moment'
     markdown: '../lib/markdown-js/markdown'
-    text: 'requirejs/text'
+    text: '../lib/lib/javascripts/requirejs/text'
   shim:
     handlebars:
       exports: 'Handlebars'
