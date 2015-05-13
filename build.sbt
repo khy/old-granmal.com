@@ -1,6 +1,6 @@
 name := "granmal"
 
-scalaVersion in ThisBuild := "2.11.4"
+scalaVersion in ThisBuild := "2.11.6"
 
 lazy val lib = project.enablePlugins(SbtWeb, SbtTwirl)
 lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
