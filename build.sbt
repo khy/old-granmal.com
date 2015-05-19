@@ -7,7 +7,7 @@ lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
 lazy val bookclub = project.enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 
 lazy val root = (project in file(".")).
-  enablePlugins(PlayScala).
+  enablePlugins(PlayScala, Mongo).
   dependsOn(lib, haikunst, bookclub).
   aggregate(lib, haikunst, bookclub)
 
