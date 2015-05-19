@@ -14,5 +14,6 @@ dist
 /RUNNING_PID
 /.settings
 secrets.sbt
+secrets.sh
 .DS_Store
 dump
