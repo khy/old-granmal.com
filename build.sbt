@@ -2,14 +2,21 @@ name := "granmal"
 
 scalaVersion in ThisBuild := "2.11.6"
 
+scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
+
 lazy val lib = project.enablePlugins(SbtWeb, SbtTwirl)
 lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
 lazy val bookclub = project.enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 
 lazy val root = (project in file(".")).
-  enablePlugins(PlayScala, Mongo).
+  enablePlugins(PlayScala, Mongo, Release).
   dependsOn(lib, haikunst, bookclub).
-  aggregate(lib, haikunst, bookclub)
+  aggregate(lib, haikunst, bookclub).
+  settings(
+    aggregate in stage := false,
+    aggregate in publishLocal := false,
+    aggregate in publish := false
+  )
 
 Defaults.Settings.root
 
@@ -21,12 +28,9 @@ libraryDependencies ++= Seq(
 
 JsEngineKeys.engineType := JsEngineKeys.EngineType.Node
 
-scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
-
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
-Docker.defaultSettings
-
-Aws.defaultSettings
-
-Deploy.defaultSettings
+dockerBaseImage := "java:8"
+maintainer in Docker := "Kevin Hyland <khy@me.com>"
+dockerRepository := Some("khyland")
+dockerCmd := Seq("-Dconfig.file=conf/prod.conf")

@@ -2,7 +2,7 @@ import sbt._
 import Keys._
 
 /**
- * NOTICE: This was copy-and-pasted from useless.io.
+ * NOTICE: This was copied-and-pasted from useless.io.
  */
 
 object Mongo extends AutoPlugin {
