@@ -1,45 +1,33 @@
 package clients.bookclub
 
 import scala.concurrent.Future
+import play.api.{Application, Configuration}
 import play.api.mvc._
-import io.useless.client.ClientConfiguration
-import io.useless.util.Logger
 import io.useless.play.client._
 
 import com.granmal.auth.AuthRequest
 
-trait BooksClient
-  extends DefaultResourceClientComponent
-  with    DefaultJsonClientComponent
-  with    ConfigurableBaseClientComponent
-  with    ClientConfiguration
-  with    Logger
-{
+trait BooksClient {
 
-  override val baseUrlConfigKey = "useless.books.baseUrl"
+  def configuration: Configuration
 
-  lazy val baseClient = new ConfigurableBaseClient
+  lazy val baseUrl = configuration.underlying.getString("useless.books.baseUrl")
+  lazy val appAccessTokenGuid = configuration.underlying.getString("useless.client.accessTokenGuid")
 
-  def jsonClient = new DefaultJsonClient(baseClient)
-
-  def resourceClient = new DefaultResourceClient(jsonClient)
-
-  def withUselessClient(
-    block: ResourceClient => Future[Result]
-  )(
-    implicit request: AuthRequest[_]
-  ): Future[Result] = {
-    request.account.map { account =>
-      account.uselessAccessToken.map { accessToken =>
-        val client = resourceClient.withAuth(accessToken.token)
-        play.api.Logger.debug(s"Using Useless Books client for access token [${accessToken.token}]")
-        block(client)
-      }.getOrElse {
-        Future.successful(Results.Unauthorized("Need access token"))
+  def jsonClient()(implicit request: Request[_], app: Application): JsonClient = {
+    val optAccessToken = request match {
+      case authRequest: AuthRequest[_] => authRequest.account.flatMap { account =>
+        account.uselessAccessToken.map(_.token)
       }
-    }.getOrElse {
-      Future.successful(Results.Unauthorized("Need to log in"))
+      case _ => None
     }
+
+    val accessToken = optAccessToken.getOrElse(appAccessTokenGuid)
+    JsonClient(baseUrl, accessToken)
+  }
+
+  def resourceClient()(implicit request: Request[_], app: Application): ResourceClient = {
+    new DefaultResourceClient(jsonClient())
   }
 
 }

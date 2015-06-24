@@ -3,6 +3,7 @@ package controllers.bookclub
 import java.util.UUID
 import scala.concurrent.Future
 import play.api._
+import play.api.Play.current
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.concurrent.Execution.Implicits._
@@ -29,6 +30,8 @@ object Application extends Controller with BooksClient {
     currentNote: Option[JsValue]
   )
 
+  val configuration = Play.configuration
+
   implicit val bootstrapFormat = Json.format[Bootstrap]
 
   def app(path: String = "") = Action.auth.async { implicit request =>
@@ -54,13 +57,11 @@ object Application extends Controller with BooksClient {
   }
 
   def createAuthor = Action.auth.async(parse.json) { implicit request =>
-    withUselessClient { client =>
-      client.create[Author]("/authors", request.body).map { result =>
-        result.fold(
-          error => Conflict(error),
-          author => Created(Json.toJson(author))
-        )
-      }
+    resourceClient().create[Author]("/authors", request.body).map { result =>
+      result.fold(
+        error => Conflict(error),
+        author => Created(Json.toJson(author))
+      )
     }
   }
 
@@ -72,7 +73,7 @@ object Application extends Controller with BooksClient {
 
   def findBooks(title: String) = Action.async { implicit request =>
     request.queryString.get("title").flatMap(_.headOption).map { title =>
-      jsonClient.find("/books", "title" -> title).map { books =>
+      jsonClient().find("/books", "title" -> title).map { books =>
         Ok(Json.toJson(books.items))
       }
     }.getOrElse {
@@ -81,13 +82,11 @@ object Application extends Controller with BooksClient {
   }
 
   def createBook = Action.auth.async(parse.json) { implicit request =>
-    withUselessClient { client =>
-      client.create[Book]("/books", request.body).map { result =>
-        result.fold(
-          error => Conflict(error),
-          book => Created(Json.toJson(book))
-        )
-      }
+    resourceClient().create[Book]("/books", request.body).map { result =>
+      result.fold(
+        error => Conflict(error),
+        book => Created(Json.toJson(book))
+      )
     }
   }
 
@@ -117,9 +116,9 @@ object Application extends Controller with BooksClient {
     }
   }
 
-  def findNotes = Action.auth.async { request =>
+  def findNotes = Action.auth.async { implicit request =>
     val query = request.queryString.mapValues { value => value.head }
-    jsonClient.find("/notes", query.toSeq:_*).map { page =>
+    jsonClient().find("/notes", query.toSeq:_*).map { page =>
       val headers = page.next.
         flatMap { nextUrl => UrlHelper.getRawQueryString(nextUrl) }.
         map { nextPageQuery => "X-Next-Page-Query" -> nextPageQuery }.
@@ -132,7 +131,8 @@ object Application extends Controller with BooksClient {
   def createNote = Action.auth.async(parse.json) { implicit request =>
     request.body.validate[NewNote].fold(
       error => Future.successful(Conflict),
-      newNote => withUselessClient { client =>
+      newNote => {
+        val client = resourceClient()
 
         // We first need to get the book for which this note is being created.
         client.get[Book](s"/books/${newNote.book_guid}").flatMap { optBook =>
@@ -211,12 +211,12 @@ object Application extends Controller with BooksClient {
     )
   }
 
-  private def getInitialNotes() = jsonClient.find("/notes", "p.limit" -> "10")
+  private def getInitialNotes()(implicit request: AuthRequest[_]) = jsonClient().find("/notes", "p.limit" -> "10")
 
   // The last note of the current user.
   private def getLastNoteCreated()(implicit request: AuthRequest[_]) = {
     request.account.flatMap(_.uselessAccessToken).map { accessToken =>
-      jsonClient.find("/notes",
+      jsonClient().find("/notes",
         "account_guid" -> accessToken.accountId,
         "p.limit" -> "1"
       ).map(_.items.headOption)
