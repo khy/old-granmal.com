@@ -1,9 +1,9 @@
 package clients.useless
 
 import scala.concurrent.Future
+import play.api.Application
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits._
-import io.useless.play.client.ResourceClient
 import io.useless.accesstoken.{ AccessToken => UselessAccessToken }
 import io.useless.account.{ Account => UselessAccount, User }
 import io.useless.play.json.accesstoken.AccessTokenJson._
@@ -15,7 +15,7 @@ import com.granmal.models.external.{ ExternalAccessToken, ExternalAccount }
 
 object UselessClient {
 
-  def instance: UselessClient = new StandardUselessClient
+  def instance()(implicit app: Application): UselessClient = new StandardUselessClient
 
 }
 
@@ -25,9 +25,9 @@ trait UselessClient extends OAuthClient {
 
 }
 
-class StandardUselessClient
+class StandardUselessClient()(implicit protected val app: Application)
   extends UselessClient
-  with ResourceClient
+  with CoreApplicationResourceClient
 {
 
   def getAccessToken(code: String) = {

@@ -15,7 +15,7 @@ import clients.OAuthClient
 class AccessTokenServiceSpec extends Specification {
 
   trait Context extends Before {
-    def before = MongoUtil.clearDb()
+    def before = MongoUtil.clearDb("mongo.uri")
   }
 
   class MockAuthClient(

@@ -16,7 +16,7 @@ import clients.useless.TrustedUselessClient
 class UselessAccessTokenServiceSpec extends Specification {
 
   trait Context extends Before {
-    def before = MongoUtil.clearDb()
+    def before = MongoUtil.clearDb("mongo.uri")
   }
 
   class MockTrustedUselessClient(

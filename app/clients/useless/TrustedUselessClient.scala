@@ -2,6 +2,7 @@ package clients.useless
 
 import java.util.UUID
 import scala.concurrent.Future
+import play.api.Application
 import play.api.libs.json.Json
 import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.play.client.ResourceClient
@@ -12,7 +13,7 @@ import io.useless.play.json.account.AccountJson._
 
 object TrustedUselessClient {
 
-  def instance: TrustedUselessClient = new StandardTrustedUselessClient
+  def instance()(implicit app: Application): TrustedUselessClient = new StandardTrustedUselessClient
 
 }
 
@@ -32,9 +33,9 @@ trait TrustedUselessClient {
 
 }
 
-class StandardTrustedUselessClient
+class StandardTrustedUselessClient()(implicit protected val app: Application)
   extends TrustedUselessClient
-  with ResourceClient
+  with CoreApplicationResourceClient
 {
 
   def getUserByEmail(email: String) = {
