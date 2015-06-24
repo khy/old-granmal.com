@@ -9,7 +9,7 @@ object Defaults {
 
   object Dependencies {
 
-    val useless = "io.useless"  %% "useless"  % "0.17.0"
+    val useless = "io.useless"  %% "lib"  % "0.0.7"
 
     val webJars = Seq(
       "org.webjars" % "requirejs"      % "2.1.15",
