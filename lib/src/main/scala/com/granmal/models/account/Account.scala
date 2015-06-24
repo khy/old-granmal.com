@@ -8,16 +8,18 @@ import reactivemongo.bson._
 import reactivemongo.api.indexes.{ Index, IndexType }
 import play.api.libs.concurrent.Execution.Implicits._
 import io.useless.util.Validator
-import io.useless.reactivemongo.MongoAccess
+import io.useless.reactivemongo.MongoAccessor
 import io.useless.reactivemongo.bson.UuidBson._
 
 import OAuthProvider.OAuthProvider
 import mongo._
 import com.granmal.models.external.ExternalAccessToken
 
-object Account extends MongoAccess {
+object Account {
 
-  lazy val collection = mongo.collection("accounts")
+  lazy val collection = {
+    MongoAccessor("mongo.uri").collection("accounts")
+  }
 
   def ensureIndexes() {
     collection.indexesManager.ensure(new Index(

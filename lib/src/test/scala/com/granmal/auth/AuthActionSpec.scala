@@ -65,7 +65,7 @@ class AuthActionSpec extends PlaySpec with OneAppPerSuite {
     }
 
     "return the specified result, with a logged-in account" in {
-      MongoUtil.clearDb()
+      MongoUtil.clearDb("mongo.uri")
       val account = await { Account.create(email = Some("john@granmal.com")) }.right.get
       val request = FakeRequest().withSession((AuthKeys.session, account.guid.toString))
       val result = TestController.authAction(request)
@@ -80,7 +80,7 @@ class AuthActionSpec extends PlaySpec with OneAppPerSuite {
     }
 
     "return the specified result, with a logged-in account" in {
-      MongoUtil.clearDb()
+      MongoUtil.clearDb("mongo.uri")
       val account = await { Account.create(email = Some("john@granmal.com")) }.right.get
       val request = FakeRequest().withSession((AuthKeys.session, account.guid.toString))
       val result = TestController.asyncAuthAction(request)

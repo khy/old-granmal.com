@@ -20,7 +20,7 @@ class AccountSpec
 {
 
   override def beforeEach = {
-    MongoUtil.clearDb()
+    MongoUtil.clearDb("mongo.uri")
     Account.ensureIndexes()
   }
 
