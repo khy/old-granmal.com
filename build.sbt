@@ -4,9 +4,10 @@ scalaVersion in ThisBuild := "2.11.6"
 
 scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
 
-lazy val lib = project.enablePlugins(SbtWeb, SbtTwirl)
-lazy val haikunst = project.enablePlugins(PlayScala).dependsOn(lib)
-lazy val bookclub = project.enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
+lazy val lib = (project in file("modules/lib")).enablePlugins(SbtWeb, SbtTwirl)
+
+lazy val haikunst = (project in file("modules/haikunst")).enablePlugins(PlayScala).dependsOn(lib)
+lazy val bookclub = (project in file("modules/bookclub")).enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala, Mongo, Release).
