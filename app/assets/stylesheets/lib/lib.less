@@ -6,6 +6,8 @@
 @container-margin: 20px;
 @component-width-max: (@container-width-max - (2 * @container-margin));
 
+@header-height: 75px;
+
 @primary-font-size: 1.2em;
 @secondary-font-size: 0.9em;
 
@@ -20,6 +22,10 @@
   padding: 0;
   margin: 0;
   list-style: none;
+}
+
+.headerless {
+  margin-top: -@header-height;
 }
 
 .list-item {

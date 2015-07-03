@@ -1,8 +1,14 @@
 requirejs.config
   paths:
-    lib: '../lib/lib/javascripts'
+    lib: '../lib/lib'
     jquery: '../lib/jquery/jquery'
+    underscore: '../lib/underscorejs/underscore'
 
-require ['jquery', 'lib/page'], ($, page) ->
+require [
+  'jquery'
+  'lib/javascripts/page'
+  'lib/javascripts/ui/header'
+], ($, page, Header) ->
   $(document).ready ->
     page.ensureFullPage()
+    Header.init()

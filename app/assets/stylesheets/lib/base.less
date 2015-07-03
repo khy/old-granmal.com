@@ -18,20 +18,13 @@ a {
 .container {
   width: @container-width-max;
   margin: 0 auto;
+  padding-top: @header-height;
   border-left: 1px solid #DDD;
   border-right: 1px solid #DDD;
 
   @media all and (max-width: @container-width-max) {
     border-width: 0;
     width: 100%;
-  }
-
-  .affix-header {
-    padding-top: 74px;
-
-    .header {
-      .header.affixed()
-    }
   }
 }
 

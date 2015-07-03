@@ -1,10 +1,21 @@
 @import "lib.less";
 
-.header {
+.header, header {
   .clearfix;
   .bottom-shadow;
 
-  padding: @container-margin 0;
+  position: fixed;
+  width: 100%;
+  min-width: 320px;
+  top: 0;
+  left: 0;
+  background-color: #FFF;
+  padding: @container-margin 0 (@container-margin * 1.25);
+  transition: top 0.2s ease-in-out;
+
+  &.hidden {
+    top: -@header-height;
+  }
 
   h1 {
     margin: 0 0 0 @container-margin;
@@ -26,17 +37,6 @@
         padding: (@container-margin / 2);
         &:hover { color: #777; }
       }
-    }
-  }
-
-  .affixed {
-    position: fixed;
-    top: 0;
-    width: @container-width-max;
-    background-color: #FFF;
-
-    @media all and (max-width: @container-width-max) {
-      width: 100%;
     }
   }
 

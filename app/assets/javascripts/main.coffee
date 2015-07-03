@@ -17,11 +17,13 @@ require [
   'jquery'
   'backbone'
   'lib/javascripts/page'
+  'lib/javascripts/ui/header'
   'routers/client'
   'bootstrap'
-], ($, Backbone, Page, ClientRouter, bootstrap) ->
+], ($, Backbone, Page, Header, ClientRouter, bootstrap) ->
   window.router = new ClientRouter bootstrap
 
   $(document).ready ->
     Page.ensureFullPage()
+    Header.init()
     Backbone.history.start pushState: true
