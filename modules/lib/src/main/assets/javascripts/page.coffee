@@ -2,7 +2,6 @@ define ['jquery'], ($) ->
 
   resizeContent = (el) ->
     minHeight = $(window).height() - $('header, .header').height()
-    console.log minHeight
     $(el).css('min-height', minHeight)
 
   ensureFullPage = (el) ->
