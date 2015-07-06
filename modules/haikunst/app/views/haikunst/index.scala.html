@@ -6,10 +6,12 @@
 
   <ol class="haikus">
     @haikus.zipWithIndex.map { case (haiku, index) =>
-      <li class="haiku @(if (index % 2 == 0) "even" else "odd")">
-        <div class="line">@haiku.firstLine</div>
-        <div class="line">@haiku.secondLine</div>
-        <div class="line">@haiku.thirdLine</div>
+      <li class="@(if (index % 2 == 0) "even" else "odd")">
+        <div class="haiku">
+          <div class="line">@haiku.firstLine</div>
+          <div class="line">@haiku.secondLine</div>
+          <div class="line">@haiku.thirdLine</div>
+        </div>
         <a class="author" href="@haiku.authorUrl">@haiku.authorName</a>
       </li>
     }

@@ -44,10 +44,6 @@
   .list-item;
   text-decoration: none;
 
-  &:hover {
-    background-color: @hover-background-color;
-  }
-
   p.primary {
     font-size: @primary-font-size;
     color: @default-text-color;
@@ -66,6 +62,7 @@
 
   li {
     border-bottom: 1px solid @default-border-color;
+    background-color: #FFF;
 
     &.alert {
       .alert;
@@ -76,6 +73,25 @@
     & > a {
       .link-list-item;
     }
+  }
+}
+
+@card-base-spacing: 10px;
+
+.card {
+  .bottom-shadow;
+  background-color: #FFF;
+  border: 1px solid @default-border-color;
+  padding: (@card-base-spacing * 3) (@card-base-spacing * 2) (@card-base-spacing * 4);
+}
+
+.card-list {
+  .unstyled-list;
+  padding: (@card-base-spacing * 1.5) @card-base-spacing;
+
+  li {
+    .card;
+    margin-bottom: (@card-base-spacing * 1.5);
   }
 }
 

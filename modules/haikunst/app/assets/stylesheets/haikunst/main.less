@@ -4,20 +4,20 @@
 
 .container {
   .haikus {
-    .unstyled-list();
+    .card-list();
 
-    padding: 40px 20px;
-
-    .haiku {
-      margin-bottom: 40px;
-
+    li {
       &.odd {
         text-align: right;
       }
 
-      .line {
-        font-size: 2em;
-        margin-bottom: 10px;
+      .haiku {
+        margin-bottom: (@card-base-spacing * 3);
+
+        .line {
+          font-size: 2em;
+          margin-bottom: 10px;
+        }
       }
 
       .author {
