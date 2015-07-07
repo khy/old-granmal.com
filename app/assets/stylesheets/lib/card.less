@@ -1,0 +1,19 @@
+@import "lib.less";
+
+@card-base-spacing: 10px;
+
+.card {
+  .bottom-shadow;
+  background-color: #FFF;
+  border: 1px solid @default-border-color;
+}
+
+.card-list {
+  .unstyled-list;
+  padding: (@card-base-spacing * 1.5) @card-base-spacing;
+
+  li {
+    .card;
+    margin-bottom: (@card-base-spacing * 2);
+  }
+}

@@ -5,8 +5,8 @@
   @header()
 
   <ol class="haikus">
-    @haikus.zipWithIndex.map { case (haiku, index) =>
-      <li class="@(if (index % 2 == 0) "even" else "odd")">
+    @haikus.map { haiku =>
+      <li>
         <div class="haiku">
           <div class="line">@haiku.firstLine</div>
           <div class="line">@haiku.secondLine</div>
