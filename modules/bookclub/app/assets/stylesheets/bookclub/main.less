@@ -1,6 +1,7 @@
 @import "../../../../../../app/assets/stylesheets/lib/base.less";
 @import "../../../../../../app/assets/stylesheets/lib/lib.less";
 @import "../../../../../../app/assets/stylesheets/lib/form.less";
+@import "../../../../../../app/assets/stylesheets/lib/card.less";
 
 .dialog-header {
   .header;
@@ -18,19 +19,10 @@ ol.authors, ol.books {
 }
 
 ol.notes {
-  .unstyled-list;
+  .card-list();
 
   li.note {
-    .list-item;
-    padding: 10px 20px;
-    border-bottom: 1px solid @default-border-color;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    cursor: pointer;
-
-    &:hover {
-      background-color: @hover-background-color;
-    }
+    padding: @card-base-spacing (@card-base-spacing * 2);
 
     p.content {
       font-size: @primary-font-size;
@@ -49,7 +41,7 @@ ol.notes {
 
   li.load-more > a {
     .link-list-item;
-    padding: @container-margin;
+    padding: (@card-base-spacing * 2);
     border-bottom: 1px solid @default-border-color;
     color: @light-text-color;
   }
