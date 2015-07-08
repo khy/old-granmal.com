@@ -6,7 +6,7 @@ scalacOptions ++= Seq("-feature", "-language:reflectiveCalls")
 
 lazy val lib = (project in file("modules/lib")).enablePlugins(SbtWeb, SbtTwirl)
 
-lazy val haikunst = (project in file("modules/haikunst")).enablePlugins(PlayScala).dependsOn(lib)
+lazy val haikunst = (project in file("modules/haikunst")).enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 lazy val bookclub = (project in file("modules/bookclub")).enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 
 lazy val root = (project in file(".")).

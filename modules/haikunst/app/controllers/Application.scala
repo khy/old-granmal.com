@@ -12,7 +12,13 @@ import com.granmal.auth.AuthAction._
 import com.granmal.auth.AuthKeys
 import clients.haikunst.UselessHaikuClient
 
+object Assets extends controllers.AssetsBuilder
+
 object Application extends Controller {
+
+  def app(path: String = "") = Action.auth { request =>
+    Ok(views.html.haikunst.app())
+  }
 
   class HaikuPresenter(json: JsObject) {
     val firstLine: String = (json \ "lines")(0).as[String]
@@ -87,7 +93,7 @@ object Application extends Controller {
 
                   Ok(views.html.haikunst.form(formWithError))
                 },
-                json => Redirect(routes.Application.index)
+                json => Redirect(routes.Application.app(""))
               )
             }
           }.getOrElse {

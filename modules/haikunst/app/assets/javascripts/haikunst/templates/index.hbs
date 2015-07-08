@@ -1,0 +1,30 @@
+<header>
+  <h1>Haikunst!</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="/">
+        <span class="glyphicon glyphicon-home"></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="@controllers.haikunst.routes.Application.menu">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<ol class="haikus">
+  {{#each haikus}}
+    <li>
+      <div class="haiku">
+        <div class="line">{{firstLine}}</div>
+        <div class="line">{{secondLine}}</div>
+        <div class="line">{{thirdLine}}</div>
+      </div>
+      <a class="author" href="{{authorUrl}}">{{authorName}}</a>
+    </li>
+  {{/each}}
+</ol>
