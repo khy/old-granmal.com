@@ -16,6 +16,8 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller {
 
+  val anonymousClient = UselessHaikuClient.instance()
+
   def app(path: String = "") = Action.auth { implicit request =>
     Ok(views.html.haikunst.app(buildJavascriptRouter()))
   }
@@ -28,31 +30,48 @@ object Application extends Controller {
     )
   }
 
-  def bootstrap = Action.auth { request =>
-    Ok(Json.obj())
+  def bootstrap = Action.auth.async { request =>
+    anonymousClient.getHaikus().map { haikuJsons =>
+      Ok(Json.obj(
+        "haikus" -> Json.toJson(haikuJsons.map(buildHaikuPresenter))
+      ))
+    }
   }
 
-  class HaikuPresenter(json: JsObject) {
-    val firstLine: String = (json \ "lines")(0).as[String]
-    val secondLine: String = (json \ "lines")(1).as[String]
-    val thirdLine: String = (json \ "lines")(2).as[String]
-    val authorName: String = (json \ "created_by" \ "name").as[String]
+  case class HaikuPresenter(
+    firstLine: String,
+    secondLine: String,
+    thirdLine: String,
+    authorName: String,
+    authorHandle: String,
+    authorUrl: String
+  )
+
+  implicit val hpFormat = Json.format[HaikuPresenter]
+
+  def buildHaikuPresenter(json: JsObject) = {
     val authorHandle = (json \ "created_by" \ "handle").as[String]
-    val authorUrl = routes.Application.byUser(authorHandle)
-  }
 
-  lazy val anonymousClient = UselessHaikuClient.instance()
+    HaikuPresenter(
+      firstLine = (json \ "lines")(0).as[String],
+      secondLine = (json \ "lines")(1).as[String],
+      thirdLine = (json \ "lines")(2).as[String],
+      authorName = (json \ "created_by" \ "name").as[String],
+      authorHandle = authorHandle,
+      authorUrl = routes.Application.byUser(authorHandle).url
+    )
+  }
 
   def index = Action.async {
     anonymousClient.getHaikus().map { haikuJsons =>
-      val haikus = haikuJsons.map(new HaikuPresenter(_))
+      val haikus = haikuJsons.map(buildHaikuPresenter)
       Ok(views.html.haikunst.index(haikus))
     }
   }
 
   def byUser(handle: String) = Action.async {
     anonymousClient.getHaikus(handle = Some(handle)).map { haikuJsons =>
-      val haikus = haikuJsons.map(new HaikuPresenter(_))
+      val haikus = haikuJsons.map(buildHaikuPresenter)
       Ok(views.html.haikunst.index(haikus))
     }
   }

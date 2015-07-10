@@ -7,13 +7,13 @@ define [
 
   class ClientRouter extends Backbone.Router
 
-    initialize: (config) ->
+    initialize: (bootstrap) ->
       @el = $("#main")
       _.extend @, ElManager
 
-      @showPrestitial = config.showPrestitial || true
+      @showPrestitial = bootstrap.showPrestitial || true
 
-      @index = new Index
+      @index = new Index bootstrap
 
     routes:
       '' : 'index'

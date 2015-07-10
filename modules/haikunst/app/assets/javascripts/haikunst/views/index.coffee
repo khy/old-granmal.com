@@ -11,8 +11,9 @@ define [
     @template: Handlebars.compile(template)
 
     initialize: (opts) ->
+      @opts = opts
 
     render: ->
-      @$el.html Index.template
+      @$el.html Index.template @opts
 
       @
