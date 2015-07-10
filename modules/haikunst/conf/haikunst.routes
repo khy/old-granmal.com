@@ -4,6 +4,8 @@ GET     /menu          controllers.haikunst.Application.menu
 
 GET     /assets/*file  controllers.haikunst.Assets.versioned(path="/public", file: Asset)
 
+GET     /bootstrap     controllers.haikunst.Application.bootstrap
+
 GET     /              controllers.haikunst.Application.app(path = "")
 GET     /*path         controllers.haikunst.Application.app(path)
 

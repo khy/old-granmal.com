@@ -10,20 +10,18 @@ requirejs.config
     handlebars:
       exports: 'Handlebars'
 
-define 'bootstrap', ['module'], (module) -> module.config()
-
 require [
   'jquery'
   'backbone'
   'lib/javascripts/page'
   'lib/javascripts/ui/header'
+  'haikunst/routers/server'
   'haikunst/routers/client'
-  'bootstrap'
-], ($, Backbone, Page, Header, ClientRouter, bootstrap) ->
-
-  window.router = new ClientRouter bootstrap
+], ($, Backbone, Page, Header, ServerRouter, ClientRouter) ->
 
   $(document).ready ->
     Page.ensureFullPage()
-    Header.init()
-    Backbone.history.start root: "haikunst", pushState: true
+    ServerRouter.bootstrap().ajax().done (bootstrap) ->
+      Header.init()
+      window.router = new ClientRouter bootstrap
+      Backbone.history.start root: "haikunst", pushState: true

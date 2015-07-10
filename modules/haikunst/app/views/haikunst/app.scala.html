@@ -1,3 +1,5 @@
+@(javascriptRouter: JavaScript)
+
 @com.granmal.views.html.layout.simpleLayout(Some("haikunst"), "Haikunst!")(controllers.haikunst.routes.Assets.versioned) {
 
   <div id="main">
@@ -7,9 +9,12 @@
   <div class="alert"></div>
 
   <script type="text/javascript">
+    @Html(javascriptRouter.body)
 
     var require = {
-      config: {}
+      config: {
+        'haikunst/routers/server': Router.controllers.haikunst
+      }
     };
   </script>
 

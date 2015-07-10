@@ -16,8 +16,20 @@ object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller {
 
-  def app(path: String = "") = Action.auth { request =>
-    Ok(views.html.haikunst.app())
+  def app(path: String = "") = Action.auth { implicit request =>
+    Ok(views.html.haikunst.app(buildJavascriptRouter()))
+  }
+
+  private def buildJavascriptRouter()(implicit request: RequestHeader) = {
+    import routes.javascript
+
+    Routes.javascriptRouter()(
+      javascript.Application.bootstrap
+    )
+  }
+
+  def bootstrap = Action.auth { request =>
+    Ok(Json.obj())
   }
 
   class HaikuPresenter(json: JsObject) {
