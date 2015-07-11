@@ -5,8 +5,8 @@ define [
   'handlebars'
   'lib/javascripts/backbone/el-manager'
   'text!haikunst/templates/index.hbs'
-  'haikunst/views/haiku-form'
-], ($, _, Backbone, Handlebars, ElManager, template, HaikuForm) ->
+  'haikunst/views/new-haiku'
+], ($, _, Backbone, Handlebars, ElManager, template, NewHaiku) ->
 
   class Index extends Backbone.View
 
@@ -27,11 +27,11 @@ define [
 
     newHaiku: (e) ->
       e.preventDefault()
-      haikuForm = new HaikuForm
+      newHaiku = new NewHaiku
 
-      @listenTo haikuForm, 'close', ->
+      @listenTo newHaiku, 'close', ->
         @setView @
         @router.navigate("")
 
-      @setView haikuForm
+      @setView newHaiku
       @router.navigate("haikus/new")

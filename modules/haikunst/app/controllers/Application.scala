@@ -26,7 +26,8 @@ object Application extends Controller {
     import routes.javascript
 
     Routes.javascriptRouter()(
-      javascript.Application.bootstrap
+      javascript.Application.bootstrap,
+      javascript.Application.create
     )
   }
 
