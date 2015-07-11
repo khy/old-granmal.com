@@ -15,3 +15,10 @@ define [
     render: ->
       @$el.html HaikuForm.template @opts
       @
+
+    events:
+      'click a.close': 'close'
+
+    close: (e) ->
+      e.preventDefault()
+      @trigger 'close'

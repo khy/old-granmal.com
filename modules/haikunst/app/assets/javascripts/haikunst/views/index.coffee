@@ -15,7 +15,7 @@ define [
     initialize: (opts) ->
       _.extend @, ElManager
       @opts = opts
-      @haikuForm = new HaikuForm
+      @router = opts.router
 
     render: ->
       @$el.html Index.template @opts
@@ -27,4 +27,11 @@ define [
 
     newHaiku: (e) ->
       e.preventDefault()
-      @setView @haikuForm
+      haikuForm = new HaikuForm
+
+      @listenTo haikuForm, 'close', ->
+        @setView @
+        @router.navigate("")
+
+      @setView haikuForm
+      @router.navigate("haikus/new")

@@ -13,7 +13,7 @@ define [
 
       @showPrestitial = bootstrap.showPrestitial || true
 
-      @index = new Index bootstrap
+      @index = new Index _.extend bootstrap, router: @
 
     routes:
       '' : 'index'
