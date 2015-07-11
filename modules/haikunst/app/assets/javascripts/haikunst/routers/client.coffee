@@ -8,7 +8,7 @@ define [
   class ClientRouter extends Backbone.Router
 
     initialize: (bootstrap) ->
-      @el = $("#main")
+      @el = $("#app")
       _.extend @, ElManager
 
       @showPrestitial = bootstrap.showPrestitial || true

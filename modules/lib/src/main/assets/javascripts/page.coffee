@@ -1,16 +1,16 @@
-define ['jquery'], ($) ->
+define ['jquery', 'underscore'], ($) ->
 
-  resizeContent = (el) ->
-    minHeight = $(window).height() - $('header, .header').height()
-    $(el).css('min-height', minHeight)
+  setMainMinHeight = ->
+    minHeight = $(window).height() - $('header').height()
+    newStyle = $("<style class='main-min-height'>main { min-height: #{minHeight}px; }</style>")
+    existingStyle = $('style.main-min-height')
 
-  ensureFullPage = (el) ->
-    unless el
-      # The first child of .container that is neither the header nor the footer
-      el = $(".container > [class!=header]:not(header)[class!=footer]:first")
+    if (existingStyle.length > 0)
+      existingStyle.replaceWith newStyle
+    else
+      newStyle.appendTo('head')
 
-    if $(el).length > 0
-      resizeContent(el)
-      $(window).resize -> resizeContent(el)
-
-  ensureFullPage: ensureFullPage
+  ensureFullPage: (el) ->
+    setMainMinHeight()
+    $("footer").removeClass("hidden")
+    $(window).resize _.debounce setMainMinHeight, 100

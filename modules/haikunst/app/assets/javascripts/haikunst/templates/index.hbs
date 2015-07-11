@@ -16,15 +16,17 @@
   </ul>
 </header>
 
-<ol class="haikus">
-  {{#each haikus}}
-    <li>
-      <div class="haiku">
-        <div class="line">{{firstLine}}</div>
-        <div class="line">{{secondLine}}</div>
-        <div class="line">{{thirdLine}}</div>
-      </div>
-      <a class="author" href="{{authorUrl}}">{{authorName}}</a>
-    </li>
-  {{/each}}
-</ol>
+<main>
+  <ol class="haikus">
+    {{#each haikus}}
+      <li>
+        <div class="haiku">
+          <div class="line">{{firstLine}}</div>
+          <div class="line">{{secondLine}}</div>
+          <div class="line">{{thirdLine}}</div>
+        </div>
+        <a class="author" href="{{authorUrl}}">{{authorName}}</a>
+      </li>
+    {{/each}}
+  </ol>
+</main>

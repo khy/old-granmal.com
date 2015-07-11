@@ -2,28 +2,26 @@
 @import "../../../../../../app/assets/stylesheets/lib/lib.less";
 @import "../../../../../../app/assets/stylesheets/lib/card.less";
 
-.container {
-  .haikus {
-    .card-list();
+.haikus {
+  .card-list;
 
-    li {
-      padding: (@card-base-spacing * 3) (@card-base-spacing * 2) (@card-base-spacing * 4);
+  li {
+    padding: (@card-base-spacing * 3) (@card-base-spacing * 2) (@card-base-spacing * 4);
 
-      .haiku {
-        margin-bottom: (@card-base-spacing * 3);
+    .haiku {
+      margin-bottom: (@card-base-spacing * 3);
 
-        .line {
-          font-size: 2em;
-          margin-bottom: 10px;
-        }
+      .line {
+        font-size: 2em;
+        margin-bottom: 10px;
       }
+    }
 
-      .author {
-        font-size: 1.4em;
-        color: #777;
-        text-decoration: none;
-        &:hover { text-decoration: underline; }
-      }
+    .author {
+      font-size: 1.4em;
+      color: #777;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
     }
   }
 }
