@@ -16,8 +16,8 @@ define [
       @haiku = new Haiku
 
     render: ->
-      @$el.html HaikuForm.template @opts
-      @haiku = new Haiku
+      options = _.extend @input, errors: @errors
+      @$el.html HaikuForm.template options
 
     events:
       'submit form': 'createHaiku'
@@ -27,8 +27,6 @@ define [
       e.preventDefault()
       @input = @getInput()
       @errors = @validate(@input)
-
-      console.log @errors
 
       if _.isEmpty(@errors)
         @haiku.save @input
@@ -43,8 +41,14 @@ define [
     validate: (input) ->
       errors = {}
 
-      if Check.isMissing(input.one) or Check.isMissing(input.two) or Check.isMissing(input.three)
-        errors.global = 'All lines are required.'
+      if Check.isMissing(input.one)
+        errors.one = 'All lines are required.'
+
+      if Check.isMissing(input.two)
+        errors.two = 'All lines are required.'
+
+      if Check.isMissing(input.three)
+        errors.three = 'All lines are required.'
 
       errors
 

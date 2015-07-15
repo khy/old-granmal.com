@@ -13,15 +13,33 @@
 <main class="form">
   <form>
     <div class="field">
-      <input type="text" name="one" value="" placeholder="Fünf">
+      <input type="text" name="one" placeholder="Fünf" value="{{one}}"></input>
+
+      {{#if errors.one}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.one}}</li>
+        </ol>
+      {{/if}}
     </div>
 
     <div class="field">
-      <input type="text" name="two" value="" placeholder="Sieben">
+      <input type="text" name="two" placeholder="Sieben" value="{{two}}"></input>
+
+      {{#if errors.two}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.two}}</li>
+        </ol>
+      {{/if}}
     </div>
 
     <div class="field">
-      <input type="text" name="three" value="" placeholder="Fünf">
+      <input type="text" name="three" placeholder="Sieben" value="{{three}}"></input>
+
+      {{#if errors.three}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.three}}</li>
+        </ol>
+      {{/if}}
     </div>
 
     <button type="submit">Verkünden!</button>
