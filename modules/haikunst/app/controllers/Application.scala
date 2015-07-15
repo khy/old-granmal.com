@@ -8,6 +8,7 @@ import play.api.data._
 import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits._
 
+import com.granmal.models.account.PublicAccount.Json._
 import com.granmal.auth.AuthAction._
 import com.granmal.auth.AuthKeys
 import clients.haikunst.UselessHaikuClient
@@ -34,6 +35,7 @@ object Application extends Controller {
   def bootstrap = Action.auth.async { request =>
     anonymousClient.getHaikus().map { haikuJsons =>
       Ok(Json.obj(
+        "account" -> Json.toJson(request.account.map(_.toPublic)),
         "haikus" -> Json.toJson(haikuJsons.map(buildHaikuPresenter))
       ))
     }

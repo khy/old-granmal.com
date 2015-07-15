@@ -14,11 +14,14 @@ define [
 
     initialize: (opts) ->
       _.extend @, ElManager
-      @opts = opts
+
+      @haikus = opts.haikus
       @router = opts.router
+      @session = opts.session
 
     render: ->
-      @$el.html Index.template @opts
+      @$el.html Index.template
+        haikus: @haikus
 
       @
 
@@ -28,6 +31,7 @@ define [
     newHaiku: (e) ->
       e.preventDefault()
       newHaiku = new NewHaiku
+        session: @session
 
       @listenTo newHaiku, 'close', ->
         @setView @

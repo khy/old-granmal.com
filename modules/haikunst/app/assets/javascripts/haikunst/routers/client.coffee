@@ -2,9 +2,10 @@ define [
   'backbone'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/backbone/prestitial'
+  'lib/javascripts/auth/session'
   'haikunst/views/index'
   'haikunst/views/new-haiku'
-], (Backbone, ElManager, Prestitial, Index, NewHaiku) ->
+], (Backbone, ElManager, Prestitial, Session, Index, NewHaiku) ->
 
   class ClientRouter extends Backbone.Router
 
@@ -14,7 +15,12 @@ define [
 
       @showPrestitial = bootstrap.showPrestitial || true
 
-      @index = new Index _.extend bootstrap, router: @
+      @session = new Session bootstrap.account
+
+      @index = new Index
+        haikus: bootstrap.haikus
+        router: @,
+        session: @session
 
     routes:
       '' : 'index'
@@ -25,6 +31,7 @@ define [
 
     newHaiku: ->
       newHaiku = new NewHaiku
+        session: @session
       @_showViewOrPrestitial newHaiku
 
     _showViewOrPrestitial: (view) ->

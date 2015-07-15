@@ -3,21 +3,41 @@ define [
   'underscore'
   'backbone'
   'handlebars'
+  'lib/javascripts/backbone/el-manager'
+  'lib/javascripts/alert'
+  'lib/javascripts/auth/form'
   'lib/javascripts/validation/check'
   'text!haikunst/templates/new-haiku.hbs'
   'haikunst/models/haiku'
-], ($, _, Backbone, Handlebars, Check, template, Haiku) ->
+], ($, _, Backbone, Handlebars, ElManager, Alert, AuthForm, Check, template, Haiku) ->
 
   class HaikuForm extends Backbone.View
 
     @template: Handlebars.compile(template)
 
     initialize: (opts) ->
+      _.extend @, ElManager
+
       @haiku = new Haiku
 
+      @session = opts.session
+      @listenTo @session, 'create', ->
+        Alert.success 'Signed in'
+        @setView @
+
     render: ->
-      options = _.extend @input, errors: @errors
-      @$el.html HaikuForm.template options
+      if @session.isSignedIn()
+        options = _.extend @input, errors: @errors
+        @$el.html HaikuForm.template options
+      else
+        authForm = new AuthForm
+          session: @session
+          formError: "You must sign-in or sign-up to add a haiku."
+
+        @listenTo authForm, 'close', ->
+          @setView @
+
+        @setView authForm
 
     events:
       'submit form': 'createHaiku'
