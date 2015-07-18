@@ -97,8 +97,8 @@ define [
 
     getErrorDisplay: (key) ->
       switch key
-        when 'useless.haiku.error.too_few_syllables' then 'Zu wenige Silben!'
-        when 'useless.haiku.error.too_many_syllables' then 'Zu viele Silben!'
+        when 'useless.haiku.error.too_few_syllables' then 'Too few syllables.'
+        when 'useless.haiku.error.too_many_syllables' then 'Too many syllables.'
         else 'Fehler!'
 
     close: (e) ->
