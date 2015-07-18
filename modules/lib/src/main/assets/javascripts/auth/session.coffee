@@ -9,15 +9,15 @@ define [
       _.extend @, Backbone.Events
       @create(account)
 
-    isSignedIn: -> !_.isUndefined(@account)
+    isSignedIn: -> _.isObject @account
 
     create: (account) ->
       @account = account
-      unless _.isUndefined @account
+      if _.isObject @account
         @trigger 'create', @account
 
     destroy: ->
       oldAccount = @account
       @account = undefined
-      unless _.isUndefined oldAccount
+      if _.isObject oldAccount
         @trigger 'destroy', oldAccount
