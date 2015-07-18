@@ -25,7 +25,21 @@
             <div class="line">{{this}}</div>
           {{/each}}
         </div>
-        <a class="author" href="{{authorUrl}}">{{created_by.name}}</a>
+
+        <div class="author">
+          <span class="name">{{created_by.name}}</span>
+        </div>
+
+        <div class="actions">
+          <a href="#">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            0
+          </a>
+          <a href="#">
+            <span class="glyphicon glyphicon-heart"></span>
+            0
+          </a>
+        </div>
       </li>
     {{/each}}
   </ol>

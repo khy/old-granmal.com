@@ -7,22 +7,43 @@
   .card-list;
 
   li {
-    padding: (@card-base-spacing * 3) (@card-base-spacing * 2) (@card-base-spacing * 4);
-
     .haiku {
-      margin-bottom: (@card-base-spacing * 3);
+      padding: 4 * @card-base-spacing;
 
       .line {
         font-size: 2em;
         margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
 
     .author {
-      font-size: 1.4em;
-      color: #777;
-      text-decoration: none;
-      &:hover { text-decoration: underline; }
+      border-top: 1px solid #EEE;
+      color: #888;
+      padding: 2 * @card-base-spacing;
+
+      .name {
+        font-size: 1.4em;
+      }
+    }
+
+    .actions {
+      border-top: 1px solid #EEE;
+      padding: 2 * @card-base-spacing;
+      font-size: 1.2em;
+
+      a {
+        color: #888;
+        text-decoration: none;
+        margin-right: 10px;
+
+        .glyphicon {
+          margin-right: 5px;
+        }
+      }
     }
   }
 }
