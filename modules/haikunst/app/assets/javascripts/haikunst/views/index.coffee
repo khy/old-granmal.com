@@ -33,7 +33,7 @@ define [
       'click a.new-haiku': 'newHaiku'
 
     newHaiku: (e) ->
-      e.preventDefault()
+      e?.preventDefault()
       newHaiku = new NewHaiku
         session: @session
 

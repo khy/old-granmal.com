@@ -27,19 +27,20 @@ define [
       'haikus/new': 'newHaiku'
 
     index: ->
-      @_showViewOrPrestitial @index
+      @_showViewOrPrestitial =>
+        @setView @index
 
     newHaiku: ->
-      newHaiku = new NewHaiku
-        session: @session
-      @_showViewOrPrestitial newHaiku
+      @_showViewOrPrestitial =>
+        @setView @index
+        @index.newHaiku()
 
-    _showViewOrPrestitial: (view) ->
+    _showViewOrPrestitial: (render) ->
       if @showPrestitial
         prestitial = new Prestitial el: @el
         @listenTo prestitial, 'continue', ->
           @showPrestitial = false
-          @setView view
+          render()
         @setView prestitial
       else
-        @setView view
+        render()
