@@ -36,31 +36,9 @@ object Application extends Controller {
     anonymousClient.getHaikus().map { haikuJsons =>
       Ok(Json.obj(
         "account" -> Json.toJson(request.account.map(_.toPublic)),
-        "haikus" -> Json.toJson(haikuJsons.map(buildHaikuPresenter))
+        "haikus" -> haikuJsons
       ))
     }
-  }
-
-  case class HaikuPresenter(
-    firstLine: String,
-    secondLine: String,
-    thirdLine: String,
-    authorName: String,
-    authorHandle: String
-  )
-
-  implicit val hpFormat = Json.format[HaikuPresenter]
-
-  def buildHaikuPresenter(json: JsObject) = {
-    val authorHandle = (json \ "created_by" \ "handle").as[String]
-
-    HaikuPresenter(
-      firstLine = (json \ "lines")(0).as[String],
-      secondLine = (json \ "lines")(1).as[String],
-      thirdLine = (json \ "lines")(2).as[String],
-      authorName = (json \ "created_by" \ "name").as[String],
-      authorHandle = authorHandle
-    )
   }
 
   private case class HaikuCreateData(one: String, two: String, three: String)

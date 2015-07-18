@@ -20,6 +20,9 @@ define [
 
       @haiku = new Haiku
 
+      @listenTo @haiku, 'sync', ->
+        @trigger 'create', @haiku
+
       @session = opts.session
       @listenTo @session, 'create', ->
         Alert.success 'Signed in'

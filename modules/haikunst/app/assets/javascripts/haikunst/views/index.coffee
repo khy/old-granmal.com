@@ -5,8 +5,9 @@ define [
   'handlebars'
   'lib/javascripts/backbone/el-manager'
   'text!haikunst/templates/index.hbs'
+  'haikunst/collections/haikus'
   'haikunst/views/new-haiku'
-], ($, _, Backbone, Handlebars, ElManager, template, NewHaiku) ->
+], ($, _, Backbone, Handlebars, ElManager, template, Haikus, NewHaiku) ->
 
   class Index extends Backbone.View
 
@@ -15,13 +16,16 @@ define [
     initialize: (opts) ->
       _.extend @, ElManager
 
-      @haikus = opts.haikus
+      @collection = new Haikus opts.haikus
+
+      @listenTo @collection, 'change', @render
+
       @router = opts.router
       @session = opts.session
 
     render: ->
       @$el.html Index.template
-        haikus: @haikus
+        haikus: @collection.toJSON()
 
       @
 
@@ -33,9 +37,15 @@ define [
       newHaiku = new NewHaiku
         session: @session
 
-      @listenTo newHaiku, 'close', ->
+      closeNewNote = =>
         @setView @
         @router.navigate("")
+
+      @listenTo newHaiku, 'close', closeNewNote
+
+      @listenTo newHaiku, 'create', (haiku) ->
+        @collection.unshift haiku
+        closeNewNote()
 
       @setView newHaiku
       @router.navigate("haikus/new")

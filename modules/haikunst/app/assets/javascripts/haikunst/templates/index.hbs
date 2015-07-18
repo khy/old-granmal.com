@@ -21,11 +21,11 @@
     {{#each haikus}}
       <li>
         <div class="haiku">
-          <div class="line">{{firstLine}}</div>
-          <div class="line">{{secondLine}}</div>
-          <div class="line">{{thirdLine}}</div>
+          {{#each lines}}
+            <div class="line">{{this}}</div>
+          {{/each}}
         </div>
-        <a class="author" href="{{authorUrl}}">{{authorName}}</a>
+        <a class="author" href="{{authorUrl}}">{{created_by.name}}</a>
       </li>
     {{/each}}
   </ol>
