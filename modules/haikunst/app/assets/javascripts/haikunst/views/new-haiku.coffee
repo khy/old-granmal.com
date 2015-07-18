@@ -49,7 +49,13 @@ define [
       @errors = @validate(@input)
 
       if _.isEmpty(@errors)
-        @haiku.save @input
+        jqxhr = @haiku.save @input
+
+        jqxhr.fail (jqxhr) =>
+          if jqxhr.status == 409
+            @errors = @parseResponseError jqxhr.responseJSON
+            @render(@input)
+
       else
         @render()
 
@@ -71,6 +77,26 @@ define [
         errors.three = 'All lines are required.'
 
       errors
+
+    parseResponseError: (data) ->
+      errors = {}
+
+      if _.isString data[0]
+        errors.one = @getErrorDisplay data[0]
+
+      if _.isString data[1]
+        errors.two = @getErrorDisplay data[1]
+
+      if _.isString data[2]
+        errors.three = @getErrorDisplay data[2]
+
+      errors
+
+    getErrorDisplay: (key) ->
+      switch key
+        when 'useless.haiku.error.too_few_syllables' then 'Zu wenige Silben!'
+        when 'useless.haiku.error.too_many_syllables' then 'Zu viele Silben!'
+        else 'Fehler!'
 
     close: (e) ->
       e.preventDefault()
