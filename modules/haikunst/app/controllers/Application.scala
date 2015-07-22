@@ -10,7 +10,6 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import com.granmal.models.account.PublicAccount.Json._
 import com.granmal.auth.AuthAction._
-import com.granmal.auth.AuthKeys
 import clients.haikunst.UselessHaikuClient
 
 object Assets extends controllers.AssetsBuilder
@@ -20,16 +19,12 @@ object Application extends Controller {
   val anonymousClient = UselessHaikuClient.instance()
 
   def app(path: String = "") = Action.auth { implicit request =>
-    Ok(views.html.haikunst.app(buildJavascriptRouter()))
-  }
-
-  private def buildJavascriptRouter()(implicit request: RequestHeader) = {
-    import routes.javascript
-
-    Routes.javascriptRouter()(
-      javascript.Application.bootstrap,
-      javascript.Application.create
+    val javascriptRouter = Routes.javascriptRouter()(
+      routes.javascript.Application.bootstrap,
+      routes.javascript.Application.create
     )
+
+    Ok(views.html.haikunst.app(javascriptRouter))
   }
 
   def bootstrap = Action.auth.async { request =>
