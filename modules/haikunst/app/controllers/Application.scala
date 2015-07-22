@@ -3,6 +3,7 @@ package controllers.haikunst
 import scala.concurrent.Future
 import play.api._
 import play.api.mvc._
+import play.api.Play.current
 import play.api.libs.json._
 import play.api.data._
 import play.api.data.Forms._
@@ -10,13 +11,13 @@ import play.api.libs.concurrent.Execution.Implicits._
 
 import com.granmal.models.account.PublicAccount.Json._
 import com.granmal.auth.AuthAction._
-import clients.haikunst.UselessHaikuClient
+import clients.haikunst.HaikuClient
 
 object Assets extends controllers.AssetsBuilder
 
 object Application extends Controller {
 
-  val anonymousClient = UselessHaikuClient.instance()
+  val anonClient = HaikuClient.anon()
 
   def app(path: String = "") = Action.auth { implicit request =>
     val javascriptRouter = Routes.javascriptRouter()(
@@ -28,7 +29,7 @@ object Application extends Controller {
   }
 
   def bootstrap = Action.auth.async { request =>
-    anonymousClient.getHaikus().map { haikuJsons =>
+    anonClient.getHaikus().map { haikuJsons =>
       Ok(Json.obj(
         "account" -> Json.toJson(request.account.map(_.toPublic)),
         "haikus" -> haikuJsons
@@ -44,7 +45,7 @@ object Application extends Controller {
       request.body.validate[HaikuCreateData].fold(
         error => Future.successful(InternalServerError),
         data => account.uselessAccessToken.map { accessToken =>
-          val client = UselessHaikuClient.instance(Some(accessToken.token))
+          val client = HaikuClient.auth(accessToken.token)
           val haiku = Seq(data.one, data.two, data.three)
 
           client.createHaiku(haiku).map { result =>
