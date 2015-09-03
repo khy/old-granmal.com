@@ -1,0 +1,6 @@
+GET     /bootstrap     controllers.budget.Application.bootstrap
+
+GET     /assets/*file  controllers.budget.Assets.versioned(path="/public", file: Asset)
+
+GET     /               controllers.budget.Application.app(path = "")
+GET     /*path          controllers.budget.Application.app(path)

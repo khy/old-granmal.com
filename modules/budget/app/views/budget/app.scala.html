@@ -1,0 +1,21 @@
+@(javascriptRouter: JavaScript)
+
+@com.granmal.views.html.layout.simpleLayout(Some("budget"), "Budget")(controllers.budget.routes.Assets.versioned) {
+
+  <div id="main">
+    @com.granmal.views.html.prestitial.fake()
+  </div>
+
+  <div class="alert"></div>
+
+  <script type="text/javascript">
+    @Html(javascriptRouter.body)
+
+    var require = {
+      config: {
+        'budget/routers/server': Router.controllers.budget
+      }
+    };
+  </script>
+
+}

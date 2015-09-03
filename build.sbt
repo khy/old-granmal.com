@@ -8,11 +8,12 @@ lazy val lib = (project in file("modules/lib")).enablePlugins(SbtWeb, SbtTwirl)
 
 lazy val haikunst = (project in file("modules/haikunst")).enablePlugins(PlayScala).dependsOn(lib)
 lazy val bookclub = (project in file("modules/bookclub")).enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
+lazy val budget = (project in file("modules/budget")).enablePlugins(SbtWeb, PlayScala).dependsOn(lib)
 
 lazy val root = (project in file(".")).
   enablePlugins(PlayScala, Mongo, Release).
-  dependsOn(lib, haikunst, bookclub).
-  aggregate(lib, haikunst, bookclub).
+  dependsOn(lib, haikunst, bookclub, budget).
+  aggregate(lib, haikunst, bookclub, budget).
   settings(
     aggregate in stage := false,
     aggregate in publishLocal := false,
