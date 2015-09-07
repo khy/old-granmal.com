@@ -13,7 +13,7 @@ define [
   class ClientRouter extends Backbone.Router
 
     initialize: (config) ->
-      @el = $("#main")
+      @el = $("#app")
       _.extend @, ElManager
 
       @showPrestitial = config.showPrestitial || true

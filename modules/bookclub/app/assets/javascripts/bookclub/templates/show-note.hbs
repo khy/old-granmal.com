@@ -1,4 +1,4 @@
-<div class="header">
+<header>
   <h1>
     Book Club
   </h1>
@@ -10,30 +10,32 @@
       </a>
     </li>
   </ul>
-</div>
+</header>
 
-{{#with note}}
-  <div class="note">
-    <p class="content">{{markdown content}}</p>
+<main>
+  {{#with note}}
+    <div class="note">
+      <p class="content">{{markdown content}}</p>
 
-    <p class="created-by">
-      {{#if created_by.user.name}}
-        <a class="name" href="#">{{created_by.user.name}}</a>
-      {{else}}
-        <a class="handle" href="#">{{created_by.user.handle}}</a>
-      {{/if}}
-    </p>
+      <p class="created-by">
+        {{#if created_by.user.name}}
+          <a class="name" href="#">{{created_by.user.name}}</a>
+        {{else}}
+          <a class="handle" href="#">{{created_by.user.handle}}</a>
+        {{/if}}
+      </p>
 
-    <p class="page-details">
-      <span class="page-number">p.{{page_number}}</span>
-      of
-      <a class="title" href="#">{{book.title}}</a>
-      by
-      <span class="author">{{book.author.name}}</span>
-    </p>
+      <p class="page-details">
+        <span class="page-number">p.{{page_number}}</span>
+        of
+        <a class="title" href="#">{{book.title}}</a>
+        by
+        <span class="author">{{book.author.name}}</span>
+      </p>
 
-    <p class="created-at">
-      {{created_at}}
-    </p>
-  </div>
-{{/with}}
+      <p class="created-at">
+        {{created_at}}
+      </p>
+    </div>
+  {{/with}}
+</main>
