@@ -12,7 +12,7 @@ define [
   class ClientRouter extends Backbone.Router
 
     initialize: (config) ->
-      @el = $("#main")
+      @el = $("#app")
       _.extend @, ElManager
 
       @session = new Session config.account

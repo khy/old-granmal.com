@@ -1,29 +1,69 @@
 @import "../../../../../../app/assets/stylesheets/lib/base.less";
 @import "../../../../../../app/assets/stylesheets/lib/lib.less";
 @import "../../../../../../app/assets/stylesheets/lib/card.less";
+@import "../../../../../../app/assets/stylesheets/lib/form.less";
 
-.container {
-  .haikus {
-    .card-list();
+.sub-haiku-section {
+  .clearfix;
+  border-top: 1px solid #EEE;
+}
 
-    li {
-      padding: (@card-base-spacing * 3) (@card-base-spacing * 2) (@card-base-spacing * 4);
+.sub-haiku-item {
+  float: left;
+  padding: 2 * @card-base-spacing;
+  color: #888;
+}
 
-      .haiku {
-        margin-bottom: (@card-base-spacing * 3);
+.haikus {
+  .card-list;
 
-        .line {
-          font-size: 2em;
-          margin-bottom: 10px;
+  li {
+    .haiku {
+      padding: 4 * @card-base-spacing;
+
+      .line {
+        font-size: 2em;
+        margin-bottom: 10px;
+
+        &:last-child {
+          margin-bottom: 0;
         }
       }
+    }
 
-      .author {
-        font-size: 1.4em;
-        color: #777;
+    .author {
+      .sub-haiku-section;
+      font-size: 1.4em;
+
+      .name {
+        .sub-haiku-item;
+      }
+    }
+
+    .actions {
+      .sub-haiku-section;
+      font-size: 1.2em;
+
+      a {
+        .sub-haiku-item;
         text-decoration: none;
-        &:hover { text-decoration: underline; }
+        margin-right: 10px;
+
+        .glyphicon {
+          margin-right: 5px;
+        }
+
+        &.liked {
+          .glyphicon { color: #F12938 }
+        }
       }
     }
   }
+}
+
+main.form {
+  background-color: #FFF;
+  border-left: 1px solid @default-border-color;
+  border-right: 1px solid @default-border-color;
+  border-bottom: 1px solid @default-border-color;
 }

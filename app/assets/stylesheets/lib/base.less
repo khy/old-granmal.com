@@ -16,7 +16,7 @@ a {
   color: @default-text-color;
 }
 
-.container {
+main {
   width: @container-width-max;
   margin: 0 auto;
   padding-top: @header-height;
@@ -27,11 +27,15 @@ a {
   }
 }
 
-footer.footer {
+footer {
   text-align: center;
   padding: 1em;
   font-size: 0.8em;
   color: #999;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 @alert-padding: 20px;

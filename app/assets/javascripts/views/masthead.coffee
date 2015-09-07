@@ -11,7 +11,7 @@ define [
     render: ->
       @$el.html Masthead.template
       @el.ontouchmove = (e) -> e.preventDefault()
-      @$('.masthead .poster').height @$el.height() - 40
+      @$('.masthead .poster').height @$('main').height() - 40
       @
 
     events:

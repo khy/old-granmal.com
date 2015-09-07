@@ -1,4 +1,4 @@
-<div class="header">
+<header>
   <h1>Gran Mal</h1>
 
   <ul class="right-actions">
@@ -6,32 +6,34 @@
       <a href="#" class="close"><span class="glyphicon glyphicon-remove"></span></a>
     </li>
   </ul>
-</div>
+</header>
 
-<form action="/sign-up" method="POST" >
+<main class="form">
+  <form action="/sign-up" method="POST" >
 
-  {{formError formError}}
+    {{formError formError}}
 
-  {{#field fields.email}}
-    <input type="email" name="email" placeholder="Email" value="{{this}}">
-  {{/field}}
+    {{#field fields.email}}
+      <input type="email" name="email" placeholder="Email" value="{{this}}">
+    {{/field}}
 
-  {{#field fields.password}}
-    <input type="password" name="password" placeholder="Password" value="{{this}}">
-  {{/field}}
+    {{#field fields.password}}
+      <input type="password" name="password" placeholder="Password" value="{{this}}">
+    {{/field}}
 
-  {{#field fields.handle}}
-    <input type="text" name="handle" placeholder="Username" value="{{this}}">
-  {{/field}}
+    {{#field fields.handle}}
+      <input type="text" name="handle" placeholder="Username" value="{{this}}">
+    {{/field}}
 
-  {{#field fields.name}}
-    <input type="text" name="name" placeholder="Full Name" value="{{this}}">
-  {{/field}}
+    {{#field fields.name}}
+      <input type="text" name="name" placeholder="Full Name" value="{{this}}">
+    {{/field}}
 
-  <button type="submit">Sign Up</button>
+    <button type="submit">Sign Up</button>
 
-  <ul class="alternate-actions">
-    <li><a class="sign-in" href="#">Sign In</a></li>
-  </ul>
+    <ul class="alternate-actions">
+      <li><a class="sign-in" href="#">Sign In</a></li>
+    </ul>
 
-</form>
+  </form>
+</main>

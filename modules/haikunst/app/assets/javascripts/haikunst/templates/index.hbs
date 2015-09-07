@@ -1,0 +1,47 @@
+<header>
+  <h1>Haikunst!</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="/">
+        <span class="glyphicon glyphicon-home"></span>
+      </a>
+    </li>
+
+    <li>
+      <a href="#" class="new-haiku">
+        <span class="glyphicon glyphicon-plus"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<main>
+  <ol class="haikus">
+    {{#each haikus}}
+      <li>
+        <div class="haiku">
+          {{#each lines}}
+            <div class="line">{{this}}</div>
+          {{/each}}
+        </div>
+
+        <div class="author">
+          <span class="name">{{created_by.name}}</span>
+        </div>
+
+        <div class="actions">
+          <a {{#if liked}} class="liked" {{/if}} href="#">
+            <span class="glyphicon glyphicon-heart"></span>
+            {{like_count}}
+          </a>
+
+          <a href="#">
+            <span class="glyphicon glyphicon-share-alt"></span>
+            {{reply_count}}
+          </a>
+        </div>
+      </li>
+    {{/each}}
+  </ol>
+</main>

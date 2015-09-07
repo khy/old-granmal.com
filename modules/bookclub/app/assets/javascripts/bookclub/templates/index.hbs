@@ -16,29 +16,31 @@
   </ul>
 </header>
 
-<ol class="notes">
-  {{#each notes}}
-    <li class="note" data-guid="{{guid}}">
-      <p class="content">{{markdown content}}</p>
-      <p class="details">
-        {{#if created_by.user.name}}
-          <a class="name" href="#">{{created_by.user.name}}</a>
-        {{else}}
-          <a class="handle" href="#">{{created_by.user.handle}}</a>
-        {{/if}}
-        at
-        <span class="page-number">p.{{page_number}}</span>
-        of
-        <a class="title" href="#">{{book.title}}</a>
-        by
-        <span class="author">{{book.author.name}}</span>
-      </p>
-    </li>
-  {{/each}}
+<main>
+  <ol class="notes">
+    {{#each notes}}
+      <li class="note" data-guid="{{guid}}">
+        <p class="content">{{markdown content}}</p>
+        <p class="details">
+          {{#if created_by.user.name}}
+            <a class="name" href="#">{{created_by.user.name}}</a>
+          {{else}}
+            <a class="handle" href="#">{{created_by.user.handle}}</a>
+          {{/if}}
+          at
+          <span class="page-number">p.{{page_number}}</span>
+          of
+          <a class="title" href="#">{{book.title}}</a>
+          by
+          <span class="author">{{book.author.name}}</span>
+        </p>
+      </li>
+    {{/each}}
 
-  {{#if hasNextPage}}
-    <li class="load-more">
-      <a href="#">Load More</a>
-    </li>
-  {{/if}}
-</ol>
+    {{#if hasNextPage}}
+      <li class="load-more">
+        <a href="#">Load More</a>
+      </li>
+    {{/if}}
+  </ol>
+</main>
