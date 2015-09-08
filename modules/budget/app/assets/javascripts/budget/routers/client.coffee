@@ -2,16 +2,20 @@ define [
   'backbone'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/backbone/prestitial'
+  'lib/javascripts/auth/session'
+  'lib/javascripts/auth/form'
   'budget/views/index'
-], (Backbone, ElManager, Prestitial, Index) ->
+], (Backbone, ElManager, Prestitial, Session, AuthForm, Index) ->
 
   class ClientRouter extends Backbone.Router
 
-    initialize: (config) ->
+    initialize: (opts) ->
       @el = $("#main")
       _.extend @, ElManager
 
       @showPrestitial = true
+
+      @session = new Session opts.account
 
       @index = new Index
         router: @,
@@ -22,20 +26,29 @@ define [
       'accounts/new': 'newAccount'
 
     index: ->
-      @_showViewOrPrestitial =>
+      @_render =>
         @setView @index
 
     newAccount: ->
-      @_showViewOrPrestitial =>
+      @_render =>
         @setView @index
         @index.newAccount()
 
-    _showViewOrPrestitial: (render) ->
+    _render: (render) ->
       if @showPrestitial
         prestitial = new Prestitial el: @el
         @listenTo prestitial, 'continue', ->
           @showPrestitial = false
-          render()
+          @_render render
         @setView prestitial
+      else if !@session.isSignedIn()
+        authForm = new AuthForm
+          session: @session
+          formError: "You must sign-in or sign-up to use Budget."
+
+        @listenTo authForm, 'close', -> @_render render
+        @listenToOnce @session, 'create', -> @_render render
+
+        @setView authForm
       else
         render()
