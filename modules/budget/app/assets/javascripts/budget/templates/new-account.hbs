@@ -1,0 +1,51 @@
+<header>
+  <h1>New Account</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<main class="form">
+  <form>
+    <div class="field">
+      <select name="accountType">
+        <option value="credit">Credit</option>
+        <option value="checking">Checking</option>
+        <option value="savings">Savings</option>
+      </select>
+
+      {{#if errors.accountType}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.accountType}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="name" placeholder="Name" value="{{name}}"></input>
+
+      {{#if errors.name}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.name}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="initialBalance" placeholder="Initial Balance" value="{{initialBalance}}"></input>
+
+      {{#if errors.initialBalance}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.initialBalance}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <button type="submit">Create</button>
+  </form>
+</main>

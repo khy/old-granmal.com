@@ -14,16 +14,28 @@ define [
       @showPrestitial = true
 
       @index = new Index
+        router: @,
+        session: @session
 
     routes:
-      '' : 'index'
+      '': 'index'
+      'accounts/new': 'newAccount'
 
     index: ->
+      @_showViewOrPrestitial =>
+        @setView @index
+
+    newAccount: ->
+      @_showViewOrPrestitial =>
+        @setView @index
+        @index.newAccount()
+
+    _showViewOrPrestitial: (render) ->
       if @showPrestitial
         prestitial = new Prestitial el: @el
         @listenTo prestitial, 'continue', ->
           @showPrestitial = false
-          @setView @index
+          render()
         @setView prestitial
       else
-        @setView @index
+        render()
