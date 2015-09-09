@@ -31,6 +31,7 @@ libraryDependencies ++= Seq(
 JsEngineKeys.engineType := JsEngineKeys.EngineType.Node
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
+parallelExecution in Test := false
 
 dockerBaseImage := "java:8"
 maintainer in Docker := "Kevin Hyland <khy@me.com>"
