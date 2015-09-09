@@ -14,7 +14,8 @@ object Application extends Controller {
 
   def app(path: String = "") = Action.auth { implicit request =>
     val javascriptRouter = Routes.javascriptRouter()(
-      routes.javascript.Application.bootstrap
+      routes.javascript.Application.bootstrap,
+      routes.javascript.Accounts.create
     )
 
     Ok(views.html.budget.app(javascriptRouter))

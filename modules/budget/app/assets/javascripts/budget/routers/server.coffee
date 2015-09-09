@@ -1,1 +1,1 @@
-define ['module'], (module) -> module.config().Application
+define ['module'], (module) -> module.config()

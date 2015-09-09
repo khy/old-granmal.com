@@ -21,7 +21,7 @@ require [
 
   $(document).ready ->
     Page.ensureFullPage()
-    ServerRouter.bootstrap().ajax().done (bootstrap) ->
+    ServerRouter.Application.bootstrap().ajax().done (bootstrap) ->
       Header.init()
       window.router = new ClientRouter bootstrap
       Backbone.history.start root: "budget", pushState: true

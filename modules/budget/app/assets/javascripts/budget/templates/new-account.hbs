@@ -14,9 +14,9 @@
   <form>
     <div class="field">
       <select name="accountType">
-        <option value="credit">Credit</option>
-        <option value="checking">Checking</option>
-        <option value="savings">Savings</option>
+        {{#each inputOptions}}
+          <option value="{{key}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
       </select>
 
       {{#if errors.accountType}}
