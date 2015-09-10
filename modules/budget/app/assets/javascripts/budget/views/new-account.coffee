@@ -17,6 +17,9 @@ define [
       @input = {}
       @account = new Account
 
+      @listenTo @account, 'sync', ->
+        @trigger 'create', @account
+
     render: ->
       @$el.html NewAccount.template _.extend @input,
         errors: @errors

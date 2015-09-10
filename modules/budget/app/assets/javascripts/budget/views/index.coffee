@@ -4,9 +4,11 @@ define [
   'backbone'
   'handlebars'
   'lib/javascripts/backbone/el-manager'
-  'budget/views/new-account'
+  'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
-], ($, _, Backbone, Handlebars, ElManager, NewAccount, template) ->
+  'budget/views/new-account'
+  'budget/collections/accounts'
+], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewAccount, Accounts) ->
 
   class Index extends Backbone.View
 
@@ -16,6 +18,7 @@ define [
       _.extend @, ElManager
       @router = opts.router
       @session = opts.session
+      @accounts = new Accounts opts.accounts
 
     render: ->
       @$el.html Index.template
@@ -31,6 +34,11 @@ define [
         @router.navigate("")
 
       @listenTo newAccount, 'close', closeNewAccount
+
+      @listenTo newAccount, 'create', (account) ->
+        @accounts.unshift account
+        Alert.success "Created new #{account.get('accountType')} account \"#{account.get('name')}\""
+        closeNewAccount()
 
       @setView newAccount
       @router.navigate("accounts/new")

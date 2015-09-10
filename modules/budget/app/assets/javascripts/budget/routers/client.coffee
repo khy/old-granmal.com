@@ -19,7 +19,8 @@ define [
 
       @index = new Index
         router: @,
-        session: @session
+        session: @session,
+        accounts: opts.accounts
 
     routes:
       '': 'index'
