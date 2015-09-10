@@ -17,14 +17,14 @@ define [
 
       @session = new Session opts.account
 
-      @index = new Index
+      @index = new Index _.extend opts,
         router: @,
-        session: @session,
-        accounts: opts.accounts
+        session: @session
 
     routes:
       '': 'index'
       'accounts/new': 'newAccount'
+      'projections/new': 'newProjection'
 
     index: ->
       @_render =>
@@ -34,6 +34,11 @@ define [
       @_render =>
         @setView @index
         @index.newAccount()
+
+    newProjection: ->
+      @_render =>
+        @setView @index
+        @index.newProjection()
 
     _render: (render) ->
       if @showPrestitial

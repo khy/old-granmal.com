@@ -20,17 +20,25 @@ object Application extends Controller with BudgetClient {
   def app(path: String = "") = Action.auth { implicit request =>
     val javascriptRouter = Routes.javascriptRouter()(
       routes.javascript.Application.bootstrap,
-      routes.javascript.Accounts.create
+      routes.javascript.Accounts.create,
+      routes.javascript.Projections.create
     )
 
     Ok(views.html.budget.app(javascriptRouter))
   }
 
   def bootstrap = Action.auth.async { implicit request =>
-    jsonClient().find("/accounts").map { page =>
+    val futAccounts = jsonClient().find("/accounts").map(_.items)
+    val futProjections = jsonClient().find("/projections").map(_.items)
+
+    for {
+      accounts <- futAccounts
+      projections <- futProjections
+    } yield {
       Ok(Json.obj(
         "account" -> Json.toJson(request.account.map(_.toPublic)),
-        "accounts" -> Json.toJson(page.items)
+        "accounts" -> accounts,
+        "projections" -> projections
       ))
     }
   }
