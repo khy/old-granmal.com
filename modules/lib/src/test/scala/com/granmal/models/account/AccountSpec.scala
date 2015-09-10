@@ -24,6 +24,12 @@ class AccountSpec
     Account.ensureIndexes()
   }
 
+  implicit override lazy val app = new FakeApplication(
+    additionalConfiguration = Map(
+      "mongo.uri" -> "mongodb://localhost/granmal_test"
+    )
+  )
+
   def factory = new AccountFactory(Account.collection)
 
   "Account.accountForGuid" should {

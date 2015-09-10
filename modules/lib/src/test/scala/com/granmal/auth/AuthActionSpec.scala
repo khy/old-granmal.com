@@ -40,7 +40,8 @@ class AuthActionSpec extends PlaySpec with OneAppPerSuite {
 
   implicit override lazy val app = new FakeApplication(
     additionalConfiguration = Map(
-      "application.secret" -> "test"
+      "application.secret" -> "test",
+      "mongo.uri" -> "mongodb://localhost/granmal_test"
     )
   )
 
