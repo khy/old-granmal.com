@@ -28,18 +28,22 @@ object Application extends Controller with BudgetClient {
   }
 
   def bootstrap = Action.auth.async { implicit request =>
-    val futAccounts = jsonClient().find("/accounts").map(_.items)
-    val futProjections = jsonClient().find("/projections").map(_.items)
+    optJsonClient().map { jsonClient =>
+      val futAccounts = jsonClient.find("/accounts").map(_.items)
+      val futProjections = jsonClient.find("/projections").map(_.items)
 
-    for {
-      accounts <- futAccounts
-      projections <- futProjections
-    } yield {
-      Ok(Json.obj(
-        "account" -> Json.toJson(request.account.map(_.toPublic)),
-        "accounts" -> accounts,
-        "projections" -> projections
-      ))
+      for {
+        accounts <- futAccounts
+        projections <- futProjections
+      } yield {
+        Ok(Json.obj(
+          "account" -> Json.toJson(request.account.map(_.toPublic)),
+          "accounts" -> accounts,
+          "projections" -> projections
+        ))
+      }
+    }.getOrElse {
+      Future.successful(Ok(Json.obj()))
     }
   }
 
