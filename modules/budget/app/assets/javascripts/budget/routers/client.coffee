@@ -25,6 +25,7 @@ define [
       '': 'index'
       'accounts/new': 'newAccount'
       'projections/new': 'newProjection'
+      'transactionTypes/new': 'newTransactionType'
 
     index: ->
       @_render =>
@@ -39,6 +40,11 @@ define [
       @_render =>
         @setView @index
         @index.newProjection()
+
+    newTransactionType: ->
+      @_render =>
+        @setView @index
+        @index.newTransactionType()
 
     _render: (render) ->
       if @showPrestitial

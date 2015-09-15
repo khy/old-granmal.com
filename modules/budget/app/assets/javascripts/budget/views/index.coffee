@@ -10,7 +10,10 @@ define [
   'budget/collections/accounts'
   'budget/views/new-projection'
   'budget/collections/projections'
-], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewAccount, Accounts, NewProjection, Projections) ->
+  'budget/views/new-transaction-type'
+  'budget/collections/transaction-types'
+], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewAccount, Accounts,
+    NewProjection, Projections, NewTransactionType, TransactionTypes) ->
 
   class Index extends Backbone.View
 
@@ -22,10 +25,10 @@ define [
       @session = opts.session
       @accounts = new Accounts opts.accounts
       @projections = new Projections opts.projections
+      @transactionTypes = new TransactionTypes opts.transactionTypes
 
     render: ->
       @$el.html Index.template
-
       @
 
     newAccount: (e) ->
@@ -63,3 +66,21 @@ define [
 
       @setView newProjection
       @router.navigate("projections/new")
+
+    newTransactionType: (e) ->
+      e?.preventDefault()
+      newTransactionType = new NewTransactionType accounts: @accounts
+
+      closeNewTransactionType = =>
+        @setView @
+        @router.navigate("")
+
+      @listenTo newTransactionType, 'close', closeNewTransactionType
+
+      @listenTo newTransactionType, 'create', (transactionType) ->
+        @transactionTypes.unshift transactionType
+        Alert.success "Created new transaction type \"#{transactionType.get('name')}\""
+        closeNewTransactionType()
+
+      @setView newTransactionType
+      @router.navigate("transactionTypes/new")

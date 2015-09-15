@@ -21,7 +21,8 @@ object Application extends Controller with BudgetClient {
     val javascriptRouter = Routes.javascriptRouter()(
       routes.javascript.Application.bootstrap,
       routes.javascript.Accounts.create,
-      routes.javascript.Projections.create
+      routes.javascript.Projections.create,
+      routes.javascript.TransactionTypes.create
     )
 
     Ok(views.html.budget.app(javascriptRouter))
