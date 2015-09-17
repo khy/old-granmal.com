@@ -26,6 +26,8 @@ define [
       @accounts = new Accounts opts.accounts
       @projections = new Projections opts.projections
       @transactionTypes = new TransactionTypes opts.transactionTypes
+      @accountTypes = opts.accountTypes
+      @transactionClasses = opts.transactionClasses
 
     render: ->
       @$el.html Index.template
@@ -34,6 +36,7 @@ define [
     newAccount: (e) ->
       e?.preventDefault()
       newAccount = new NewAccount
+        accountTypes: @accountTypes
 
       closeNewAccount = =>
         @setView @
@@ -69,7 +72,9 @@ define [
 
     newTransactionType: (e) ->
       e?.preventDefault()
-      newTransactionType = new NewTransactionType accounts: @accounts
+      newTransactionType = new NewTransactionType
+        accounts: @accounts
+        transactionClasses: @transactionClasses
 
       closeNewTransactionType = =>
         @setView @

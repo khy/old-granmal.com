@@ -17,22 +17,20 @@ define [
       @input = {}
       @transactionType = new TransactionType
       @accounts = opts.accounts
+      @transactionClasses = opts.transactionClasses
 
       @listenTo @transactionType, 'sync', ->
         @trigger 'create', @transactionType
 
     render: ->
       @$el.html NewTransactionType.template _.extend @input,
-        transactionClassOptions: [
-          {name: 'Salary', key: 'salary'}
-          {name: 'Rent', key: 'rent'}
-        ].map (transactionClass) =>
-          _.extend transactionClass,
-            selected: transactionClass.key == @input.transactionClass
         accountOptions: @accounts.map (account) =>
           guid: account.get('guid')
           name: account.get('name')
-          selected: account.get('guid') == @input.accountGuid
+          selected: account.get('guid') == @input.accountGuig
+        transactionClassOptions: @transactionClasses.map (transactionClass) =>
+          _.extend transactionClass,
+            selected: transactionClass.key == @input.transactionClass
         errors: @errors
       @
 

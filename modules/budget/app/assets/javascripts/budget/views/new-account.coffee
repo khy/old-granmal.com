@@ -16,6 +16,7 @@ define [
       _.extend @, ElManager
       @input = {}
       @account = new Account
+      @accountTypes = opts.accountTypes
 
       @listenTo @account, 'sync', ->
         @trigger 'create', @account
@@ -23,8 +24,8 @@ define [
     render: ->
       @$el.html NewAccount.template _.extend @input,
         errors: @errors
-        inputOptions: _.map Account.AccountTypes, (key, name) =>
-          key: key, name: name, selected: @input.accountType == key
+        inputOptions: @accountTypes.map (accountType) =>
+          _.extend accountType, selected: @input.accountType == accountType.key
       @
 
     events:

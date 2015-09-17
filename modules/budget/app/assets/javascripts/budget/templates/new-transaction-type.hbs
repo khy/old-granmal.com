@@ -13,20 +13,6 @@
 <main class="form">
   <form>
     <div class="field">
-      <select name="transactionClass">
-        {{#each transactionClassOptions}}
-          <option value="{{key}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
-        {{/each}}
-      </select>
-
-      {{#if errors.transactionClass}}
-        <ol class="input-messages">
-          <li class="input-error">{{errors.transactionClass}}</li>
-        </ol>
-      {{/if}}
-    </div>
-
-    <div class="field">
       <select name="accountGuid">
         {{#each accountOptions}}
           <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
@@ -36,6 +22,20 @@
       {{#if errors.accountUuid}}
         <ol class="input-messages">
           <li class="input-error">{{errors.accountUuid}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <select name="transactionClass">
+        {{#each transactionClassOptions}}
+          <option value="{{key}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+
+      {{#if errors.transactionClass}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.transactionClass}}</li>
         </ol>
       {{/if}}
     </div>

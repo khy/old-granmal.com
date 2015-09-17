@@ -32,15 +32,21 @@ object Application extends Controller with BudgetClient {
     optJsonClient().map { jsonClient =>
       val futAccounts = jsonClient.find("/accounts").map(_.items)
       val futProjections = jsonClient.find("/projections").map(_.items)
+      val futAccountTypes = jsonClient.find("/accountTypes").map(_.items)
+      val futTransactionClasses = jsonClient.find("/transactionClasses").map(_.items)
 
       for {
         accounts <- futAccounts
         projections <- futProjections
+        accountTypes <- futAccountTypes
+        transactionClasses <- futTransactionClasses
       } yield {
         Ok(Json.obj(
           "account" -> Json.toJson(request.account.map(_.toPublic)),
           "accounts" -> accounts,
-          "projections" -> projections
+          "projections" -> projections,
+          "accountTypes" -> accountTypes,
+          "transactionClasses" -> transactionClasses
         ))
       }
     }.getOrElse {
