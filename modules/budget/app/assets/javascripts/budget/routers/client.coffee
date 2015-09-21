@@ -24,7 +24,6 @@ define [
     routes:
       '': 'index'
       'accounts/new': 'newAccount'
-      'projections/new': 'newProjection'
       'transactionTypes/new': 'newTransactionType'
 
     index: ->
@@ -35,11 +34,6 @@ define [
       @_render =>
         @setView @index
         @index.newAccount()
-
-    newProjection: ->
-      @_render =>
-        @setView @index
-        @index.newProjection()
 
     newTransactionType: ->
       @_render =>
