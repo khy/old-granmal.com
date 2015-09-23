@@ -27,15 +27,15 @@
     </div>
 
     <div class="field">
-      <select name="transactionClass">
-        {{#each transactionClassOptions}}
-          <option value="{{key}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+      <select name="parentGuid">
+        {{#each systemTransactionTypeOptions}}
+          <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
         {{/each}}
       </select>
 
-      {{#if errors.transactionClass}}
+      {{#if errors.parentGuid}}
         <ol class="input-messages">
-          <li class="input-error">{{errors.transactionClass}}</li>
+          <li class="input-error">{{errors.parentGuid}}</li>
         </ol>
       {{/if}}
     </div>
