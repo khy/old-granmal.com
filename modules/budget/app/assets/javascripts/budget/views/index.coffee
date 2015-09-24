@@ -22,8 +22,7 @@ define [
       @router = opts.router
       @session = opts.session
       @accounts = new Accounts opts.accounts
-      @systemTransactionTypes = new TransactionTypes opts.systemTransactionTypes
-      @userTransactionTypes = new TransactionTypes opts.userTransactionTypes
+      @transactionTypes = new TransactionTypes opts.transactionTypes
       @accountTypes = opts.accountTypes
 
     render: ->
@@ -52,8 +51,7 @@ define [
     newTransactionType: (e) ->
       e?.preventDefault()
       newTransactionType = new NewTransactionType
-        accounts: @accounts
-        systemTransactionTypes: @systemTransactionTypes
+        transactionTypes: @transactionTypes
 
       closeNewTransactionType = =>
         @setView @
@@ -62,7 +60,7 @@ define [
       @listenTo newTransactionType, 'close', closeNewTransactionType
 
       @listenTo newTransactionType, 'create', (transactionType) ->
-        @userTransactionTypes.unshift transactionType
+        @transactionTypes.unshift transactionType
         Alert.success "Created new transaction type \"#{transactionType.get('name')}\""
         closeNewTransactionType()
 

@@ -14,23 +14,18 @@ define [
 
     initialize: (opts = {}) ->
       _.extend @, ElManager
-      console.log opts
       @input = {}
       @transactionType = new TransactionType
-      @accounts = opts.accounts
-      @systemTransactionTypes = opts.systemTransactionTypes
+      @transactionTypes = opts.transactionTypes
 
       @listenTo @transactionType, 'sync', ->
         @trigger 'create', @transactionType
 
     render: ->
       @$el.html NewTransactionType.template _.extend @input,
-        accountOptions: @accounts.map (account) =>
-          _.extend account.toJSON(),
-            selected: account.get('guid') == @input.accountGuid
-        systemTransactionTypeOptions: @systemTransactionTypes.map (systemTransactionType) =>
-          _.extend systemTransactionType.toJSON(),
-            selected: systemTransactionType.get('guid') == @input.parentGuid
+        parentOptions: @transactionTypes.map (transactionType) =>
+          _.extend transactionType.toJSON(),
+            selected: transactionType.get('guid') == @input.parentGuid
         errors: @errors
       @
 
@@ -56,7 +51,6 @@ define [
 
     getInput: ->
       parentGuid: @$('select[name="parentGuid"]').val()
-      accountGuid: @$('select[name="accountGuid"]').val()
       name: @$('input[name="name"]').val()
 
     validate: (input) ->
