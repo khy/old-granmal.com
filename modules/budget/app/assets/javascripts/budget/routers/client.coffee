@@ -23,12 +23,18 @@ define [
 
     routes:
       '': 'index'
+      'transactions/new': 'newTransaction'
       'accounts/new': 'newAccount'
       'transactionTypes/new': 'newTransactionType'
 
     index: ->
       @_render =>
         @setView @index
+
+    newTransaction: ->
+      @_render =>
+        @setView @index
+        @index.newTransaction()
 
     newAccount: ->
       @_render =>

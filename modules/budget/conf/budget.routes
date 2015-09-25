@@ -1,5 +1,7 @@
 GET     /bootstrap      controllers.budget.Application.bootstrap
 
+POST    /transactions   controllers.budget.Transactions.create
+
 POST    /accounts       controllers.budget.Accounts.create
 
 POST    /transactionTypes   controllers.budget.TransactionTypes.create

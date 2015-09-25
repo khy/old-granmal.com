@@ -6,12 +6,14 @@ define [
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
+  'budget/views/new-transaction'
+  'budget/collections/transactions'
   'budget/views/new-account'
   'budget/collections/accounts'
   'budget/views/new-transaction-type'
   'budget/collections/transaction-types'
-], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewAccount, Accounts,
-    NewTransactionType, TransactionTypes) ->
+], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewTransaction,
+    Transactions, NewAccount, Accounts, NewTransactionType, TransactionTypes) ->
 
   class Index extends Backbone.View
 
@@ -21,6 +23,7 @@ define [
       _.extend @, ElManager
       @router = opts.router
       @session = opts.session
+      @transactions = new Transactions opts.transactions
       @accounts = new Accounts opts.accounts
       @transactionTypes = new TransactionTypes opts.transactionTypes
       @accountTypes = opts.accountTypes
@@ -28,6 +31,26 @@ define [
     render: ->
       @$el.html Index.template
       @
+
+    newTransaction: (e) ->
+      e?.preventDefault()
+      newTransaction = new NewTransaction
+        accounts: @accounts
+        transactionTypes: @transactionTypes
+
+      closeNewTransaction = =>
+        @setView @
+        @router.navigate("")
+
+      @listenTo newTransaction, 'close', closeNewTransaction
+
+      @listenTo newTransaction, 'create', (transaction) ->
+        @transactions.unshift transaction
+        Alert.success "Created new transaction."
+        closeNewTransaction()
+
+      @setView newTransaction
+      @router.navigate("transactions/new")
 
     newAccount: (e) ->
       e?.preventDefault()
