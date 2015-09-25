@@ -11,5 +11,17 @@
 </header>
 
 <main>
-  <h2>Budget</h2>
+  <ol class="transactions">
+    {{#each transactions}}
+      <li>
+        <div class="details">
+          <a class="transactionType" href="transactionTypes/{{transactionType.guid}}">{{transactionType.name}}</a> /
+          <a class="account" href="accounts/{{account.guid}}">{{account.name}}</a>
+        </div>
+        <div class="amount {{amount.class}}">
+          ${{amount.value}}
+        </div>
+      </li>
+    {{/each}}
+  </ol>
 </main>

@@ -30,6 +30,20 @@ define [
 
     render: ->
       @$el.html Index.template
+        transactions: @transactions.map (transaction) =>
+          account = @accounts.get(transaction.get('accountGuid'))
+          transactionType = @transactionTypes.get(transaction.get('transactionTypeGuid'))
+
+          account:
+            guid: account.get('guid')
+            name: account.get('name')
+          transactionType:
+            guid: transactionType.get('guid')
+            name: transactionType.get('name')
+          amount:
+            value: transaction.get('amount')
+            class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
+
       @
 
     newTransaction: (e) ->

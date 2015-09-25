@@ -2,3 +2,25 @@
 @import "../../../../../../app/assets/stylesheets/lib/lib.less";
 @import "../../../../../../app/assets/stylesheets/lib/form.less";
 @import "../../../../../../app/assets/stylesheets/lib/card.less";
+
+ol.transactions {
+  .card-list;
+
+  li {
+    padding: 2 * @card-base-spacing;
+
+    .details {
+      color: #999;
+      margin-bottom: 0.75em;
+      a.transactionType { font-size: 1.25em; }
+      a.account { color: #999; }
+    }
+
+    .amount {
+      font-size: 2.25em;
+      &.amount-income { color: green; }
+      &.amount-expense { color: red; }
+    }
+  }
+
+}
