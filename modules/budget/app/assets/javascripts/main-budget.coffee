@@ -5,6 +5,7 @@ requirejs.config
     underscore: '../lib/underscorejs/underscore'
     backbone: '../lib/backbonejs/backbone'
     handlebars: '../lib/handlebars/handlebars'
+    moment: '../lib/momentjs/moment'
     text: '../lib/lib/javascripts/requirejs/text'
   shim:
     handlebars:

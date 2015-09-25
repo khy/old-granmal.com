@@ -2,15 +2,18 @@ define [
   'jquery'
   'backbone'
   'handlebars'
+  'moment'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/validation/check'
   'budget/models/transaction'
   'text!budget/templates/new-transaction.hbs'
-], ($, Backbone, Handlebars, ElManager, Check, Transaction, template) ->
+], ($, Backbone, Handlebars, Moment, ElManager, Check, Transaction, template) ->
 
   class NewTransaction extends Backbone.View
 
     @template: Handlebars.compile(template)
+
+    @parseDate: (raw) -> Moment(raw, "MM|DD|YYYY")
 
     initialize: (opts = {}) ->
       _.extend @, ElManager
@@ -42,8 +45,11 @@ define [
       @input = @getInput()
       @errors = @validate(@input)
 
+      console.log NewTransaction.parseDate(@input.date)
+
       if _.isEmpty(@errors)
-        jqxhr = @transaction.save @input
+        jqxhr = @transaction.save _.extend @input,
+          timestamp: NewTransaction.parseDate(@input.date).toISOString()
 
         jqxhr.fail (jqxhr) =>
           if jqxhr.status == 409
@@ -54,10 +60,10 @@ define [
         @render()
 
     getInput: ->
-      parentGuid: @$('select[name="accountGuid"]').val()
-      parentGuid: @$('select[name="transactionTypeGuid"]').val()
+      accountGuid: @$('select[name="accountGuid"]').val()
+      transactionTypeGuid: @$('select[name="transactionTypeGuid"]').val()
       amount: @$('input[name="amount"]').val()
-      timestamp: @$('input[name="date"]').val()
+      date: @$('input[name="date"]').val()
 
     validate: (input) ->
       errors = {}
@@ -65,8 +71,10 @@ define [
       if Check.isMissing(input.amount)
         errors.amount = 'Amount is required.'
 
-      if Check.isMissing(input.timestamp)
+      if Check.isMissing(input.date)
         errors.date = 'Date is required.'
+      else if !NewTransaction.parseDate(input.date).isValid()
+        errors.date = 'Date is invalid. Try something like \'3/15/16\' or \'10-31-17\''
 
       errors
 

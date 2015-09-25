@@ -3,6 +3,6 @@ define [
   'budget/models/transaction'
 ], (Backbone, Transaction) ->
 
-  class Transaction extends Backbone.Collection
+  class Transactions extends Backbone.Collection
 
     model: Transaction
