@@ -3,6 +3,7 @@ define [
   'underscore'
   'backbone'
   'handlebars'
+  'moment'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
@@ -12,7 +13,7 @@ define [
   'budget/collections/accounts'
   'budget/views/new-transaction-type'
   'budget/collections/transaction-types'
-], ($, _, Backbone, Handlebars, ElManager, Alert, template, NewTransaction,
+], ($, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction,
     Transactions, NewAccount, Accounts, NewTransactionType, TransactionTypes) ->
 
   class Index extends Backbone.View
@@ -43,6 +44,7 @@ define [
           amount:
             value: transaction.get('amount')
             class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
+          date: Moment(transaction.get('timestamp')).format('MMMM Do YYYY')
 
       @
 
