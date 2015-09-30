@@ -8,13 +8,12 @@ define [
   'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
   'budget/views/new-transaction'
-  'budget/collections/transactions'
   'budget/views/new-account'
-  'budget/collections/accounts'
   'budget/views/new-transaction-type'
-  'budget/collections/transaction-types'
-], ($, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction,
-    Transactions, NewAccount, Accounts, NewTransactionType, TransactionTypes) ->
+], (
+  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template,
+  NewTransaction, NewAccount, NewTransactionType
+) ->
 
   class Index extends Backbone.View
 
@@ -22,86 +21,73 @@ define [
 
     initialize: (opts) ->
       _.extend @, ElManager
-      @router = opts.router
-      @session = opts.session
-      @transactions = new Transactions opts.transactions
-      @accounts = new Accounts opts.accounts
-      @transactionTypes = new TransactionTypes opts.transactionTypes
-      @accountTypes = opts.accountTypes
+      @app = opts.app
 
     render: ->
       @$el.html Index.template
-        transactions: @transactions.map (transaction) =>
-          account = @accounts.get(transaction.get('accountGuid'))
-          transactionType = @transactionTypes.get(transaction.get('transactionTypeGuid'))
-
-          account:
-            guid: account.get('guid')
-            name: account.get('name')
-          transactionType:
-            guid: transactionType.get('guid')
-            name: transactionType.get('name')
-          amount:
-            value: transaction.get('amount')
-            class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
-          date: Moment(transaction.get('timestamp')).format('MMMM Do YYYY')
-
       @
+
+    events:
+      'click a.plan': 'showPlan'
+
+    showPlan: (e) ->
+      e?.preventDefault()
+      @app.navigate "plan", trigger: true
 
     newTransaction: (e) ->
       e?.preventDefault()
       newTransaction = new NewTransaction
-        accounts: @accounts
-        transactionTypes: @transactionTypes
+        accounts: @app.accounts
+        transactionTypes: @app.transactionTypes
 
       closeNewTransaction = =>
         @setView @
-        @router.navigate("")
+        @app.navigate("")
 
       @listenTo newTransaction, 'close', closeNewTransaction
 
       @listenTo newTransaction, 'create', (transaction) ->
-        @transactions.unshift transaction
+        @app.transactions.unshift transaction
         Alert.success "Created new transaction."
         closeNewTransaction()
 
       @setView newTransaction
-      @router.navigate("transactions/new")
+      @app.navigate("transactions/new")
 
     newAccount: (e) ->
       e?.preventDefault()
       newAccount = new NewAccount
-        accountTypes: @accountTypes
+        accountTypes: @app.accountTypes
 
       closeNewAccount = =>
         @setView @
-        @router.navigate("")
+        @app.navigate("")
 
       @listenTo newAccount, 'close', closeNewAccount
 
       @listenTo newAccount, 'create', (account) ->
-        @accounts.unshift account
+        @app.accounts.unshift account
         Alert.success "Created new #{account.get('accountType')} account \"#{account.get('name')}\""
         closeNewAccount()
 
       @setView newAccount
-      @router.navigate("accounts/new")
+      @app.navigate("accounts/new")
 
     newTransactionType: (e) ->
       e?.preventDefault()
       newTransactionType = new NewTransactionType
-        transactionTypes: @transactionTypes
+        transactionTypes: @app.transactionTypes
 
       closeNewTransactionType = =>
         @setView @
-        @router.navigate("")
+        @app.navigate("")
 
       @listenTo newTransactionType, 'close', closeNewTransactionType
 
       @listenTo newTransactionType, 'create', (transactionType) ->
-        @transactionTypes.unshift transactionType
+        @app.transactionTypes.unshift transactionType
         Alert.success "Created new transaction type \"#{transactionType.get('name')}\""
         closeNewTransactionType()
 
       @setView newTransactionType
-      @router.navigate("transactionTypes/new")
+      @app.navigate("transactionTypes/new")

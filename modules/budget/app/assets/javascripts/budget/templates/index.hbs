@@ -11,26 +11,11 @@
 </header>
 
 <main>
-  <div class="filters">
-    <a href="#">To Resolve</a>
-    <a href="#">Upcoming</a>
-    <a href="#">Confirmed</a>
+  <div class="overview">
+    <ul class="links-primary">
+      <li><a class="plan" href="#">Plan</a></li>
+      <li><a class="resolve" href="#">Resolve</a></li>
+      <li><a class="review" href="#">Review</a></li>
+    </ul>
   </div>
-
-  <ol class="transactions">
-    {{#each transactions}}
-      <li>
-        <div class="details">
-          <a class="transactionType" href="transactionTypes/{{transactionType.guid}}">{{transactionType.name}}</a> /
-          <a class="account" href="accounts/{{account.guid}}">{{account.name}}</a>
-        </div>
-        <div class="amount {{amount.class}}">
-          ${{amount.value}}
-        </div>
-        <div class="date">
-          {{date}}
-        </div>
-      </li>
-    {{/each}}
-  </ol>
 </main>

@@ -5,24 +5,35 @@ define [
   'lib/javascripts/auth/session'
   'lib/javascripts/auth/form'
   'budget/views/index'
-], (Backbone, ElManager, Prestitial, Session, AuthForm, Index) ->
+  'budget/views/plan'
+  'budget/collections/transactions'
+  'budget/collections/transaction-types'
+  'budget/collections/accounts'
+], (
+  Backbone, ElManager, Prestitial, Session, AuthForm, Index, Plan
+  Transactions, TransactionTypes, Accounts
+) ->
 
   class ClientRouter extends Backbone.Router
 
-    initialize: (opts) ->
+    initialize: (bootstrap) ->
       @el = $("#main")
       _.extend @, ElManager
 
       @showPrestitial = true
 
-      @session = new Session opts.account
+      @session = new Session bootstrap.account
+      @transactions = new Transactions bootstrap.transactions
+      @transactionTypes = new TransactionTypes bootstrap.transactionTypes
+      @accounts = new Accounts bootstrap.accounts
+      @accountTypes = bootstrap.accountTypes
 
-      @index = new Index _.extend opts,
-        router: @,
-        session: @session
+      @index = new Index app: @
+      @plan = new Plan app: @
 
     routes:
       '': 'index'
+      'plan': 'plan'
       'transactions/new': 'newTransaction'
       'accounts/new': 'newAccount'
       'transactionTypes/new': 'newTransactionType'
@@ -30,6 +41,10 @@ define [
     index: ->
       @_render =>
         @setView @index
+
+    plan: ->
+      @_render =>
+        @setView @plan
 
     newTransaction: ->
       @_render =>
