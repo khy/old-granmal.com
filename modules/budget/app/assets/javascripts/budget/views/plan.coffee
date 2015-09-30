@@ -7,8 +7,9 @@ define [
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/alert'
   'text!budget/templates/plan.hbs'
+  'budget/views/new-transaction'
 ], (
-  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template
+  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction
 ) ->
 
   class Plan extends Backbone.View
@@ -20,8 +21,12 @@ define [
       @app = opts.app
 
     render: ->
+      transactions = @app.transactions
+        .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
+        .sort (a, b) -> Moment(a.get('timestamp')).isAfter(b.get('timestamp'))
+
       @$el.html Plan.template
-        transactions: @app.transactions.map (transaction) =>
+        transactions: transactions.map (transaction) =>
           account = @app.accounts.get(transaction.get('accountGuid'))
           transactionType = @app.transactionTypes.get(transaction.get('transactionTypeGuid'))
 
@@ -37,3 +42,24 @@ define [
           date: Moment(transaction.get('timestamp')).format('MMMM Do YYYY')
 
       @
+
+    events:
+      'click a.new-transaction': 'newTransaction'
+
+    newTransaction: (e) ->
+      e?.preventDefault()
+
+      newTransaction = new NewTransaction
+        accounts: @app.accounts
+        transactionTypes: @app.transactionTypes
+
+      closeNewTransaction = => @setView @
+
+      @listenTo newTransaction, 'close', closeNewTransaction
+
+      @listenTo newTransaction, 'create', (transaction) ->
+        @app.transactions.unshift transaction
+        Alert.success "Created new transaction."
+        closeNewTransaction()
+
+      @setView newTransaction

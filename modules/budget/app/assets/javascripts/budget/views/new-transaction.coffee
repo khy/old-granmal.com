@@ -45,8 +45,6 @@ define [
       @input = @getInput()
       @errors = @validate(@input)
 
-      console.log NewTransaction.parseDate(@input.date)
-
       if _.isEmpty(@errors)
         jqxhr = @transaction.save _.extend @input,
           timestamp: NewTransaction.parseDate(@input.date).toISOString()
