@@ -34,9 +34,6 @@ define [
     routes:
       '': 'index'
       'plan': 'plan'
-      'transactions/new': 'newTransaction'
-      'accounts/new': 'newAccount'
-      'transactionTypes/new': 'newTransactionType'
 
     index: ->
       @_render =>
@@ -45,21 +42,6 @@ define [
     plan: ->
       @_render =>
         @setView @plan
-
-    newTransaction: ->
-      @_render =>
-        @setView @index
-        @index.newTransaction()
-
-    newAccount: ->
-      @_render =>
-        @setView @index
-        @index.newAccount()
-
-    newTransactionType: ->
-      @_render =>
-        @setView @index
-        @index.newTransactionType()
 
     _render: (render) ->
       if @showPrestitial

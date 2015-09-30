@@ -14,16 +14,16 @@ define [
 
     initialize: (opts = {}) ->
       _.extend @, ElManager
+      @app = opts.app
       @input = {}
       @transactionType = new TransactionType
-      @transactionTypes = opts.transactionTypes
 
       @listenTo @transactionType, 'sync', ->
         @trigger 'create', @transactionType
 
     render: ->
       @$el.html NewTransactionType.template _.extend @input,
-        parentOptions: @transactionTypes.map (transactionType) =>
+        parentOptions: @app.transactionTypes.map (transactionType) =>
           _.extend transactionType.toJSON(),
             selected: transactionType.get('guid') == @input.parentGuid
         errors: @errors

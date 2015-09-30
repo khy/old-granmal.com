@@ -49,9 +49,7 @@ define [
     newTransaction: (e) ->
       e?.preventDefault()
 
-      newTransaction = new NewTransaction
-        accounts: @app.accounts
-        transactionTypes: @app.transactionTypes
+      newTransaction = new NewTransaction app: @app
 
       closeNewTransaction = => @setView @
 

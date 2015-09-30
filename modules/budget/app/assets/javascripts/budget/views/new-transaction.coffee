@@ -3,11 +3,17 @@ define [
   'backbone'
   'handlebars'
   'moment'
+  'lib/javascripts/alert'
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/validation/check'
   'budget/models/transaction'
   'text!budget/templates/new-transaction.hbs'
-], ($, Backbone, Handlebars, Moment, ElManager, Check, Transaction, template) ->
+  'budget/views/new-transaction-type'
+  'budget/views/new-account'
+], (
+  $, Backbone, Handlebars, Moment, Alert, ElManager, Check, Transaction,
+  template, NewTransactionType, NewAccount
+) ->
 
   class NewTransaction extends Backbone.View
 
@@ -17,20 +23,19 @@ define [
 
     initialize: (opts = {}) ->
       _.extend @, ElManager
+      @app = opts.app
       @input = {}
       @transaction = new Transaction
-      @accounts = opts.accounts
-      @transactionTypes = opts.transactionTypes
 
       @listenTo @transaction, 'sync', ->
         @trigger 'create', @transaction
 
     render: ->
       @$el.html NewTransaction.template _.extend @input,
-        accountOptions: @accounts.map (account) =>
+        accountOptions: @app.accounts.map (account) =>
           _.extend account.toJSON(),
             selected: account.get('guid') == @input.accountGuid
-        transactionTypeOptions: @transactionTypes.map (transactionType) =>
+        transactionTypeOptions: @app.transactionTypes.map (transactionType) =>
           _.extend transactionType.toJSON(),
             selected: transactionType.get('guid') == @input.transactionTypeGuid
         errors: @errors
@@ -39,6 +44,8 @@ define [
     events:
       'submit form': 'create'
       'click a.close': 'close'
+      'click a.new-transaction-type': 'newTransactionType'
+      'click a.new-account': 'newAccount'
 
     create: (e) ->
       e?.preventDefault()
@@ -83,3 +90,35 @@ define [
     close: (e) ->
       e?.preventDefault()
       @trigger 'close'
+
+    newTransactionType: (e) ->
+      e?.preventDefault()
+
+      newTransactionType = new NewTransactionType app: @app
+
+      closeNewTransactionType = => @setView @
+
+      @listenTo newTransactionType, 'close', closeNewTransactionType
+
+      @listenTo newTransactionType, 'create', (transactionType) ->
+        @app.transactionTypes.unshift transactionType
+        Alert.success "Created new transaction type \"#{transactionType.get('name')}\""
+        closeNewTransactionType()
+
+      @setView newTransactionType
+
+    newAccount: (e) ->
+      e?.preventDefault()
+      newAccount = new NewAccount app: @app
+
+      closeNewAccount = =>
+        @setView @
+
+      @listenTo newAccount, 'close', closeNewAccount
+
+      @listenTo newAccount, 'create', (account) ->
+        @app.accounts.unshift account
+        Alert.success "Created new #{account.get('accountType')} account \"#{account.get('name')}\""
+        closeNewAccount()
+
+      @setView newAccount
