@@ -22,8 +22,13 @@ define [
       @
 
     events:
-      'click a.plan': 'showPlan'
+      'click a.plan': 'plan'
+      'click a.resolve': 'resolve'
 
-    showPlan: (e) ->
+    plan: (e) ->
       e?.preventDefault()
-      @app.navigate "plan", trigger: true
+      @app.navigate 'plan', trigger: true
+
+    resolve: (e) ->
+      e?.preventDefault()
+      @app.navigate 'resolve', trigger: true

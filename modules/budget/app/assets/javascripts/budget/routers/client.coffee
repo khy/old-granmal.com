@@ -6,11 +6,12 @@ define [
   'lib/javascripts/auth/form'
   'budget/views/index'
   'budget/views/plan'
+  'budget/views/resolve'
   'budget/collections/transactions'
   'budget/collections/transaction-types'
   'budget/collections/accounts'
 ], (
-  Backbone, ElManager, Prestitial, Session, AuthForm, Index, Plan
+  Backbone, ElManager, Prestitial, Session, AuthForm, Index, Plan, Resolve,
   Transactions, TransactionTypes, Accounts
 ) ->
 
@@ -30,10 +31,12 @@ define [
 
       @index = new Index app: @
       @plan = new Plan app: @
+      @resolve = new Resolve app: @
 
     routes:
       '': 'index'
       'plan': 'plan'
+      'resolve': 'resolve'
 
     index: ->
       @_render =>
@@ -42,6 +45,10 @@ define [
     plan: ->
       @_render =>
         @setView @plan
+
+    resolve: ->
+      @_render =>
+        @setView @resolve
 
     _render: (render) ->
       if @showPrestitial

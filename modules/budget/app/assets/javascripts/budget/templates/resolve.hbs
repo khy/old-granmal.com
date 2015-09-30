@@ -1,0 +1,34 @@
+<header>
+  <h1>Budget</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="/">
+        <span class="glyphicon glyphicon-home"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<main>
+  <div class="overview">
+    <h2>Resolve</h2>
+  </div>
+
+  <ol class="transactions">
+    {{#each transactions}}
+      <li>
+        <div class="details">
+          <a class="transactionType" href="transactionTypes/{{transactionType.guid}}">{{transactionType.name}}</a> /
+          <a class="account" href="accounts/{{account.guid}}">{{account.name}}</a>
+        </div>
+        <div class="amount {{amount.class}}">
+          ${{amount.value}}
+        </div>
+        <div class="date">
+          {{date}}
+        </div>
+      </li>
+    {{/each}}
+  </ol>
+</main>
