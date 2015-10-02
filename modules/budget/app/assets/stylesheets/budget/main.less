@@ -10,29 +10,17 @@
   .links-primary { .unstyled-list; }
 }
 
-ol.transactions {
-  .card-list;
+.upcoming-transactions {
+  .card;
+  padding: 2 * @card-base-spacing;
+  margin-bottom: (@card-base-spacing * 2);
 
-  li {
-    padding: 2 * @card-base-spacing;
+  table {
+    width: 100%;
 
-    .details {
-      color: #999;
-      margin-bottom: 0.75em;
-      a.transactionType { font-size: 1.25em; }
-      a.account { color: #999; }
-    }
+    th { text-align: left; }
 
-    .amount {
-      font-size: 2.25em;
-      margin-bottom: 0.25em;
-      &.amount-income { color: green; }
-      &.amount-expense { color: red; }
-    }
-
-    .date {
-      color: #999;
-    }
+    td.amount-income { color: green; }
+    td.amount-expense { color: red; }
   }
-
 }

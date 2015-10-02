@@ -16,20 +16,28 @@
     <a class="new-transaction" href="#">New Transaction</a>
   </div>
 
-  <ol class="transactions">
-    {{#each transactions}}
-      <li>
-        <div class="details">
-          <a class="transactionType" href="transactionTypes/{{transactionType.guid}}">{{transactionType.name}}</a> /
-          <a class="account" href="accounts/{{account.guid}}">{{account.name}}</a>
-        </div>
-        <div class="amount {{amount.class}}">
-          ${{amount.value}}
-        </div>
-        <div class="date">
-          {{date}}
-        </div>
-      </li>
-    {{/each}}
-  </ol>
+  <div class="upcoming-transactions">
+    <h3>Upcoming Transactions</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Account</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each transactions}}
+          <tr>
+            <td>{{date}}</td>
+            <td class="{{amount.class}}">${{amount.value}}</td>
+            <td>{{transactionType.name}}</td>
+            <td>{{account.name}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </main>

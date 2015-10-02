@@ -83,7 +83,7 @@ define [
 
       errors
 
-    parseResponseError: (errors) ->
+    parseResponseErrors: (errors) ->
       errors = {}
       errors
 

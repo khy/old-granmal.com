@@ -21,8 +21,8 @@ define [
       @app = opts.app
 
     render: ->
-      transactions = @app.transactions
-        .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
+      transactions = @app.transactions.models
+        # .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
         .sort (a, b) -> Moment(a.get('timestamp')).isAfter(b.get('timestamp'))
 
       @$el.html Plan.template
@@ -39,7 +39,7 @@ define [
           amount:
             value: transaction.get('amount')
             class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
-          date: Moment(transaction.get('timestamp')).format('MMMM Do YYYY')
+          date: Moment(transaction.get('timestamp')).format('M/D')
 
       @
 
