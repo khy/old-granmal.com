@@ -25,6 +25,9 @@ define [
         # .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
         .sort (a, b) -> Moment(a.get('timestamp')).isAfter(b.get('timestamp'))
 
+      transactionGroups = @app.transactions.groupBy (transaction) ->
+        transaction.get('accountGuid')
+
       @$el.html Plan.template
         transactions: transactions.map (transaction) =>
           account = @app.accounts.get(transaction.get('accountGuid'))
@@ -40,6 +43,19 @@ define [
             value: transaction.get('amount')
             class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
           date: Moment(transaction.get('timestamp')).format('M/D')
+        projectedBalances: _.map transactionGroups, (transactions, accountGuid) =>
+          account = @app.accounts.get(accountGuid)
+          transactionTotal = transactions
+            .map (transaction) -> transaction.get('amount')
+            .reduce (memo, amount) -> memo + amount
+
+          account:
+            guid: account.get('guid')
+            name: account.get('name')
+          currentBalance:
+            value: account.get('initialBalance')
+          projectedBalance:
+            value: account.get('initialBalance') + transactionTotal
 
       @
 

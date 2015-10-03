@@ -40,4 +40,27 @@
       </tbody>
     </table>
   </div>
+
+  <div class="projected-balances">
+    <h3>Projected Balances</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Current Balance</th>
+          <th>Projected Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each projectedBalances}}
+          <tr>
+            <td>{{account.name}}</td>
+            <td>{{currentBalance.value}}</td>
+            <td>{{projectedBalance.value}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 </main>

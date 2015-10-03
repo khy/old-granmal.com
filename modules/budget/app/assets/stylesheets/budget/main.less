@@ -10,17 +10,24 @@
   .links-primary { .unstyled-list; }
 }
 
-.upcoming-transactions {
+.table-card {
   .card;
   padding: 2 * @card-base-spacing;
   margin-bottom: (@card-base-spacing * 2);
 
   table {
     width: 100%;
-
     th { text-align: left; }
-
-    td.amount-income { color: green; }
-    td.amount-expense { color: red; }
   }
+}
+
+.upcoming-transactions {
+  .table-card;
+
+  td.amount-income { color: green; }
+  td.amount-expense { color: red; }
+}
+
+.projected-balances {
+  .table-card;
 }
