@@ -21,17 +21,17 @@ define [
       @app = opts.app
 
     render: ->
-      transactions = @app.transactions.models
+      plannedTransactions = @app.plannedTransactions.models
         # .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
-        .sort (a, b) -> Moment(a.get('timestamp')).isAfter(b.get('timestamp'))
+        .sort (a, b) -> Moment(a.get('minTimestamp')).isAfter(b.get('minTimestamp'))
 
-      transactionGroups = @app.transactions.groupBy (transaction) ->
-        transaction.get('accountGuid')
+      transactionGroups = @app.plannedTransactions.groupBy (plannedTransaction) ->
+        plannedTransaction.get('accountGuid')
 
       @$el.html Plan.template
-        transactions: transactions.map (transaction) =>
-          account = @app.accounts.get(transaction.get('accountGuid'))
-          transactionType = @app.transactionTypes.get(transaction.get('transactionTypeGuid'))
+        plannedTransactions: plannedTransactions.map (plannedTransaction) =>
+          account = @app.accounts.get(plannedTransaction.get('accountGuid'))
+          transactionType = @app.transactionTypes.get(plannedTransaction.get('transactionTypeGuid'))
 
           account:
             guid: account.get('guid')
@@ -40,13 +40,13 @@ define [
             guid: transactionType.get('guid')
             name: transactionType.get('name')
           amount:
-            value: transaction.get('amount')
-            class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
-          date: Moment(transaction.get('timestamp')).format('M/D')
-        projectedBalances: _.map transactionGroups, (transactions, accountGuid) =>
+            value: plannedTransaction.get('minAmount')
+            class: if plannedTransaction.get('minAmount') >= 0 then 'amount-income' else 'amount-expense'
+          date: Moment(plannedTransaction.get('minTimestamp')).format('M/D')
+        projectedBalances: _.map transactionGroups, (plannedTransactions, accountGuid) =>
           account = @app.accounts.get(accountGuid)
-          transactionTotal = transactions
-            .map (transaction) -> transaction.get('amount')
+          transactionTotal = plannedTransactions
+            .map (plannedTransaction) -> plannedTransaction.get('minAmount')
             .reduce (memo, amount) -> memo + amount
 
           account:

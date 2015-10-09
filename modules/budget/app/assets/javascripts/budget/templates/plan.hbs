@@ -16,8 +16,8 @@
     <a class="new-transaction" href="#">New Transaction</a>
   </div>
 
-  <div class="upcoming-transactions">
-    <h3>Upcoming Transactions</h3>
+  <div class="planned-transactions">
+    <h3>Planned Transactions</h3>
 
     <table>
       <thead>
@@ -29,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        {{#each transactions}}
+        {{#each plannedTransactions}}
           <tr>
             <td>{{date}}</td>
             <td class="{{amount.class}}">${{amount.value}}</td>

@@ -7,12 +7,13 @@ define [
   'budget/views/index'
   'budget/views/plan'
   'budget/views/resolve'
+  'budget/collections/planned-transactions'
   'budget/collections/transactions'
   'budget/collections/transaction-types'
   'budget/collections/accounts'
 ], (
   Backbone, ElManager, Prestitial, Session, AuthForm, Index, Plan, Resolve,
-  Transactions, TransactionTypes, Accounts
+  PlannedTransactions, Transactions, TransactionTypes, Accounts
 ) ->
 
   class ClientRouter extends Backbone.Router
@@ -24,6 +25,7 @@ define [
       @showPrestitial = true
 
       @session = new Session bootstrap.account
+      @plannedTransactions = new PlannedTransactions bootstrap.plannedTransactions
       @transactions = new Transactions bootstrap.transactions
       @transactionTypes = new TransactionTypes bootstrap.transactionTypes
       @accounts = new Accounts bootstrap.accounts
