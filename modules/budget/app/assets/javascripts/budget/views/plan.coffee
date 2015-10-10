@@ -8,8 +8,10 @@ define [
   'lib/javascripts/alert'
   'text!budget/templates/plan.hbs'
   'budget/views/new-transaction'
+  'budget/views/confirm-planned-transaction'
 ], (
-  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction
+  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction,
+  ConfirmPlannedTransaction
 ) ->
 
   class Plan extends Backbone.View
@@ -33,6 +35,7 @@ define [
           account = @app.accounts.get(plannedTransaction.get('accountGuid'))
           transactionType = @app.transactionTypes.get(plannedTransaction.get('transactionTypeGuid'))
 
+          guid: plannedTransaction.get('guid')
           account:
             guid: account.get('guid')
             name: account.get('name')
@@ -61,6 +64,7 @@ define [
 
     events:
       'click a.new-transaction': 'newTransaction'
+      'click a.confirm-planned-transaction': 'confirmPlannedTransaction'
 
     newTransaction: (e) ->
       e?.preventDefault()
@@ -77,3 +81,23 @@ define [
         closeNewTransaction()
 
       @setView newTransaction
+
+    confirmPlannedTransaction: (e) ->
+      e?.preventDefault()
+
+      guid = $(e.target).data("guid")
+      console.log guid
+      plannedTransaction = @app.plannedTransactions.get(guid)
+      console.log plannedTransaction
+      confirmPlannedTransaction = new ConfirmPlannedTransaction plannedTransaction, @app
+
+      closeConfirmPlannedTransaction = => @setView @
+
+      @listenTo confirmPlannedTransaction, 'close', closeConfirmPlannedTransaction
+
+      @listenTo confirmPlannedTransaction, 'create', (transaction) ->
+        @app.transactions.unshift transaction
+        Alert.success "Created new transaction."
+        closeConfirmPlannedTransaction()
+
+      @setView confirmPlannedTransaction

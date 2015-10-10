@@ -26,6 +26,7 @@
           <th>Amount</th>
           <th>Type</th>
           <th>Account</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -35,6 +36,7 @@
             <td class="{{amount.class}}">${{amount.value}}</td>
             <td>{{transactionType.name}}</td>
             <td>{{account.name}}</td>
+            <td><a class="confirm-planned-transaction" data-guid="{{guid}}" href="#">Confirm</a></td>
           </tr>
         {{/each}}
       </tbody>

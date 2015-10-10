@@ -1,0 +1,73 @@
+<header>
+  <h1>Budget</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<main class="form">
+  <h2>Confirm</h2>
+
+  <form>
+    <input type="hidden" name="plannedTransactionGuid" value="{{plannedTransactionGuid}}"></input>
+
+    <div class="field">
+      <select name="transactionTypeGuid">
+        {{#each transactionTypeOptions}}
+          <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+
+      <a class="new-transaction-type" href="#">New Transaction Type</a>
+
+      {{#if errors.transactionTypeGuid}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.transactionTypeGuid}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <select name="accountGuid">
+        {{#each accountOptions}}
+          <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+
+      <a class="new-account" href="#">New Account</a>
+
+      {{#if errors.accountGuid}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.accountGuid}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="amount" placeholder="Amount" value="{{amount}}"></input>
+
+      {{#if errors.amount}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.amount}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="date" placeholder="Date" value="{{date}}"></input>
+
+      {{#if errors.date}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.date}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <button type="submit">Confirm</button>
+  </form>
+</main>
