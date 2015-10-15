@@ -75,19 +75,30 @@ define [
         upcomingTransactions: preparePlannedTransactions(upcomingTransactions)
         pendingTransactions: preparePlannedTransactions(pendingTransactions)
         recentTransactions: recentTransactions
-        projectedBalances: _.map transactionGroups, (plannedTransactions, accountGuid) =>
-          account = @app.accounts.get(accountGuid)
-          transactionTotal = plannedTransactions
+        projectedBalances: @app.accounts.models.map (account) =>
+          transactionTotal = @app.transactions.models
+            .filter (transaction) -> transaction.get('accountGuid') == account.get('guid')
+            .map (transaction) -> transaction.get('amount')
+            .reduce (total, amount) ->
+              total + amount
+            , 0
+
+          plannedTransactionTotal = @app.plannedTransactions.models
+            .filter (plannedTransaction) ->
+              plannedTransaction.get('accountGuid') == account.get('guid') &&
+              typeof plannedTransaction.get('transactionGuid') != 'string'
             .map (plannedTransaction) -> plannedTransaction.get('minAmount')
-            .reduce (memo, amount) -> memo + amount
+            .reduce (total, amount) ->
+              total + amount
+            , 0
 
           account:
             guid: account.get('guid')
             name: account.get('name')
           currentBalance:
-            value: account.get('initialBalance')
-          projectedBalance:
             value: account.get('initialBalance') + transactionTotal
+          projectedBalance:
+            value: account.get('initialBalance') + transactionTotal + plannedTransactionTotal
 
       @
 
