@@ -23,19 +23,40 @@ define [
       @app = opts.app
 
     render: ->
-      plannedTransactions = @app.plannedTransactions.models
-        # .filter (transaction) -> Moment(transaction.get('timestamp')).isAfter(new Date)
-        .sort (a, b) -> Moment(a.get('minTimestamp')).isAfter(b.get('minTimestamp'))
+      upcomingTransactions = @app.plannedTransactions.models
+        .filter (transaction) -> Moment(transaction.get('minTimestamp')).isAfter(new Date)
 
-      transactionGroups = @app.plannedTransactions.groupBy (plannedTransaction) ->
-        plannedTransaction.get('accountGuid')
+      pendingTransactions = @app.plannedTransactions.models
+        .filter (transaction) ->
+          Moment(transaction.get('minTimestamp')).isBefore(new Date) &&
+          typeof transaction.get('transactionGuid') != 'string'
 
-      @$el.html Plan.template
-        plannedTransactions: plannedTransactions.map (plannedTransaction) =>
-          account = @app.accounts.get(plannedTransaction.get('accountGuid'))
-          transactionType = @app.transactionTypes.get(plannedTransaction.get('transactionTypeGuid'))
+      preparePlannedTransactions = (plannedTransactions) =>
+        plannedTransactions
+          .sort (a, b) -> Moment(a.get('minTimestamp')).isAfter(b.get('minTimestamp'))
+          .map (plannedTransaction) =>
+            account = @app.accounts.get(plannedTransaction.get('accountGuid'))
+            transactionType = @app.transactionTypes.get(plannedTransaction.get('transactionTypeGuid'))
 
-          guid: plannedTransaction.get('guid')
+            guid: plannedTransaction.get('guid')
+            account:
+              guid: account.get('guid')
+              name: account.get('name')
+            transactionType:
+              guid: transactionType.get('guid')
+              name: transactionType.get('name')
+            amount:
+              value: plannedTransaction.get('minAmount')
+              class: if plannedTransaction.get('minAmount') >= 0 then 'amount-income' else 'amount-expense'
+            date: Moment(plannedTransaction.get('minTimestamp')).format('M/D')
+
+      recentTransactions = @app.transactions.models
+        .sort (a, b) -> Moment(b.get('minTimestamp')).isAfter(a.get('minTimestamp'))
+        .map (transaction) =>
+          account = @app.accounts.get(transaction.get('accountGuid'))
+          transactionType = @app.transactionTypes.get(transaction.get('transactionTypeGuid'))
+
+          guid: transaction.get('guid')
           account:
             guid: account.get('guid')
             name: account.get('name')
@@ -43,9 +64,17 @@ define [
             guid: transactionType.get('guid')
             name: transactionType.get('name')
           amount:
-            value: plannedTransaction.get('minAmount')
-            class: if plannedTransaction.get('minAmount') >= 0 then 'amount-income' else 'amount-expense'
-          date: Moment(plannedTransaction.get('minTimestamp')).format('M/D')
+            value: transaction.get('amount')
+            class: if transaction.get('amount') >= 0 then 'amount-income' else 'amount-expense'
+          date: Moment(transaction.get('timestamp')).format('M/D')
+
+      transactionGroups = @app.plannedTransactions.groupBy (plannedTransaction) ->
+        plannedTransaction.get('accountGuid')
+
+      @$el.html Plan.template
+        upcomingTransactions: preparePlannedTransactions(upcomingTransactions)
+        pendingTransactions: preparePlannedTransactions(pendingTransactions)
+        recentTransactions: recentTransactions
         projectedBalances: _.map transactionGroups, (plannedTransactions, accountGuid) =>
           account = @app.accounts.get(accountGuid)
           transactionTotal = plannedTransactions
