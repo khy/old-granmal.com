@@ -7,12 +7,13 @@ define [
   'lib/javascripts/backbone/el-manager'
   'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
+  'budget/views/new-planned-transaction'
   'budget/views/new-transaction'
   'budget/views/new-transfer'
   'budget/views/confirm-planned-transaction'
 ], (
   $, _, Backbone, Handlebars, Moment, ElManager, Alert, template,
-  NewTransaction, NewTransfer, ConfirmPlannedTransaction
+  NewPlannedTransaction, NewTransaction, NewTransfer, ConfirmPlannedTransaction
 ) ->
 
   class Index extends Backbone.View
@@ -105,9 +106,26 @@ define [
       @
 
     events:
+      'click a.new-planned-transaction': 'newPlannedTransaction'
       'click a.new-transaction': 'newTransaction'
       'click a.new-transfer': 'newTransfer'
       'click a.confirm-planned-transaction': 'confirmPlannedTransaction'
+
+    newPlannedTransaction: (e) ->
+      e?.preventDefault()
+
+      newPlannedTransaction = new NewPlannedTransaction app: @app
+
+      closeNewPlannedTransaction = => @setView @
+
+      @listenTo newPlannedTransaction, 'close', closeNewPlannedTransaction
+
+      @listenTo newPlannedTransaction, 'create', (plannedTransaction) ->
+        @app.plannedTransactions.unshift plannedTransaction
+        Alert.success "Created new planned transaction."
+        closeNewPlannedTransaction()
+
+      @setView newPlannedTransaction
 
     newTransaction: (e) ->
       e?.preventDefault()
