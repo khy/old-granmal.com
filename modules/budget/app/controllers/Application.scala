@@ -22,6 +22,7 @@ object Application extends Controller with BudgetClient {
       routes.javascript.Application.bootstrap,
       routes.javascript.PlannedTransactions.create,
       routes.javascript.Transactions.create,
+      routes.javascript.Transfers.create,
       routes.javascript.Accounts.create,
       routes.javascript.TransactionTypes.create
     )

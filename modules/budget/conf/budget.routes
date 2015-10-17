@@ -4,6 +4,8 @@ POST    /plannedTransactions  controllers.budget.PlannedTransactions.create
 
 POST    /transactions   controllers.budget.Transactions.create
 
+POST    /transfers   controllers.budget.Transfers.create
+
 POST    /accounts       controllers.budget.Accounts.create
 
 POST    /transactionTypes   controllers.budget.TransactionTypes.create

@@ -1,0 +1,69 @@
+<header>
+  <h1>Budget</h1>
+
+  <ul class="right-actions">
+    <li>
+      <a href="#" class="close">
+        <span class="glyphicon glyphicon-remove"></span>
+      </a>
+    </li>
+  </ul>
+</header>
+
+<main class="form">
+  <form>
+    <div class="field">
+      <select name="fromAccountGuid">
+        {{#each fromAccountOptions}}
+          <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+
+      <a class="new-account" href="#">New Account</a>
+
+      {{#if errors.fromAccountGuid}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.fromAccountGuid}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <select name="toAccountGuid">
+        {{#each toAccountOptions}}
+          <option value="{{guid}}" {{#if selected}}selected="selected"{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+
+      <a class="new-account" href="#">New Account</a>
+
+      {{#if errors.toAccountGuid}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.toAccountGuid}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="amount" placeholder="Amount" value="{{amount}}"></input>
+
+      {{#if errors.amount}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.amount}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <div class="field">
+      <input type="text" name="date" placeholder="Date" value="{{date}}"></input>
+
+      {{#if errors.date}}
+        <ol class="input-messages">
+          <li class="input-error">{{errors.date}}</li>
+        </ol>
+      {{/if}}
+    </div>
+
+    <button type="submit">Create</button>
+  </form>
+</main>

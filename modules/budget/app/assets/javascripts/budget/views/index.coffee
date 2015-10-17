@@ -8,10 +8,11 @@ define [
   'lib/javascripts/alert'
   'text!budget/templates/index.hbs'
   'budget/views/new-transaction'
+  'budget/views/new-transfer'
   'budget/views/confirm-planned-transaction'
 ], (
-  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template, NewTransaction,
-  ConfirmPlannedTransaction
+  $, _, Backbone, Handlebars, Moment, ElManager, Alert, template,
+  NewTransaction, NewTransfer, ConfirmPlannedTransaction
 ) ->
 
   class Index extends Backbone.View
@@ -51,8 +52,9 @@ define [
             date: Moment(plannedTransaction.get('minTimestamp')).format('M/D')
 
       recentTransactions = @app.transactions.models
-        .sort (a, b) -> Moment(b.get('minTimestamp')).isAfter(a.get('minTimestamp'))
+        .sort (a, b) -> Moment(a.get('minTimestamp')).isAfter(Moment(b.get('minTimestamp')))
         .map (transaction) =>
+          console.log transaction.get('accountGuid')
           account = @app.accounts.get(transaction.get('accountGuid'))
           transactionType = @app.transactionTypes.get(transaction.get('transactionTypeGuid'))
 
@@ -104,6 +106,7 @@ define [
 
     events:
       'click a.new-transaction': 'newTransaction'
+      'click a.new-transfer': 'newTransfer'
       'click a.confirm-planned-transaction': 'confirmPlannedTransaction'
 
     newTransaction: (e) ->
@@ -121,6 +124,23 @@ define [
         closeNewTransaction()
 
       @setView newTransaction
+
+    newTransfer: (e) ->
+      e?.preventDefault()
+
+      newTransfer = new NewTransfer app: @app
+
+      closeNewTransfer = => @setView @
+
+      @listenTo newTransfer, 'close', closeNewTransfer
+
+      @listenTo newTransfer, 'create', (transfer) ->
+        console.log transfer
+        @app.transactions.unshift [transfer.get('fromTransaction'), transfer.get('toTransaction')]
+        Alert.success "Created new transfer."
+        closeNewTransfer()
+
+      @setView newTransfer
 
     confirmPlannedTransaction: (e) ->
       e?.preventDefault()
