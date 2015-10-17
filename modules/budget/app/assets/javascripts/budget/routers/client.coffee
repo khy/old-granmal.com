@@ -5,14 +5,12 @@ define [
   'lib/javascripts/auth/session'
   'lib/javascripts/auth/form'
   'budget/views/index'
-  'budget/views/plan'
-  'budget/views/resolve'
   'budget/collections/planned-transactions'
   'budget/collections/transactions'
   'budget/collections/transaction-types'
   'budget/collections/accounts'
 ], (
-  Backbone, ElManager, Prestitial, Session, AuthForm, Index, Plan, Resolve,
+  Backbone, ElManager, Prestitial, Session, AuthForm, Index,
   PlannedTransactions, Transactions, TransactionTypes, Accounts
 ) ->
 
@@ -32,8 +30,6 @@ define [
       @accountTypes = bootstrap.accountTypes
 
       @index = new Index app: @
-      @plan = new Plan app: @
-      @resolve = new Resolve app: @
 
     routes:
       '': 'index'

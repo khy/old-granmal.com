@@ -12,10 +12,110 @@
 
 <main>
   <div class="overview">
-    <ul class="links-primary">
-      <li><a class="plan" href="#">Plan</a></li>
-      <li><a class="resolve" href="#">Resolve</a></li>
-      <li><a class="review" href="#">Review</a></li>
-    </ul>
+    <a class="new-transaction" href="#">New Transaction</a>
+  </div>
+
+  <div class="pending-transactions">
+    <h3>Pending Transactions</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Account</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each pendingTransactions}}
+          <tr>
+            <td>{{date}}</td>
+            <td class="{{amount.class}}">${{amount.value}}</td>
+            <td>{{transactionType.name}}</td>
+            <td>{{account.name}}</td>
+            <td><a class="confirm-planned-transaction" data-guid="{{guid}}" href="#">Confirm</a></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="upcoming-transactions">
+    <h3>Upcoming Transactions</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Account</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each upcomingTransactions}}
+          <tr>
+            <td>{{date}}</td>
+            <td class="{{amount.class}}">${{amount.value}}</td>
+            <td>{{transactionType.name}}</td>
+            <td>{{account.name}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="recent-transactions">
+    <h3>Recent Transactions</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Amount</th>
+          <th>Type</th>
+          <th>Account</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each recentTransactions}}
+          <tr>
+            <td>{{date}}</td>
+            <td class="{{amount.class}}">${{amount.value}}</td>
+            <td>{{transactionType.name}}</td>
+            <td>{{account.name}}</td>
+            <td></td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="projected-balances">
+    <h3>Projected Balances</h3>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Current Balance</th>
+          <th>Projected Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each projectedBalances}}
+          <tr>
+            <td>{{account.name}}</td>
+            <td>{{currentBalance.value}}</td>
+            <td>{{projectedBalance.value}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
   </div>
 </main>
