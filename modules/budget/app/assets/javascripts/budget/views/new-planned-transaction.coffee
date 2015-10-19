@@ -52,8 +52,6 @@ define [
       @input = @getInput()
       @errors = @validate(@input)
 
-      console.log @input
-
       if _.isEmpty(@errors)
         jqxhr = @plannedTransaction.save _.extend @input,
           minTimestamp: NewPlannedTransaction.parseDate(@input.minDate).toISOString()

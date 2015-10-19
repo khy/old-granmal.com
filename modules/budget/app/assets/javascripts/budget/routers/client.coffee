@@ -27,26 +27,17 @@ define [
       @transactions = new Transactions bootstrap.transactions
       @transactionTypes = new TransactionTypes bootstrap.transactionTypes
       @accounts = new Accounts bootstrap.accounts
+      @projections = bootstrap.projections
       @accountTypes = bootstrap.accountTypes
 
       @index = new Index app: @
 
     routes:
       '': 'index'
-      'plan': 'plan'
-      'resolve': 'resolve'
 
     index: ->
       @_render =>
         @setView @index
-
-    plan: ->
-      @_render =>
-        @setView @plan
-
-    resolve: ->
-      @_render =>
-        @setView @resolve
 
     _render: (render) ->
       if @showPrestitial

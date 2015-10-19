@@ -55,7 +55,6 @@ define [
       recentTransactions = @app.transactions.models
         .sort (a, b) -> Moment(a.get('minTimestamp')).isAfter(Moment(b.get('minTimestamp')))
         .map (transaction) =>
-          console.log transaction.get('accountGuid')
           account = @app.accounts.get(transaction.get('accountGuid'))
           transactionType = @app.transactionTypes.get(transaction.get('transactionTypeGuid'))
 
@@ -78,30 +77,8 @@ define [
         upcomingTransactions: preparePlannedTransactions(upcomingTransactions)
         pendingTransactions: preparePlannedTransactions(pendingTransactions)
         recentTransactions: recentTransactions
-        projectedBalances: @app.accounts.models.map (account) =>
-          transactionTotal = @app.transactions.models
-            .filter (transaction) -> transaction.get('accountGuid') == account.get('guid')
-            .map (transaction) -> transaction.get('amount')
-            .reduce (total, amount) ->
-              total + amount
-            , 0
-
-          plannedTransactionTotal = @app.plannedTransactions.models
-            .filter (plannedTransaction) ->
-              plannedTransaction.get('accountGuid') == account.get('guid') &&
-              typeof plannedTransaction.get('transactionGuid') != 'string'
-            .map (plannedTransaction) -> plannedTransaction.get('minAmount')
-            .reduce (total, amount) ->
-              total + amount
-            , 0
-
-          account:
-            guid: account.get('guid')
-            name: account.get('name')
-          currentBalance:
-            value: account.get('initialBalance') + transactionTotal
-          projectedBalance:
-            value: account.get('initialBalance') + transactionTotal + plannedTransactionTotal
+        projectionDate: Moment(@app.projections[0].date).format('M/D')
+        projections: @app.projections
 
       @
 
@@ -153,7 +130,6 @@ define [
       @listenTo newTransfer, 'close', closeNewTransfer
 
       @listenTo newTransfer, 'create', (transfer) ->
-        console.log transfer
         @app.transactions.unshift [transfer.get('fromTransaction'), transfer.get('toTransaction')]
         Alert.success "Created new transfer."
         closeNewTransfer()

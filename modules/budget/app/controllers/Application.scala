@@ -6,6 +6,7 @@ import play.api.mvc._
 import play.api.libs.json._
 import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
+import org.joda.time.LocalDate
 
 import com.granmal.auth.AuthAction._
 import com.granmal.models.account.PublicAccount.Json._
@@ -37,6 +38,8 @@ object Application extends Controller with BudgetClient {
       val futAccounts = jsonClient.find("/accounts").map(_.items)
       val futAccountTypes = jsonClient.find("/accountTypes").map(_.items)
       val futTransactionTypes = jsonClient.find( "/transactionTypes").map(_.items)
+      val futProjections = jsonClient.find("/projections",
+        "date" -> LocalDate.now.plusMonths(1).withDayOfMonth(1).toString).map(_.items)
 
       for {
         plannedTransactions <- futPlannedTransactions
@@ -44,6 +47,7 @@ object Application extends Controller with BudgetClient {
         accounts <- futAccounts
         accountTypes <- futAccountTypes
         transactionTypes <- futTransactionTypes
+        projections <- futProjections
       } yield {
         Ok(Json.obj(
           "account" -> Json.toJson(request.account.map(_.toPublic)),
@@ -51,7 +55,8 @@ object Application extends Controller with BudgetClient {
           "transactions" -> transactions,
           "accounts" -> accounts,
           "accountTypes" -> accountTypes,
-          "transactionTypes" -> transactionTypes
+          "transactionTypes" -> transactionTypes,
+          "projections" -> projections
         ))
       }
     }.getOrElse {

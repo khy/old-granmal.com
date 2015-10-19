@@ -98,23 +98,25 @@
     </table>
   </div>
 
-  <div class="projected-balances">
-    <h3>Projected Balances</h3>
+  <div class="projections">
+    <h3>{{projectionDate}} Projections</h3>
 
     <table>
       <thead>
         <tr>
           <th>Account</th>
           <th>Current Balance</th>
-          <th>Projected Balance</th>
+          <th>Min Balance</th>
+          <th>Max Balance</th>
         </tr>
       </thead>
       <tbody>
-        {{#each projectedBalances}}
+        {{#each projections}}
           <tr>
             <td>{{account.name}}</td>
-            <td>{{currentBalance.value}}</td>
-            <td>{{projectedBalance.value}}</td>
+            <td>{{account.balance}}</td>
+            <td>{{minBalance}}</td>
+            <td>{{maxBalance}}</td>
           </tr>
         {{/each}}
       </tbody>
