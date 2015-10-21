@@ -11,14 +11,43 @@
 </header>
 
 <main>
-  <div class="overview">
+  <div class="links">
     <a class="new-planned-transaction" href="#">New Planned Transaction</a>
     <a class="new-transaction" href="#">New Transaction</a>
     <a class="new-transfer" href="#">New Transfer</a>
   </div>
 
+  <div class="projections">
+    <div class="card-header">
+      <h3>{{projectionDate}} Projections</h3>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Account</th>
+          <th>Current Balance</th>
+          <th>Min Balance</th>
+          <th>Max Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each projections}}
+          <tr>
+            <td>{{account.name}}</td>
+            <td>{{account.balance}}</td>
+            <td>{{minBalance}}</td>
+            <td>{{maxBalance}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+
   <div class="pending-transactions">
-    <h3>Pending Transactions</h3>
+    <div class="card-header">
+      <h3>Pending Transactions</h3>
+    </div>
 
     <table>
       <thead>
@@ -45,7 +74,9 @@
   </div>
 
   <div class="upcoming-transactions">
-    <h3>Upcoming Transactions</h3>
+    <div class="card-header">
+      <h3>Upcoming Transactions</h3>
+    </div>
 
     <table>
       <thead>
@@ -72,7 +103,9 @@
   </div>
 
   <div class="recent-transactions">
-    <h3>Recent Transactions</h3>
+    <div class="card-header">
+      <h3>Recent Transactions</h3>
+    </div>
 
     <table>
       <thead>
@@ -92,31 +125,6 @@
             <td>{{transactionType.name}}</td>
             <td>{{account.name}}</td>
             <td></td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-
-  <div class="projections">
-    <h3>{{projectionDate}} Projections</h3>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Account</th>
-          <th>Current Balance</th>
-          <th>Min Balance</th>
-          <th>Max Balance</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each projections}}
-          <tr>
-            <td>{{account.name}}</td>
-            <td>{{account.balance}}</td>
-            <td>{{minBalance}}</td>
-            <td>{{maxBalance}}</td>
           </tr>
         {{/each}}
       </tbody>

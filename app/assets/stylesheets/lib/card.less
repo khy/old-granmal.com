@@ -2,17 +2,59 @@
 
 @card-base-spacing: 10px;
 
-.card {
+.card-colors {
   .bottom-shadow;
   background-color: #FFF;
   border: 1px solid @default-border-color;
 }
 
+.card-margin {
+  margin-bottom: (@card-base-spacing * 2);
+}
+
+.card-section {
+  padding: (@card-base-spacing * 2);
+}
+
+.card-header {
+  .card-section;
+
+  h3 {
+    margin: 0;
+    font-weight: 500;
+  }
+}
+
+.card-table {
+  table {
+    width: 100%;
+
+    td, th {
+      font-weight: normal;
+      border-top: 1px solid @default-border-color;
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #EEE;
+    }
+  }
+}
+
+.card {
+  .card-colors;
+  .card-table;
+  .card-margin;
+}
+
+.simple-card {
+  .card-colors;
+  .card-margin;
+  .card-section
+}
+
 .card-list {
   .unstyled-list;
-
-  li {
-    .card;
-    margin-bottom: (@card-base-spacing * 2);
-  }
+  li { .card; }
 }

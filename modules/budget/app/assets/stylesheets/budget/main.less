@@ -3,31 +3,17 @@
 @import "../../../../../../app/assets/stylesheets/lib/form.less";
 @import "../../../../../../app/assets/stylesheets/lib/card.less";
 
-.overview {
-  .card;
-  padding: 2 * @card-base-spacing;
-  margin-bottom: (@card-base-spacing * 2);
-  .links-primary { .unstyled-list; }
+.links {
+  .simple-card;
+  a { margin-right: 10px; }
 }
 
-.table-card {
-  .card;
-  padding: 2 * @card-base-spacing;
-  margin-bottom: (@card-base-spacing * 2);
-
-  table {
-    width: 100%;
-    th { text-align: left; }
-  }
-}
-
-.upcoming-transactions, .pending-transactions, .recent-transactions {
-  .table-card;
-
-  td.amount-income { color: green; }
-  td.amount-expense { color: red; }
-}
-
+.upcoming-transactions,
+.pending-transactions,
+.recent-transactions,
 .projections {
-  .table-card;
+  .card;
+
+  td.amount-income { color: #3C763D; }
+  td.amount-expense { color: #A94442; }
 }
